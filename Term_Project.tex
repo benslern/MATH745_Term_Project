@@ -1,0 +1,166 @@
+\documentclass[12pt]{article}
+
+
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+
+\pagecolor[rgb]{0.2,0.2,0.2}
+\color[rgb]{0.95,0.95,0.95}
+
+\usepackage{times}\usepackage{setspace}
+\doublespacing
+
+\usepackage{hyperref}
+\hypersetup{
+ colorlinks,
+ linkcolor={blue!90!black},
+ citecolor={red!80!black},
+ urlcolor={blue!50!black}
+}
+\urlstyle{same}
+\pagenumbering{arabic}
+
+\usepackage[letterpaper, total={6.25in, 8.5in},top=35mm]{geometry}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{Math 745 Term Project - Noah Bensler}
+\rhead{McMaster University - CSE}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+
+\newcommand{\bds}{\boldsymbol}
+\newcommand{\la}{\left\langle}
+\newcommand{\ra}{\right\rangle}
+\newcommand{\lb}{\left\lbrace}
+\newcommand{\rb}{\right\rbrace}
+
+\def\w{\omega}
+\def\wt{\omega_t}
+\def\wx{\omega_x}
+\def\wxx{\omega_{xx}}
+\def\L{\mathcal{L}}
+\def\P{\mathbf{P}}
+
+\DeclareMathOperator*{\argmax}{argmax}
+
+\newtheorem{thm}{Theorem}[section]
+
+\numberwithin{equation}{section}
+
+\begin{document}
+
+\newgeometry{top=3.8cm,left=3.8cm,right=2.5cm,bottom=2.5cm}
+\begin{titlepage}
+   \begin{center}
+       \vspace*{1cm}
+
+	    ON A SEARCH FOR SINGULARITIES IN THE GENERALIZED CONSTANTIN–LAX–MAJDA EQUATION
+	   
+   \end{center}
+\end{titlepage}
+
+\setcounter{page}{0}
+\begin{titlepage}
+   \begin{center}
+       \vspace*{3.8cm}
+
+       ON A SEARCH FOR SINGULARITIES IN THE GENERALIZED CONSTANTIN–LAX–MAJDA EQUATION
+
+       \vspace{2.5cm}
+
+       By NOAH BENSLER, B.Sc.
+
+       \vfill
+            
+       A Project Submitted to Math 745\\
+            
+       \vspace{0.8cm}
+     
+            
+       Computational Science \& Engineering\\
+       McMaster University\\
+       ©Copyright by Noah Bensler, DATE
+            
+   \end{center}
+\end{titlepage}
+\restoregeometry
+
+\pagenumbering{roman}
+\setcounter{page}{2}
+
+\pagebreak
+
+\begin{flushleft}
+\begin{large}
+\textbf{Abstract}
+\\~\\
+\end{large}
+\end{flushleft}
+\noindent
+\qquad For my term project I will compute and analyse solutions of the Generalized Constantine-Lax-Majda equation. The Constantine-Lax-Majda (CLM) equation was proposed as a one-dimensional model for the three-dimensional vorticity equation. The CLM equation was later expanded on by De Gregorio to include the convection term $u\omega_x$. The De Gregorio equation was generalized by Okamoto et al. to include the real parameter $a$ which determines the relative strength of the convection term. The result is the Generalized Constantin-Lax-Majda equation (GCLM). 
+\\~\\
+The CLM equation was proposed in 1985 and has been shown to exhibit finite time blow-up. While the De Gregorio equation was proposed shortly after in 1989, questions still remain as to whether or not the equation permits finite time blow-up. The goal of this analysis is to examine the affect the parameter $a$ has on the finite time blow-up of the GCLM equation on the periodic domain $x\in[-\pi,\pi]$. I will explore solutions of the GCLM for values of $a\in[-1,1]$. 
+\\~\\
+The analysis found RESULTS RESULTS RESULTS. CONCLUSION CONCLUSION CONCLUSION.
+
+\pagebreak
+
+
+{
+  \hypersetup{linkcolor=white} %black
+  \tableofcontents
+}
+
+\pagebreak
+
+\pagenumbering{arabic}
+
+\section{Introduction}
+
+One of the 
+
+
+\section{The Generalized Constantin–Lax–Majda Equation}
+
+explore this by studying simpler one-dimensional models.
+
+\subsection{The CLM Equation}
+
+The Constantin-Lax-Majda equation was proposed as a one-dimensional model of the three-dimensional vorticity equation for an incompressible fluid \cite{constantin_simple_1985}.
+
+\subsection{The De Gregorio Equation}
+
+The De Gregorio equation was proposed as a one-dimensional model that improves on the CLM equation by ... \cite{de_gregorio_one-dimensional_1990}
+
+\subsection{Generalization of the CLM Equation}
+The De Gregorio equation was later generalized to the GCLM \cite{okamoto_generalization_2008}.
+
+\section{Blow-up Criteria}
+how do we define blow up
+
+\section{Numerical Methods}
+what numerical methods are used
+\subsection{Domain and Grid}
+a
+\subsection{Time Stepping}
+b
+\subsection{Initial Conditions}
+c
+
+\section{Results}
+these are the results
+
+\section{Conclusion}
+this is the conclusion
+
+\pagebreak
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}

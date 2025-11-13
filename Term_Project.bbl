@@ -1,0 +1,23 @@
+\begin{thebibliography}{1}
+
+\bibitem{constantin_simple_1985}
+P.~Constantin, P.~D. Lax, and A.~Majda.
+\newblock A simple one-dimensional model for the three-dimensional vorticity
+  equation.
+\newblock {\em Communications on Pure and Applied Mathematics}, 38(6):715--724,
+  1985.
+\newblock \_eprint:
+  https://onlinelibrary.wiley.com/doi/pdf/10.1002/cpa.3160380605.
+
+\bibitem{de_gregorio_one-dimensional_1990}
+Salvatore De~Gregorio.
+\newblock On a one-dimensional model for the three-dimensional vorticity
+  equation.
+\newblock {\em Journal of Statistical Physics}, 59(5):1251--1263, June 1990.
+
+\bibitem{okamoto_generalization_2008}
+Hisashi Okamoto, Takashi Sakajo, and Marcus Wunsch.
+\newblock On a generalization of the {Constantin}–{Lax}–{Majda} equation.
+\newblock {\em Nonlinearity}, 21(10):2447, September 2008.
+
+\end{thebibliography}
