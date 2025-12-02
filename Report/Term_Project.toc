@@ -1,12 +1,18 @@
 \contentsline {section}{\numberline {1}Introduction}{1}{section.1}%
-\contentsline {section}{\numberline {2}The Generalized Constantin–Lax–Majda Equation}{1}{section.2}%
-\contentsline {subsection}{\numberline {2.1}The CLM Equation}{1}{subsection.2.1}%
-\contentsline {subsection}{\numberline {2.2}The De Gregorio Equation}{1}{subsection.2.2}%
-\contentsline {subsection}{\numberline {2.3}Generalization of the CLM Equation}{1}{subsection.2.3}%
-\contentsline {section}{\numberline {3}Blow-up Criteria}{1}{section.3}%
-\contentsline {section}{\numberline {4}Numerical Methods}{1}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Domain and Grid}{2}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Time Stepping}{2}{subsection.4.2}%
-\contentsline {subsection}{\numberline {4.3}Initial Conditions}{2}{subsection.4.3}%
-\contentsline {section}{\numberline {5}Results}{2}{section.5}%
-\contentsline {section}{\numberline {6}Conclusion}{2}{section.6}%
+\contentsline {subsection}{\numberline {1.1}The CLM Equation}{2}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}The De Gregorio Equation}{2}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}The Generalized CLM Equation}{3}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.4}Blow-up Criteria}{3}{subsection.1.4}%
+\contentsline {subsection}{\numberline {1.5}Overview}{3}{subsection.1.5}%
+\contentsline {section}{\numberline {2}Numerical Methods}{3}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Domain and Grid}{3}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Time Stepping}{4}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Complete Numerical Method}{5}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Initial Conditions}{5}{subsection.2.4}%
+\contentsline {section}{\numberline {3}Results}{6}{section.3}%
+\contentsline {section}{\numberline {4}Conclusion}{6}{section.4}%
+\contentsline {section}{\numberline {5}Appendix}{6}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Hilbert Transform}{6}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Hilbert Transform Implementation}{8}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Velocity Field}{9}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}Velocity Implementation}{10}{subsection.5.4}%

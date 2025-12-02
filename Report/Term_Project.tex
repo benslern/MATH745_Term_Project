@@ -2,14 +2,24 @@
 
 
 \usepackage{xcolor}
+\usepackage{color}
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{amssymb}
 \usepackage{amsfonts}
+\usepackage[numbered,framed]{matlab-prettifier}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+\lstset{
+        basicstyle=\ttfamily,
+        literate={~}{{\fontfamily{ptm}\selectfont \textasciitilde}}1
+}
 
 \pagecolor[rgb]{0.2,0.2,0.2}
 \color[rgb]{0.95,0.95,0.95}
+
+\newtheorem{thm}{Theorem}[section]
 
 \usepackage{times}\usepackage{setspace}
 \doublespacing
@@ -27,8 +37,8 @@
 \usepackage[letterpaper, total={6.25in, 8.5in},top=35mm]{geometry}
 \usepackage{fancyhdr}
 \pagestyle{fancy}
-\lhead{Math 745 Term Project - Noah Bensler}
-\rhead{McMaster University - CSE}
+\lhead{Math 745 Term Project --- Noah Bensler}
+\rhead{McMaster University --- CSE}
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\footrulewidth}{0.4pt}
 
@@ -38,17 +48,26 @@
 \newcommand{\ra}{\right\rangle}
 \newcommand{\lb}{\left\lbrace}
 \newcommand{\rb}{\right\rbrace}
+\newcommand{\ls}{\left[}
+\newcommand{\rs}{\right]}
+\newcommand{\lr}{\left(}
+\newcommand{\rr}{\right)}
 
 \def\w{\omega}
 \def\wt{\omega_t}
 \def\wx{\omega_x}
 \def\wxx{\omega_{xx}}
+\def\wk{\hat{\omega}_k}
+\def\wn{\omega^{(n)}}
+\def\un{u^{(n)}}
+\def\ux{u_x}
+\def\ut{u_t}
+\def\tn{t^{(n)}}
 \def\L{\mathcal{L}}
-\def\P{\mathbf{P}}
+\def\R{\mathbb{R}}
+\def\sgn{\,\text{sgn}}
 
 \DeclareMathOperator*{\argmax}{argmax}
-
-\newtheorem{thm}{Theorem}[section]
 
 \numberwithin{equation}{section}
 
@@ -59,7 +78,7 @@
    \begin{center}
        \vspace*{1cm}
 
-	    ON A SEARCH FOR SINGULARITIES IN THE GENERALIZED CONSTANTIN–LAX–MAJDA EQUATION
+	    SINGULARITIES IN THE GENERALIZED CONSTANTIN–LAX–MAJDA EQUATION
 	   
    \end{center}
 \end{titlepage}
@@ -69,7 +88,7 @@
    \begin{center}
        \vspace*{3.8cm}
 
-       ON A SEARCH FOR SINGULARITIES IN THE GENERALIZED CONSTANTIN–LAX–MAJDA EQUATION
+       ON A SEARCH FOR FINITE-TIME SINGULARITIES IN THE GENERALIZED CONSTANTIN–LAX–MAJDA EQUATION
 
        \vspace{2.5cm}
 
@@ -84,7 +103,7 @@
             
        Computational Science \& Engineering\\
        McMaster University\\
-       ©Copyright by Noah Bensler, DATE
+       ©Copyright by Noah Bensler, 17 December 2025.
             
    \end{center}
 \end{titlepage}
@@ -97,14 +116,30 @@
 
 \begin{flushleft}
 \begin{large}
+\textbf{Project Proposal}
+\end{large}
+\end{flushleft}
+\noindent
+For my term project I will compute and analyse solutions of the Generalized Constantine-Lax-Majda equation. The Constantine-Lax-Majda (CLM) equation was proposed as a one-dimensional model for the three-dimensional vorticity equation and has the form\vspace{-12pt}
+$$\wt - \ux\w = 0, \qquad \ux = H\w\vspace{-12pt}$$
+where $\w$ is the vorticity of the fluid and $u$ is the fluid velocity. For this analysis the equations will be examined on the periodic domain $x\in[-\pi,\pi]$. The Hilbert transform of the vorticity is defined as
+$$H\w(x,t) = \frac{1}{2\pi}\int_{-\pi}^{\pi} \w(y,t)\cot\lr\frac{x-y}{t}\rr \,dy,$$
+which has a singularity at $x=y$ and so must be evaluated using the Cauchy Principle Value. The CLM equation was later expanded on by De Gregorio to include the convection term $u\wx$. The De Gregorio equation has the form\vspace{-12pt}
+$$\wt + u\wx - \ux\w = 0, \qquad \ux = H\w.\vspace{-12pt}$$
+The De Gregorio equation was later generalized by Okamoto et al. to include the real parameter $a$. The result is the Generalized Constantin-Lax-Majda equation (GCLM)\vspace{-12pt}
+$$\wt + au\wx - \ux\w = 0, \qquad \ux = H\w.\vspace{-12pt}$$
+The parameter $a$ determines the relative strength of the convection term. When $a=0$ the GCLM is equal to the CLM, and when $a=1$ it is equal to the De Gregorio equation. The CLM equation was proposed in 1985 and has been shown to exhibit finite time blow-up. While the De Gregorio equation was proposed shortly after in 1989, questions still remain as to whether or not the equation permits finite time blow-up. The goal of this analysis will be to examine the affect the parameter $a$ has on the finite time blow-up of the GCLM equation. I will explore solutions of the GCLM for values of $a\in[-1,1]$. 
+
+\pagebreak
+
+\begin{flushleft}
+\begin{large}
 \textbf{Abstract}
 \\~\\
 \end{large}
 \end{flushleft}
 \noindent
-\qquad For my term project I will compute and analyse solutions of the Generalized Constantine-Lax-Majda equation. The Constantine-Lax-Majda (CLM) equation was proposed as a one-dimensional model for the three-dimensional vorticity equation. The CLM equation was later expanded on by De Gregorio to include the convection term $u\omega_x$. The De Gregorio equation was generalized by Okamoto et al. to include the real parameter $a$ which determines the relative strength of the convection term. The result is the Generalized Constantin-Lax-Majda equation (GCLM). 
-\\~\\
-The CLM equation was proposed in 1985 and has been shown to exhibit finite time blow-up. While the De Gregorio equation was proposed shortly after in 1989, questions still remain as to whether or not the equation permits finite time blow-up. The goal of this analysis is to examine the affect the parameter $a$ has on the finite time blow-up of the GCLM equation on the periodic domain $x\in[-\pi,\pi]$. I will explore solutions of the GCLM for values of $a\in[-1,1]$. 
+The Constantine-Lax-Majda (CLM) equation was proposed as a one-dimensional model for the three-dimensional vorticity equation. The CLM equation was later expanded on by De Gregorio to include the convection term $u\wx$. The De Gregorio equation was generalized by Okamoto et al. to include the real parameter $a$ which determines the relative strength of the convection term. The result is the Generalized Constantin-Lax-Majda equation (GCLM). In this analysis we examine the affect the parameter $a\in[-1,1]$ has on the finite time blow-up of the GCLM equation on the periodic domain $x\in[-\pi,\pi]$. 
 \\~\\
 The analysis found RESULTS RESULTS RESULTS. CONCLUSION CONCLUSION CONCLUSION.
 
@@ -122,35 +157,134 @@ The analysis found RESULTS RESULTS RESULTS. CONCLUSION CONCLUSION CONCLUSION.
 
 \section{Introduction}
 
-One of the 
-
-
-\section{The Generalized Constantin–Lax–Majda Equation}
-
-explore this by studying simpler one-dimensional models.
+The three-dimensional Euler equations are a simplified form of the Navier-Stokes equations which describe the flow of inviscid, incompressible fluids. The Euler equations are
+\begin{subequations}\label{eq:Euler}
+\begin{align}
+\ut + u\cdot \nabla u + \nabla p &= 0, \\
+\nabla \cdot u &= 0,
+\end{align}
+\end{subequations}
+where $u$ is the velocity field and $p$ is the scalar pressure. By substituting in the vorticity ($\w = \nabla \times u$) these equations can be re-expressed in the three-dimensional vorticity equation
+\begin{equation}\label{eq:Vorticity}
+\wt + (u\nabla)\w = (\w\nabla)u,
+\end{equation}
+where the velocity can be computed from the vorticity field with the equation DOUBLE CHECK THIS
+\begin{equation}\label{eq:Vel:Vort}
+u = -\nabla \times (\nabla^{-1} \w).
+\end{equation}
+A central question in fluid dynamics is whether or not finite-time singularities can form in fluid flows with smooth initial conditions \cite{constantin_simple_1985}. As first demonstrated by Beale, Kato, and Majda, singularities can form if and only if the maximum vorticity of the flow becomes infinite \cite{beale_remarks_1984}. The vorticity equation allows for the direct modelling of the vorticity and so is a very useful tool for studying singularity formation in the Euler equations. WHY USE 1D MODELS.
 
 \subsection{The CLM Equation}
 
-The Constantin-Lax-Majda equation was proposed as a one-dimensional model of the three-dimensional vorticity equation for an incompressible fluid \cite{constantin_simple_1985}.
+The Constantin-Lax-Majda (CLM) equation was the first one-dimensional model of the three-dimensional vorticity equation for an incompressible fluid \cite{constantin_simple_1985}. The CLM equation is
+\begin{equation}\label{eq:CLM}
+\wt = H(\w)\w
+\end{equation}
+where $H$ is the Hilbert transform DOUBLE CHECK THIS
+\begin{equation}\label{eq:Hilbert:Transform:R1}
+H\w(x,t) = \frac{1}{2\pi}\int_{-\pi}^{\pi} \w(y,t)\cot\lr\frac{x-y}{2}\rr \,dy.
+\end{equation}
+The CLM equation was defined on the unbounded domain $R^1$ DOUBLE CHECK THIS. A significant advantage of this model was that its simplicity. This allowed Constantin et al. to prove the following Theorem \cite{constantin_simple_1985}.
+\begin{thm}
+Suppose $\w_0(x)$ is a smooth function decaying sufficiently rapidly as $|x|\rightarrow \infty$ ($\w_0 \in H^1(\R)$ suffices). Then the solution to the model vorticity equation in (\ref{eq:CLM}) is given by
+\begin{equation}\label{eq:Explicit:Omega}
+\w(x,t) = \frac{4\w_0(x)}{(2 - tH\w_0(x))^2 + t^2\w_0^2(x)}.
+\end{equation}
+\end{thm}
+The CLM model is a very simple model. The biggest advantage it has is that it has an explicit solution which allows for ...\cite{constantin_simple_1985}. 
+
+However, De Gregorio noted three shortcomings of the model \cite{de_gregorio_one-dimensional_1990}.
+\begin{enumerate}
+\item asdf
+\end{enumerate}
 
 \subsection{The De Gregorio Equation}
 
 The De Gregorio equation was proposed as a one-dimensional model that improves on the CLM equation by ... \cite{de_gregorio_one-dimensional_1990}
 
-\subsection{Generalization of the CLM Equation}
+\subsection{The Generalized CLM Equation}
 The De Gregorio equation was later generalized to the GCLM \cite{okamoto_generalization_2008}.
 
-\section{Blow-up Criteria}
-how do we define blow up
+\begin{equation}\label{eq:Hilbert:Transform}
+H\omega(x,t) = \frac{1}{2\pi}\int_{-\pi}^{\pi} \omega(y,t)\cot\left(\frac{x-y}{2}\right) \,dy.
+\end{equation}
+
+\subsection{Blow-up Criteria}
+Okamoto et al. (2008) prove Theorem 3.1 and Theorem 3.2.
+
+\begin{thm}\label{thm:Theorem:3.1}
+Let $a\in\R$ be given. For all $\omega_0\in H^1(S^1)/\R$, there exists a $T>0$ depending only on $a$ and $\|\omega_{0,x}\|$ such that there exists a unique solution $\omega\in C^0([0,T];H^1(S^1)/\R) \cap C^1([0,T];L^2(S^1)/\R)$ of (GCLM ref) with $\omega(0,x)=w_0$.
+\end{thm}
+
+
+\subsection{Overview}
+
+In this paper we will conduct a search for singularity formation in the GCLM by 
 
 \section{Numerical Methods}
-what numerical methods are used
+
+We use the same numerical methods as \cite{okamoto_generalization_2008} which are described below. We use the notation $\hat{\omega}_k$ for the Fourier coefficients of the vorticity. There derivatives  The numerical integration techniques below describe the procedure to calculate the value of $\omega$ at step $n+1$ from the value at step number $n$. To distinguish the notation from the Fourier coefficient we use $\omega^{(n)}$, $u^{(n)}$, and $t^{(n)}$ to denote the vorticity, velocity, and time, respectively, at step $n$.
+
+
 \subsection{Domain and Grid}
-a
+
+The vorticity $\omega($ is represented in physical space on a grid of $N = 2^14$ equidistant points on the domain $x\in[\pi,pi]$. Because the domain is periodic we must avoid double counting the grid point on the boundary. Therefore we set $x_0=-\pi$ and $x_N=\pi-h$, where $h$ is the uniform distance between points $x_i$ and $x_{i+1}$. The vorticity is represented in Fourier space with the truncated Fourier series
+\begin{equation}\label{eq:Fourier}
+\omega(t,x) = \sum_{k=-N/2}^{N/2 - 1}\hat{\omega}_k e^{ikx}.
+\end{equation}
+
+Transformation from physical to Fourier space, and vice versa, are performed using the standard Matlab fft and ifft functions. 
+
+We compute the value of $u^{(n)}$ in Fourier Space using the formula
+\begin{equation}
+u^{(n)}(t,x) = 4\ln(2)\hat{\omega}^{(n)}_0 + \sum_{k=-N/2,k\neq 0}^{N/2 - 1}\frac{\hat{\omega}^{(n)}_k \exp(ikx)}{k}\,dv.
+\end{equation}
+ 
+ Compute $u_x$ in Fourier space. Compute $\omega_x$ in Fourier space. 
+ 
+ The full derivation of each formula is shown in the Appendix. 
+
 \subsection{Time Stepping}
-b
+
+When modelling time dependent PDEs it is best practice to use explicit time stepping methods for non-linear terms in order to reduce computation cost, and use implicit methods for linear term to improve stability \cite{protas_spectral_2025}. As described in prior sections, both the convection term and stretching term of the GCLM are non-linear. Therefore, as is used in \cite{okamoto_generalization_2008}  and \cite{hideki_numerical_2006}, we perform time stepping using the explicit fourth-order Runge-Kutta (RK4) method. The RK4 time stepping is performed with the formula
+\begin{equation}\label{eq:RK4}
+\omega^{(n+1)} = \omega^{(n)} + \frac{1}{6}(k_1 + 2k_2 + 2k_3 + k_4)
+\end{equation}
+where the $k_i$ terms are calculated using
+\begin{subequations}
+\begin{align}
+k_1 &= f(\omega^{(n)},t^{(n)})  \\
+k_2 &= f(\omega^{(n)}+ dt \cdot k_1/2,t^{(n)} + dt/2)  \\
+k_3 &= f(\omega^{(n)}+ dt \cdot k_2/2,t^{(n)}+ dt/2)  \\
+k_4 &= f(\omega^{(n)}+ dt \cdot k_3,t^{(n)}+dt) 
+\end{align}
+\end{subequations}
+where $dt = 1E-4$ is the time step size. The function $f$ in the above equations is given by
+\begin{equation}\label{eq:RHS}
+f(\omega^{(n)},t^{(n)}) = \ux\omega - au\wx
+\end{equation}
+
+The derivatives $\ux$ and $\wx$ are computed in Fourier space. The
+
+\subsection{Complete Numerical Method}
+
+
+Combining the methods described above, we use the following procedure
+
+\begin{enumerate}
+  \item Convert $\omega^(n)$ from Physical space to Fourier space using FFT.
+  \item Calculate $u_x$ 
+\end{enumerate}
+
+
 \subsection{Initial Conditions}
-c
+
+Okamoto et al. (2008) showed that any solution that satisfies (GCLM ref) must also satisfy
+\begin{equation}
+\frac{d}{dt}\int_{-\pi}^{\pi}\omega(t,x)\,dx = \int_{-\pi}^{\pi} (-au\omega_x + u_x\omega)\,dx = (a+1)\int_{-\pi}^{\pi}u_x\omega\,dx = (a+1)(H\omega,\omega),
+\end{equation}
+where  $(\cdot,\cdot)$ denotes the $L^2$ inner product (Okamoto et al., 2008). Therefore, we may assume without loss of generality that the initial condition satisfies
+$$\int_{-\pi}^{\pi} \omega(0,x)\,dx = 0.$$
 
 \section{Results}
 these are the results
@@ -158,9 +292,107 @@ these are the results
 \section{Conclusion}
 this is the conclusion
 
+\section{Appendix}
+\subsection{Hilbert Transform}
+The Hilbert transform is defined as
+$$H\w(x,t) = \frac{1}{2\pi}\int_{-\pi}^{\pi}\w(y,t)\cot\left(\frac{x-y}{2}\right)\,dy.$$
+The solution $\w(t,y)$ is represented as the truncated Fourier series
+$$\w(t,y) = \sum_{k=-N/2}^{N/2 - 1}\w_k(t)\exp(iky).$$
+Substituting this into the Hilbert transform
+$$H\w(x,t) = \frac{1}{2\pi}\int_{-\pi}^{\pi}\sum_{k=-N/2}^{N/2 - 1}\w_k(t)\exp(iky)\cot\left(\frac{x-y}{2}\right)\,dy.$$
+We can swap the integral and sum to obtain
+$$H\w(x,t) = \frac{1}{2\pi}\sum_{k=-N/2}^{N/2 - 1}\w_k(t) \int_{-\pi}^{\pi} \exp(iky)\cot\left(\frac{x-y}{2}\right)\,dy.$$
+We now apply a substitution $u = y - x$. Therefore,
+$$H\w(x,t) = -\frac{1}{2\pi}\sum_{k=-N/2}^{N/2 - 1}\w_k(t) \int_{-\pi-x}^{\pi-x} \exp(ik(u+x))\cot\left(\frac{u}{2}\right)\,du.$$
+
+$$H\w(x,t) = -\frac{1}{2\pi}\sum_{k=-N/2}^{N/2 - 1}\w_k(t)\exp(ikx) \int_{-\pi-x}^{\pi-x} \exp(iku)\cot\left(\frac{u}{2}\right)\,du.$$
+Because the integrand is periodic we can shift the domain by $x$
+$$H\w(x,t) = -\frac{1}{2\pi}\sum_{k=-N/2}^{N/2 - 1}\w_k(t)\exp(ikx) \int_{-\pi}^{\pi} \exp(iku)\cot\left(\frac{u}{2}\right)\,du.$$
+Converting the exponential to its trigonometric form
+$$H\w(x,t) = -\frac{1}{2\pi}\sum_{k=-N/2}^{N/2 - 1}\w_k(t)\exp(ikx) \int_{-\pi}^{\pi} [\cos(ku)+i\sin(ku)]\cot\left(\frac{u}{2}\right)\,du,$$
+$$H\w(x,t) = -\frac{1}{2\pi}\sum_{k=-N/2}^{N/2 - 1}\w_k(t)\exp(ikx)\left[ \int_{-\pi}^{\pi} \cos(ku)\cot(\frac{u}{2})du +i \int_{-\pi}^{\pi} \sin(ku)\cot\left(\frac{u}{2}\right)\,du\right].$$
+The first integral is odd and so is equal to zero. The second integral is even and so can be simplified to a half integral. Therefore,
+$$H\w(x,t) = -\frac{2i}{2\pi}\sum_{k=-N/2}^{N/2 - 1}\w_k(t)\exp(ikx)\left[ \int_{0}^{\pi} \sin(ku)\cot\left(\frac{u}{2}\right)\,du\right].$$
+The remaining integral is a known identity [CITATION]
+$$ \int_{0}^{\pi} \sin(ku)\cot(\frac{u}{2})\,du = \pi \sgn(k), $$
+where $\sgn(k)$ is the signum function. Substituting in to the Hilbert transform
+$$H\w(x,t) = -i\sum_{k=-N/2}^{N/2 - 1}\w_k(t)\exp(ikx)\sgn(k).$$
+\subsection{Hilbert Transform Implementation}
+
+The Hilbert Transform is implemented in Matlab using the code shown below. The Fast Fourier Transform in Matlab formats the Fourier coefficients in order 0,...,N/2 -1 then -N/2,...,-1. 
+\\
+\begin{lstlisting}[
+  style=Matlab-editor,
+  language=Matlab
+]
+% Hilbert Transform Physical
+function h = ht(w_t, N)
+    % convert w_t to Fourier space
+    w_c = fft(w_t,N);
+    % wave numbers in fft format
+    k = [0:N/2-1, -N/2:-1];
+    % signum of wavenumbers
+    sgn_k = sign(k); 
+    % multiply Fourier coefficients by -i sgn_k
+    w_c = (-1i*sgn_k).*w_c;
+    % convert w_c back to physical space
+    h = ifft(w_c,N);
+end
+\end{lstlisting}
+
+
+\subsection{Velocity Field}
+
+The velocity field is defined as
+$$u(t,x) = \frac{1}{\pi}\int_{-\pi}^{\pi}\w(t,y)\log\left| \sin\left(\frac{x-y}{2}\right) \right|\,dy.$$
+The solution $\w(t,y)$ is represented as the truncated Fourier series
+$$\w(t,y) = \sum_{k=-N/2}^{N/2 - 1}\w_k(t)\exp(iky).$$
+Substituting this into the velocity field
+$$u(t,x) = \frac{1}{\pi}\int_{-\pi}^{\pi} \sum_{k=-N/2}^{N/2 - 1}\w_k(t)\exp(iky)\log\left| \sin\left(\frac{x-y}{2}\right) \right|\,dy.$$
+We can swap the integral and sum to obtain
+$$u(t,x) = \frac{1}{\pi} \sum_{k=-N/2}^{N/2 - 1}\w_k(t) \int_{-\pi}^{\pi}\exp(iky)\log\left| \sin\left(\frac{x-y}{2}\right) \right|\,dy.$$
+We now apply a substitution $v = y - x$. Therefore,
+$$u(t,x) = -\frac{1}{\pi} \sum_{k=-N/2}^{N/2 - 1}\w_k(t) \int_{-\pi-x}^{\pi-x}\exp(ik(v+x))\log\left| \sin\left(\frac{v}{2}\right) \right|\,dv.$$
+Because the integrand is periodic we can shift the domain by $x$
+$$u(t,x) = -\frac{1}{\pi} \sum_{k=-N/2}^{N/2 - 1}\w_k(t) \exp(ikx)\int_{-\pi}^{\pi}\exp(ikv)\log\left| \sin\left(\frac{v}{2}\right) \right|\,dv.$$
+Converting the exponential to its trigonometric form
+$$u(t,x) = -\frac{1}{\pi} \sum_{k=-N/2}^{N/2 - 1}\w_k(t) \exp(ikx)\int_{-\pi}^{\pi}(\cos(kv) + i\sin(kv))\log\left| \sin\left(\frac{v}{2}\right) \right|\,dv.$$
+$$u(t,x) = -\frac{1}{\pi} \sum_{k=-N/2}^{N/2 - 1}\w_k(t) \exp(ikx)\left[\int_{-\pi}^{\pi}\cos(kv)\log\left| \sin\left(\frac{v}{2}\right) \right|\,dv + i\int_{-\pi}^{\pi}\sin(kv)\log\left| \sin\left(\frac{v}{2}\right) \right|\,dv\right].$$
+The second integral is odd and so is equal to zero. The first integral is even and so can be simplified to a half integral. Therefore,
+$$u(t,x) = -\frac{2}{\pi} \sum_{k=-N/2}^{N/2 - 1}\w_k(t) \exp(ikx)\int_{0}^{\pi}\cos(kv)\log\left| \sin\left(\frac{v}{2}\right) \right|\,dv.$$
+The remaining integral is a known identity [CITATION]
+$$\int_{0}^{\pi}\cos(kv)\log\left| \sin\left(\frac{v}{2}\right) \right|\,dv = -2\pi\ln(2), \qquad k = 0,$$
+$$\int_{0}^{\pi}\cos(kv)\log\left| \sin\left(\frac{v}{2}\right) \right|\,dv = -\frac{\pi}{2|k|}, \qquad k \neq 0.$$
+Substituting in to the velocity field
+$$u(t,x) = 4\ln(2)w_0(t) + \sum_{k=-N/2,k\neq 0}^{N/2 - 1}\frac{\w_k(t) \exp(ikx)}{k}\,dv.$$
+
+\subsection{Velocity Implementation}
+
+\begin{lstlisting}[
+  style=Matlab-editor,
+  language=Matlab
+]
+% Calculate velocity from vorticity
+function u = calc_u(w_t,N)
+    % convert w_t to Fourier space
+    w_c = fft(w_t,N);
+    % wave numbers in fft format
+    k = [0:N/2-1, -N/2:-1];
+    % exclude k=0 
+    points = (k ~= 0);
+    % calc k=0 val
+    w_c(~points) = 4*log(2)*w_c(~points);
+    % divide Fourier coefficients by k~=0
+    w_c(points) = -w_c(points)./abs(k(points));
+    % convert w_c back to physical space
+    u = real(ifft(w_c, N));
+end
+\end{lstlisting}
+
 \pagebreak
 
 \bibliographystyle{plain}
+\raggedright
 \bibliography{references}
 
 \end{document}

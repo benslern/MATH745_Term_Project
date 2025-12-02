@@ -1,5 +1,12 @@
 \begin{thebibliography}{1}
 
+\bibitem{beale_remarks_1984}
+J.~T. Beale, T.~Kato, and A.~Majda.
+\newblock Remarks on the breakdown of smooth solutions for the 3-{D} {Euler}
+  equations.
+\newblock {\em Communications in Mathematical Physics}, 94(1):61--66, March
+  1984.
+
 \bibitem{constantin_simple_1985}
 P.~Constantin, P.~D. Lax, and A.~Majda.
 \newblock A simple one-dimensional model for the three-dimensional vorticity
@@ -15,9 +22,19 @@ Salvatore De~Gregorio.
   equation.
 \newblock {\em Journal of Statistical Physics}, 59(5):1251--1263, June 1990.
 
+\bibitem{hideki_numerical_2006}
+Sato Hideki and Sakajo Takashi.
+\newblock Numerical study of {De} {Gregorio}'s model for the 3-{D} vorticity
+  equation({Theory},{Scientific} {Computation} and {Numerical} {Analysis}),
+  2006.
+
 \bibitem{okamoto_generalization_2008}
 Hisashi Okamoto, Takashi Sakajo, and Marcus Wunsch.
 \newblock On a generalization of the {Constantin}–{Lax}–{Majda} equation.
 \newblock {\em Nonlinearity}, 21(10):2447, September 2008.
+
+\bibitem{protas_spectral_2025}
+Bartosz Protas.
+\newblock Spectral {Methods} ({III}) - {Nonlinear} {Evolution} {PDEs}, 2025.
 
 \end{thebibliography}
