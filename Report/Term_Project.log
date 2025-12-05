@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.8.10)  1 DEC 2025 12:07
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.8.10)  5 DEC 2025 14:27
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -565,7 +565,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 [2
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 141--145
+Underfull \hbox (badness 10000) in paragraph at lines 141--147
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 141--147
 
  []
 
@@ -601,7 +606,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.182 \end{equation}
+l.184 \end{equation}
                      [1]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -643,7 +648,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [6]
-Overfull \hbox (7.63925pt too wide) detected at line 313
+Overfull \hbox (7.63925pt too wide) detected at line 315
 \OML/cmm/m/it/12 H!\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 x; t\OT1/cmr/m/n/12 ) = \O
 MS/cmsy/m/n/12 ^^@[] [] \OML/cmm/m/it/12 ![]\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 t
 \OT1/cmr/m/n/12 ) [](\OML/cmm/m/it/12 ikx\OT1/cmr/m/n/12 ) [] \OML/cmm/m/it/12 
@@ -661,12 +666,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (C:\Users\bensl\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
 File: lstlang1.sty 2023/02/27 1.9 listings language file
 )
-Underfull \hbox (badness 10000) in paragraph at lines 322--327
+Underfull \hbox (badness 10000) in paragraph at lines 324--329
 
  []
 
 LaTeX Font Info:    Trying to load font information for T1+pcr on input line 32
-7.
+9.
 (C:\Users\bensl\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\t1pcr.fd
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
 )
@@ -686,7 +691,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [9]
-Overfull \hbox (45.6516pt too wide) detected at line 360
+Overfull \hbox (45.6516pt too wide) detected at line 362
 \OML/cmm/m/it/12 u\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 t; x\OT1/cmr/m/n/12 ) = \OM
 S/cmsy/m/n/12 ^^@[] [] \OML/cmm/m/it/12 ![]\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 t\
 OT1/cmr/m/n/12 ) [](\OML/cmm/m/it/12 ikx\OT1/cmr/m/n/12 ) [] \OML/cmm/m/it/12 :
@@ -745,7 +750,7 @@ sers/bensl/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb><C:
 /Users/bensl/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:
 /Users/bensl/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:
 /Users/bensl/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Term_Project.pdf (17 pages, 206307 bytes).
+Output written on Term_Project.pdf (17 pages, 206982 bytes).
 PDF statistics:
  322 PDF objects out of 1000 (max. 8388607)
  96 named destinations out of 1000 (max. 500000)
