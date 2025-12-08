@@ -1,0 +1,32 @@
+We now apply a substitution $u = y - x$. Therefore,
+$$H\w(x,t) = -\frac{1}{2\pi}\sum_{k=-N/2}^{N/2 - 1}\wk(t) \int_{-\pi-x}^{\pi-x} \exp(ik(u+x))\cot\left(\frac{u}{2}\right)\,du.$$
+
+$$H\w(x,t) = -\frac{1}{2\pi}\sum_{k=-N/2}^{N/2 - 1}\w_k(t)\exp(ikx) \int_{-\pi-x}^{\pi-x} \exp(iku)\cot\left(\frac{u}{2}\right)\,du.$$
+Because the integrand is periodic we can shift the domain by $x$
+$$H\w(x,t) = -\frac{1}{2\pi}\sum_{k=-N/2}^{N/2 - 1}\w_k(t)\exp(ikx) \int_{-\pi}^{\pi} \exp(iku)\cot\left(\frac{u}{2}\right)\,du.$$
+Converting the exponential to its trigonometric form
+$$H\w(x,t) = -\frac{1}{2\pi}\sum_{k=-N/2}^{N/2 - 1}\w_k(t)\exp(ikx) \int_{-\pi}^{\pi} [\cos(ku)+i\sin(ku)]\cot\left(\frac{u}{2}\right)\,du,$$
+$$H\w(x,t) = -\frac{1}{2\pi}\sum_{k=-N/2}^{N/2 - 1}\w_k(t)\exp(ikx)\left[ \int_{-\pi}^{\pi} \cos(ku)\cot(\frac{u}{2})du +i \int_{-\pi}^{\pi} \sin(ku)\cot\left(\frac{u}{2}\right)\,du\right].$$
+The first integral is odd and so is equal to zero. The second integral is even and so can be simplified to a half integral. Therefore,
+$$H\w(x,t) = -\frac{2i}{2\pi}\sum_{k=-N/2}^{N/2 - 1}\w_k(t)\exp(ikx)\left[ \int_{0}^{\pi} \sin(ku)\cot\left(\frac{u}{2}\right)\,du\right].$$
+The remaining integral is a known identity [CITATION]
+$$ \int_{0}^{\pi} \sin(ku)\cot(\frac{u}{2})\,du = \pi \sgn(k), $$
+where $\sgn(k)$ is the signum function. Substituting in to the Hilbert transform
+$$H\w(x,t) = -i\sum_{k=-N/2}^{N/2 - 1}\w_k(t)\exp(ikx)\sgn(k).$$
+
+
+
+We now apply a substitution $v = y - x$. Therefore,
+$$u(t,x) = -\frac{1}{\pi} \sum_{k=-N/2}^{N/2 - 1}\w_k(t) \int_{-\pi-x}^{\pi-x}\exp(ik(v+x))\log\left| \sin\left(\frac{v}{2}\right) \right|\,dv.$$
+Because the integrand is periodic we can shift the domain by $x$
+$$u(t,x) = -\frac{1}{\pi} \sum_{k=-N/2}^{N/2 - 1}\w_k(t) \exp(ikx)\int_{-\pi}^{\pi}\exp(ikv)\log\left| \sin\left(\frac{v}{2}\right) \right|\,dv.$$
+Converting the exponential to its trigonometric form
+$$u(t,x) = -\frac{1}{\pi} \sum_{k=-N/2}^{N/2 - 1}\w_k(t) \exp(ikx)\int_{-\pi}^{\pi}(\cos(kv) + i\sin(kv))\log\left| \sin\left(\frac{v}{2}\right) \right|\,dv.$$
+$$u(t,x) = -\frac{1}{\pi} \sum_{k=-N/2}^{N/2 - 1}\w_k(t) \exp(ikx)\left[\int_{-\pi}^{\pi}\cos(kv)\log\left| \sin\left(\frac{v}{2}\right) \right|\,dv + i\int_{-\pi}^{\pi}\sin(kv)\log\left| \sin\left(\frac{v}{2}\right) \right|\,dv\right].$$
+The second integral is odd and so is equal to zero. The first integral is even and so can be simplified to a half integral. Therefore,
+$$u(t,x) = -\frac{2}{\pi} \sum_{k=-N/2}^{N/2 - 1}\w_k(t) \exp(ikx)\int_{0}^{\pi}\cos(kv)\log\left| \sin\left(\frac{v}{2}\right) \right|\,dv.$$
+The remaining integral is a known identity [CITATION]
+$$\int_{0}^{\pi}\cos(kv)\log\left| \sin\left(\frac{v}{2}\right) \right|\,dv = -2\pi\ln(2), \qquad k = 0,$$
+$$\int_{0}^{\pi}\cos(kv)\log\left| \sin\left(\frac{v}{2}\right) \right|\,dv = -\frac{\pi}{2|k|}, \qquad k \neq 0.$$
+Substituting in to the velocity field
+$$u(t,x) = 4\ln(2)w_0(t) + \sum_{k=-N/2,k\neq 0}^{N/2 - 1}\frac{\w_k(t) \exp(ikx)}{k}\,dv.$$

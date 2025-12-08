@@ -159,7 +159,7 @@ Nearly all values of $a$ resulted in blow-up or blow-up like behaviour. The resu
 
 \section{Introduction}
 
-The three-dimensional Euler equations are a simplified form of the Navier-Stokes equations which describe the flow of inviscid, incompressible fluids. The Euler equations are
+The three-dimensional Euler equations are a simplified form of the Navier-Stokes equations which describe the flow of inviscid incompressible fluids. The Euler equations are
 \begin{subequations}\label{eq:Euler}
 \begin{align}
 \ut + u\cdot \nabla u + \nabla p &= 0, \\
@@ -170,46 +170,48 @@ where $u$ is the velocity field and $p$ is the scalar pressure. By substituting 
 \begin{equation}\label{eq:Vorticity}
 \wt + (u\nabla)\w = (\w\nabla)u,
 \end{equation}
-where the velocity can be computed from the vorticity field with the equation DOUBLE CHECK THIS
+where the velocity can be computed from the vorticity field with the equation 
 \begin{equation}\label{eq:Vel:Vort}
 u = -\nabla \times (\nabla^{-1} \w).
 \end{equation}
 A central question in fluid dynamics is whether or not finite-time singularities can form in fluid flows with smooth initial conditions \cite{constantin_simple_1985}. As first demonstrated by Beale, Kato, and Majda, singularities can form if and only if the maximum vorticity of the flow becomes infinite \cite{beale_remarks_1984}. The vorticity equation allows for the direct modelling of the vorticity and so is a very useful tool for studying singularity formation in the Euler equations. WHY USE 1D MODELS.
 
-\subsection{The CLM Equation}
+\subsection{The GCLM Equation}
 
 The Constantin-Lax-Majda (CLM) equation was the first one-dimensional model of the three-dimensional vorticity equation for an incompressible fluid \cite{constantin_simple_1985}. The CLM equation is
 \begin{equation}\label{eq:CLM}
 \wt = H(\w)\w
 \end{equation}
-where $H$ is the Hilbert transform DOUBLE CHECK THIS
-\begin{equation}\label{eq:Hilbert:Transform:R1}
-H\w(x,t) = \frac{1}{2\pi}\int_{-\pi}^{\pi} \w(y,t)\cot\lr\frac{x-y}{2}\rr \,dy.
+where $H$ is the Hilbert transform
+\begin{equation}\label{eq:Hilbert:Transform:CLM}
+H(\w) = \frac{1}{\pi}\text{ P.V.}\int \frac{\w(y)}{(x-y)}\,dy.
 \end{equation}
-The CLM equation was defined on the unbounded domain $R^1$ DOUBLE CHECK THIS. A significant advantage of this model was that its simplicity. This allowed Constantin et al. to prove the following Theorem \cite{constantin_simple_1985}.
-\begin{thm}
-Suppose $\w_0(x)$ is a smooth function decaying sufficiently rapidly as $|x|\rightarrow \infty$ ($\w_0 \in H^1(\R)$ suffices). Then the solution to the model vorticity equation in (\ref{eq:CLM}) is given by
+with P.V. indicating the integral must be evaluated using the Cauchy Principle Value due to the singularity at $x=y$. It was demonstrated that most solutions to (\ref{eq:CLM}) form finite-time singularities CITATION. A significant advantage of this model was that its simplicity allowed for the derivation of an explicit solution to (\ref{eq:CLM}) \cite{constantin_simple_1985}. The solution of the CLM equation is is
 \begin{equation}\label{eq:Explicit:Omega}
 \w(x,t) = \frac{4\w_0(x)}{(2 - tH\w_0(x))^2 + t^2\w_0^2(x)}.
 \end{equation}
-\end{thm}
-The CLM model is a very simple model. The biggest advantage it has is that it has an explicit solution which allows for ...\cite{constantin_simple_1985}. 
-
 However, De Gregorio noted three shortcomings of the model \cite{de_gregorio_one-dimensional_1990}.
 \begin{enumerate}
 \item asdf
 \end{enumerate}
+Due to these problems, De Gregorio proposed a new one-dimensional model that improved upon the CLM equation by ... \cite{de_gregorio_one-dimensional_1990}. The De Gregorio equation is
+\begin{equation}\label{eq:De:Gregorio}
+\wt + u\wx - \ux\w = 0.
+\end{equation}
+adds the convection term. De Gregorio claimed that (\ref{eq:De:Gregorio}) is globally well posed, although was not able to prove it CITATION.
 
-\subsection{The De Gregorio Equation}
-
-The De Gregorio equation was proposed as a one-dimensional model that improves on the CLM equation by ... \cite{de_gregorio_one-dimensional_1990}
-
-\subsection{The Generalized CLM Equation}
-The De Gregorio equation was later generalized to the GCLM \cite{okamoto_generalization_2008}.
+The De Gregorio equation was later generalized to the Generalized Constantin-Lax-Majda (GCLM) equation \cite{okamoto_generalization_2008}. The GCLM equation adds the real parameter $a$ which controls the relative strength of the convection term. The GCLM equation is
+\begin{equation}\label{eq:GCLM}
+\wt + au\wx - \ux\w = 0.
+\end{equation}
+When $a=0$ the GCLM is equal to the (\ref{eq:CLM}), and when $a=1$ it is (\ref{eq:De:Gregorio}). Okamoto et al. showed that in the limit of $a\rightarrow\infty$ (\ref{eq:GCLM}) does not permit blowup CITATION. 
 
 \begin{equation}\label{eq:Hilbert:Transform}
 H\omega(x,t) = \frac{1}{2\pi}\int_{-\pi}^{\pi} \omega(y,t)\cot\left(\frac{x-y}{2}\right) \,dy.
 \end{equation}
+
+
+
 
 \subsection{Blow-up Criteria}
 Okamoto et al. (2008) prove Theorem 3.1 and Theorem 3.2.
@@ -223,50 +225,57 @@ Let $a\in\R$ be given. For all $\omega_0\in H^1(S^1)/\R$, there exists a $T>0$ d
 
 In this paper we will conduct a search for singularity formation in the GCLM by 
 
+In this analysis we present results for the GCLM for different values of $a\in[-1,1]$.  We use the same pseudo-spectral numerical methods as \cite{okamoto_generalization_2008} which are described in Section 2. In Section 3 we present the results and summarize in Section 4.
+
 \section{Numerical Methods}
 
-We use the same numerical methods as \cite{okamoto_generalization_2008} which are described below. We use the notation $\hat{\omega}_k$ for the Fourier coefficients of the vorticity. There derivatives  The numerical integration techniques below describe the procedure to calculate the value of $\omega$ at step $n+1$ from the value at step number $n$. To distinguish the notation from the Fourier coefficient we use $\omega^{(n)}$, $u^{(n)}$, and $t^{(n)}$ to denote the vorticity, velocity, and time, respectively, at step $n$.
+To model the GCLM equation numerically we must compute the values of the four components, $\w$, $\wx$, $u$, and $\ux$. These components are used to calculate the nonlinear convection term $\ux\w$, the nonlinear stretching term $u\wx$, and the time stepping. The methods for calculating the components, terms, and time stepping are described below.
 
+\subsection{Physical and Fourier Representation}
 
-\subsection{Domain and Grid}
-
-The vorticity $\omega($ is represented in physical space on a grid of $N = 2^14$ equidistant points on the domain $x\in[\pi,pi]$. Because the domain is periodic we must avoid double counting the grid point on the boundary. Therefore we set $x_0=-\pi$ and $x_N=\pi-h$, where $h$ is the uniform distance between points $x_i$ and $x_{i+1}$. The vorticity is represented in Fourier space with the truncated Fourier series
-\begin{equation}\label{eq:Fourier}
-\omega(t,x) = \sum_{k=-N/2}^{N/2 - 1}\hat{\omega}_k e^{ikx}.
+The terms of (\ref{eq:GCLM}) are represented in physical space on a grid of $N = 2^{14}$ equispaced points on the domain $x\in[-\pi,\pi]$. Because the domain is periodic we must avoid double counting the grid point on the boundary. Therefore we set $x_0=-\pi$ and $x_N=\pi-h$, where $h$ is the distance between points. The terms are represented in Fourier space using a truncated Fourier series
+\begin{equation}\label{eq:Vorticity:Truncated:Fourier}
+f(x,t) = \sum_{k=-N/2}^{N/2 - 1}\hat{f}_k(t)\exp(ikx).
 \end{equation}
-
-Transformation from physical to Fourier space, and vice versa, are performed using the standard Matlab fft and ifft functions. 
-
-We compute the value of $u^{(n)}$ in Fourier Space using the formula
+Transformation from physical to Fourier space, and vice versa, are performed using the standard Matlab fft and ifft functions respectively. 
+\\~\\
+We compute the terms $\wx$, $u$ and $\ux$ from $w$. Calculations of the derivative of the vorticity $\wx$ is performed in Fourier space using the standard formula
 \begin{equation}
-u^{(n)}(t,x) = 4\ln(2)\hat{\omega}^{(n)}_0 + \sum_{k=-N/2,k\neq 0}^{N/2 - 1}\frac{\hat{\omega}^{(n)}_k \exp(ikx)}{k}\,dv.
+\wx(t) = \sum_{k=-N/2}^{N/2 - 1}(ik)\wk(t)\exp(ikx).
+\end{equation} 
+\noindent
+As shown in (ref EQUATION), the velocity can be computed from the vorticity in physical space. However, due to the singularity, this equation must be solved using the Cauchy Principle value, which is difficult to compute numerically. Therefore, we compute the value of $u$ in Fourier Space using the formula
+\begin{equation}\label{eq:Velocity:Fourier}
+u(x,t) = -\sum_{k=-N/2,k\neq 0}^{N/2 - 1}\frac{\sgn(k)\wk(t)\exp(ikx)}{k}.
 \end{equation}
- 
- Compute $u_x$ in Fourier space. Compute $\omega_x$ in Fourier space. 
- 
- The full derivation of each formula is shown in the Appendix. 
+The derivation of this equation from (ref EQUATION) is shown in Section 5.2. The derivative of the velocity is calculated using the Hilbert Transform (ref EQUATION). To calculate the derivative of the velocity in physical space would again require the CPV and so is calculated in Fourier space using the formula
+\begin{equation}\label{eq:Velocity:Deriv:Fourier}
+u(x,t) = -\sum_{k=-N/2}^{N/2 - 1}i \sgn(k)\wk(t)e^{ikx}.
+\end{equation}
+The derivation of this formula from (ref EQUATION) is shown in section 5.1. 
+
+For REASON we compute the stretching and convection terms in physical space. To avoid errors due to aliasing we apply the $2/3$ dealiasing rule to the terms. Additionally, as in \cite{okamoto_generalization_2008}, we apply a filter to prevent small values at each time step.
 
 \subsection{Time Stepping}
 
-When modelling time dependent PDEs it is best practice to use explicit time stepping methods for non-linear terms in order to reduce computation cost, and use implicit methods for linear term to improve stability \cite{protas_spectral_2025}. As described in prior sections, both the convection term and stretching term of the GCLM are non-linear. Therefore, as is used in \cite{okamoto_generalization_2008}  and \cite{hideki_numerical_2006}, we perform time stepping using the explicit fourth-order Runge-Kutta (RK4) method. The RK4 time stepping is performed with the formula
+When modelling time dependent PDEs it is best practice to use explicit time stepping methods for non-linear terms in order to reduce computation cost, and use implicit methods for linear term to improve stability \cite{protas_spectral_2025}. As described in prior sections, both the convection term and stretching term of the GCLM are non-linear. Therefore, we perform time stepping using the explicit fourth-order Runge-Kutta (RK4) method. The RK4 time stepping is performed with the formula
 \begin{equation}\label{eq:RK4}
 \omega^{(n+1)} = \omega^{(n)} + \frac{1}{6}(k_1 + 2k_2 + 2k_3 + k_4)
 \end{equation}
-where the $k_i$ terms are calculated using
+where $\omega^{(n)}$ is the vorticity at iteration $n$ and the $k_i$ terms are calculated using
 \begin{subequations}
 \begin{align}
-k_1 &= f(\omega^{(n)},t^{(n)})  \\
-k_2 &= f(\omega^{(n)}+ dt \cdot k_1/2,t^{(n)} + dt/2)  \\
-k_3 &= f(\omega^{(n)}+ dt \cdot k_2/2,t^{(n)}+ dt/2)  \\
-k_4 &= f(\omega^{(n)}+ dt \cdot k_3,t^{(n)}+dt) 
+k_1 &= F(\omega^{(n)},t^{(n)})  \\
+k_2 &= F(\omega^{(n)}+ dt \cdot k_1/2,t^{(n)} + dt/2)  \\
+k_3 &= F(\omega^{(n)}+ dt \cdot k_2/2,t^{(n)}+ dt/2)  \\
+k_4 &= F(\omega^{(n)}+ dt \cdot k_3,t^{(n)}+dt) 
 \end{align}
 \end{subequations}
-where $dt = 1E-4$ is the time step size. The function $f$ in the above equations is given by
+where $dt = 1E-4$ is the time step size. The function $F$ in the above equations is given by
 \begin{equation}\label{eq:RHS}
 f(\omega^{(n)},t^{(n)}) = \ux\omega - au\wx
 \end{equation}
-
-The derivatives $\ux$ and $\wx$ are computed in Fourier space. The
+using the components described in Section 2.1.
 
 \subsection{Complete Numerical Method}
 
@@ -286,7 +295,8 @@ Okamoto et al. (2008) showed that any solution that satisfies (GCLM ref) must al
 \frac{d}{dt}\int_{-\pi}^{\pi}\omega(t,x)\,dx = \int_{-\pi}^{\pi} (-au\omega_x + u_x\omega)\,dx = (a+1)\int_{-\pi}^{\pi}u_x\omega\,dx = (a+1)(H\omega,\omega),
 \end{equation}
 where  $(\cdot,\cdot)$ denotes the $L^2$ inner product (Okamoto et al., 2008). Therefore, we may assume without loss of generality that the initial condition satisfies
-$$\int_{-\pi}^{\pi} \omega(0,x)\,dx = 0.$$
+$$\int_{-\pi}^{\pi} \omega(0,x)\,dx = 0,$$
+which is also a necessary assumption of (ref VELOCITY EQUATION). 
 
 \section{Results}
 these are the results
@@ -295,102 +305,44 @@ these are the results
 this is the conclusion
 
 \section{Appendix}
-\subsection{Hilbert Transform}
+\subsection{Derivation of Hilbert Transform in Fourier space}
 The Hilbert transform is defined as
 $$H\w(x,t) = \frac{1}{2\pi}\int_{-\pi}^{\pi}\w(y,t)\cot\left(\frac{x-y}{2}\right)\,dy.$$
-The solution $\w(t,y)$ is represented as the truncated Fourier series
-$$\w(t,y) = \sum_{k=-N/2}^{N/2 - 1}\w_k(t)\exp(iky).$$
+The solution $\w(y,t)$ is represented as the truncated Fourier series
+$$\w(y,t) = \sum_{k=-N/2}^{N/2 - 1}\wk(t)\exp(iky).$$
 Substituting this into the Hilbert transform
-$$H\w(x,t) = \frac{1}{2\pi}\int_{-\pi}^{\pi}\sum_{k=-N/2}^{N/2 - 1}\w_k(t)\exp(iky)\cot\left(\frac{x-y}{2}\right)\,dy.$$
+$$H\w(x,t) = \frac{1}{2\pi}\int_{-\pi}^{\pi}\sum_{k=-N/2}^{N/2 - 1}\wk(t)\exp(iky)\cot\left(\frac{x-y}{2}\right)\,dy.$$
 We can swap the integral and sum to obtain
-$$H\w(x,t) = \frac{1}{2\pi}\sum_{k=-N/2}^{N/2 - 1}\w_k(t) \int_{-\pi}^{\pi} \exp(iky)\cot\left(\frac{x-y}{2}\right)\,dy.$$
-We now apply a substitution $u = y - x$. Therefore,
-$$H\w(x,t) = -\frac{1}{2\pi}\sum_{k=-N/2}^{N/2 - 1}\w_k(t) \int_{-\pi-x}^{\pi-x} \exp(ik(u+x))\cot\left(\frac{u}{2}\right)\,du.$$
+$$H\w(x,t) = \frac{1}{2\pi}\sum_{k=-N/2}^{N/2 - 1}\wk(t) \int_{-\pi}^{\pi} \exp(iky)\cot\left(\frac{x-y}{2}\right)\,dy.$$
+The integral has a singularity at $x=y$ and so must be evaluated using the Cauchy Principle Value. The Cauchy Principle values of this equation is the well known result used in \cite{hideki_numerical_2006} and \cite{okamoto_generalization_2008},
+$$H\w(x,t) = -\sum_{k=-N/2}^{N/2 - 1}i \sgn(k)\wk(t)e^{ikx}$$
+where $\sgn$ is the sign function 
+$$\sgn(k) = \begin{cases}
+  1, & \text{if } k > 0 \\
+  0, & \text{if } k = 0 \\
+  -1 & \text{if } k < 0.
+\end{cases}$$
 
-$$H\w(x,t) = -\frac{1}{2\pi}\sum_{k=-N/2}^{N/2 - 1}\w_k(t)\exp(ikx) \int_{-\pi-x}^{\pi-x} \exp(iku)\cot\left(\frac{u}{2}\right)\,du.$$
-Because the integrand is periodic we can shift the domain by $x$
-$$H\w(x,t) = -\frac{1}{2\pi}\sum_{k=-N/2}^{N/2 - 1}\w_k(t)\exp(ikx) \int_{-\pi}^{\pi} \exp(iku)\cot\left(\frac{u}{2}\right)\,du.$$
-Converting the exponential to its trigonometric form
-$$H\w(x,t) = -\frac{1}{2\pi}\sum_{k=-N/2}^{N/2 - 1}\w_k(t)\exp(ikx) \int_{-\pi}^{\pi} [\cos(ku)+i\sin(ku)]\cot\left(\frac{u}{2}\right)\,du,$$
-$$H\w(x,t) = -\frac{1}{2\pi}\sum_{k=-N/2}^{N/2 - 1}\w_k(t)\exp(ikx)\left[ \int_{-\pi}^{\pi} \cos(ku)\cot(\frac{u}{2})du +i \int_{-\pi}^{\pi} \sin(ku)\cot\left(\frac{u}{2}\right)\,du\right].$$
-The first integral is odd and so is equal to zero. The second integral is even and so can be simplified to a half integral. Therefore,
-$$H\w(x,t) = -\frac{2i}{2\pi}\sum_{k=-N/2}^{N/2 - 1}\w_k(t)\exp(ikx)\left[ \int_{0}^{\pi} \sin(ku)\cot\left(\frac{u}{2}\right)\,du\right].$$
-The remaining integral is a known identity [CITATION]
-$$ \int_{0}^{\pi} \sin(ku)\cot(\frac{u}{2})\,du = \pi \sgn(k), $$
-where $\sgn(k)$ is the signum function. Substituting in to the Hilbert transform
-$$H\w(x,t) = -i\sum_{k=-N/2}^{N/2 - 1}\w_k(t)\exp(ikx)\sgn(k).$$
-\subsection{Hilbert Transform Implementation}
-
-The Hilbert Transform is implemented in Matlab using the code shown below. The Fast Fourier Transform in Matlab formats the Fourier coefficients in order 0,...,N/2 -1 then -N/2,...,-1. 
-\\
-\begin{lstlisting}[
-  style=Matlab-editor,
-  language=Matlab
-]
-% Hilbert Transform Physical
-function h = ht(w_t, N)
-    % convert w_t to Fourier space
-    w_c = fft(w_t,N);
-    % wave numbers in fft format
-    k = [0:N/2-1, -N/2:-1];
-    % signum of wavenumbers
-    sgn_k = sign(k); 
-    % multiply Fourier coefficients by -i sgn_k
-    w_c = (-1i*sgn_k).*w_c;
-    % convert w_c back to physical space
-    h = ifft(w_c,N);
-end
-\end{lstlisting}
-
-
-\subsection{Velocity Field}
+\subsection{Derivation of the Velocity in Fourier space}
 
 The velocity field is defined as
-$$u(t,x) = \frac{1}{\pi}\int_{-\pi}^{\pi}\w(t,y)\log\left| \sin\left(\frac{x-y}{2}\right) \right|\,dy.$$
-The solution $\w(t,y)$ is represented as the truncated Fourier series
-$$\w(t,y) = \sum_{k=-N/2}^{N/2 - 1}\w_k(t)\exp(iky).$$
-Substituting this into the velocity field
-$$u(t,x) = \frac{1}{\pi}\int_{-\pi}^{\pi} \sum_{k=-N/2}^{N/2 - 1}\w_k(t)\exp(iky)\log\left| \sin\left(\frac{x-y}{2}\right) \right|\,dy.$$
+$$u(x,t) = \frac{1}{\pi}\int_{-\pi}^{\pi}\w(y,t)\log\left| \sin\left(\frac{x-y}{2}\right) \right|\,dy.$$
+The solution $\w(y,t)$ is represented as the truncated Fourier series
+$$\w(y,t) = \sum_{k=-N/2}^{N/2 - 1}\w_k(t)\exp(iky).$$
+Substituting this into the velocity equation
+$$u(t,x) = \frac{1}{\pi}\int_{-\pi}^{\pi} \sum_{k=-N/2}^{N/2 - 1}\wk(t)\exp(iky)\log\left| \sin\left(\frac{x-y}{2}\right) \right|\,dy.$$
 We can swap the integral and sum to obtain
-$$u(t,x) = \frac{1}{\pi} \sum_{k=-N/2}^{N/2 - 1}\w_k(t) \int_{-\pi}^{\pi}\exp(iky)\log\left| \sin\left(\frac{x-y}{2}\right) \right|\,dy.$$
-We now apply a substitution $v = y - x$. Therefore,
-$$u(t,x) = -\frac{1}{\pi} \sum_{k=-N/2}^{N/2 - 1}\w_k(t) \int_{-\pi-x}^{\pi-x}\exp(ik(v+x))\log\left| \sin\left(\frac{v}{2}\right) \right|\,dv.$$
-Because the integrand is periodic we can shift the domain by $x$
-$$u(t,x) = -\frac{1}{\pi} \sum_{k=-N/2}^{N/2 - 1}\w_k(t) \exp(ikx)\int_{-\pi}^{\pi}\exp(ikv)\log\left| \sin\left(\frac{v}{2}\right) \right|\,dv.$$
-Converting the exponential to its trigonometric form
-$$u(t,x) = -\frac{1}{\pi} \sum_{k=-N/2}^{N/2 - 1}\w_k(t) \exp(ikx)\int_{-\pi}^{\pi}(\cos(kv) + i\sin(kv))\log\left| \sin\left(\frac{v}{2}\right) \right|\,dv.$$
-$$u(t,x) = -\frac{1}{\pi} \sum_{k=-N/2}^{N/2 - 1}\w_k(t) \exp(ikx)\left[\int_{-\pi}^{\pi}\cos(kv)\log\left| \sin\left(\frac{v}{2}\right) \right|\,dv + i\int_{-\pi}^{\pi}\sin(kv)\log\left| \sin\left(\frac{v}{2}\right) \right|\,dv\right].$$
-The second integral is odd and so is equal to zero. The first integral is even and so can be simplified to a half integral. Therefore,
-$$u(t,x) = -\frac{2}{\pi} \sum_{k=-N/2}^{N/2 - 1}\w_k(t) \exp(ikx)\int_{0}^{\pi}\cos(kv)\log\left| \sin\left(\frac{v}{2}\right) \right|\,dv.$$
-The remaining integral is a known identity [CITATION]
-$$\int_{0}^{\pi}\cos(kv)\log\left| \sin\left(\frac{v}{2}\right) \right|\,dv = -2\pi\ln(2), \qquad k = 0,$$
-$$\int_{0}^{\pi}\cos(kv)\log\left| \sin\left(\frac{v}{2}\right) \right|\,dv = -\frac{\pi}{2|k|}, \qquad k \neq 0.$$
-Substituting in to the velocity field
-$$u(t,x) = 4\ln(2)w_0(t) + \sum_{k=-N/2,k\neq 0}^{N/2 - 1}\frac{\w_k(t) \exp(ikx)}{k}\,dv.$$
-
-\subsection{Velocity Implementation}
-
-\begin{lstlisting}[
-  style=Matlab-editor,
-  language=Matlab
-]
-% Calculate velocity from vorticity
-function u = calc_u(w_t,N)
-    % convert w_t to Fourier space
-    w_c = fft(w_t,N);
-    % wave numbers in fft format
-    k = [0:N/2-1, -N/2:-1];
-    % exclude k=0 
-    points = (k ~= 0);
-    % calc k=0 val
-    w_c(~points) = 4*log(2)*w_c(~points);
-    % divide Fourier coefficients by k~=0
-    w_c(points) = -w_c(points)./abs(k(points));
-    % convert w_c back to physical space
-    u = real(ifft(w_c, N));
-end
-\end{lstlisting}
-
+$$u(t,x) = \frac{1}{\pi} \sum_{k=-N/2}^{N/2 - 1}\wk(t) \int_{-\pi}^{\pi}\exp(iky)\log\left| \sin\left(\frac{x-y}{2}\right) \right|\,dy.$$
+The integral has a singularity at $x=y$ and so must be evaluated using the Cauchy Principle Value. The Cauchy Principle values of this equation is
+$$u(t,x) = -4\ln(2)w_0(t) - \sum_{k=-N/2,k\neq 0}^{N/2 - 1}\frac{\sgn(k)\wk(t) \exp(ikx)}{k}$$
+For functions $w(x,t)$ with a mean of zero over the domain, the Fourier coefficient $\hat{w}_0(t)$ is zero. Since the mean of the solution is constant over time, and we use initial conditions with a mean of zero, we can simplify the velocity equation to that used in \cite{hideki_numerical_2006} and \cite{okamoto_generalization_2008},
+$$u(t,x) = -\sum_{k=-N/2,k\neq 0}^{N/2 - 1}\frac{\sgn(k)\wk(t) \exp(ikx)}{k}$$
+where $\sgn$ is the sign function 
+$$\sgn(k) = \begin{cases}
+  1, & \text{if } k > 0 \\
+  0, & \text{if } k = 0 \\
+  -1 & \text{if } k < 0.
+\end{cases}$$
 \pagebreak
 
 \bibliographystyle{plain}
