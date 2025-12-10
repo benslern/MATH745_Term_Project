@@ -6,28 +6,24 @@ clear all;
 close all;
 
 % Global Constants
-global N; global DT; global H; global T; global F; global X; global K; 
-global COUNT; global DEALIAS_MAX;
+global N; global DT; global H; global T; global F; global X; global K; global DEALIAS_MAX;
 N = 2^14;                 % number of grid points
-DT = 1E-5;                % timestep
+DT = 1E-4;                % timestep
 H = 2*pi/N;               % distance between x_i and x_i+1
 T = 7;                    % timescale
 F = 1E-12;                % filter tolerance
 X = linspace(-pi,pi-H,N); % grid points
 K = [0:N/2-1, -N/2:-1];   % wavenumbers
-COUNT = 1;
-DEALIAS_MAX = 1E-9;
+DEALIAS_MAX = 1E-10;
+
+%SolveGCLM("Init_1");
+generateGraphs("Init_1");
+%SolveGCLM("Init_2");
+generateGraphs("Init_2");
 
 
-% Initial Conditions
-%eps = 0.1;
-%w_0 = sin(X)+eps*sin(2*X);
-%w_0 = exp(2*sin(X));
-SolveGCLM();
-%deriv_test()
-%ht_test()
-%calc_u_test()
-
+%Test functions used to verify the velocity, hilbert transform, and
+%derivative were calculated correctly
 function [E] = calc_u_test()
     global X; global N; global F;
     w = sin(3*X);
@@ -69,63 +65,156 @@ function [E] = deriv_test()
     E = norm(dif,2);
 end
 
-% Generalized Constantin-Lax-Majda Equation solver
-function SolveGCLM()
-    global COUNT; global X;
-    
-    blowup_times = [];
-    as = [];
+% Generate graphs from data files
+function generateGraphs(init)
+    global X; global K;
+    data_path = "../Results/Data/"+init+"/";
+    image_path = "../Results/Images/"+init+"/";
+
     index = 1;
+    for a=1.0:-0.1:-1.0
+        disp(a);
+        %colors = {[0,0,1],[0.5,0.5,0.5]};
+        %plot(X,real(w),'color', colors{1 + ~(t==0)});
+
+        % omega vs x plots
+        filename = sprintf("%sa%d/w_data_a%d_%s.csv",data_path,index,index,num2str(round(a,1)));
+        data = readmatrix(filename);
+        fg = figure();
+        clf;
+        plot(X,data(1,:),'Color','blue');
+        hold on;
+        for i=3:(size(data, 1))
+            plot(X,data(i,:),'Color',[0.5,0.5,0.5]);
+        end
+        plot(X,data(i,:),'Color','red');
+        ylim([-3,3]);
+        title("$\omega$ vs $x$ - a ="+num2str(round(a,1)),"Interpreter","latex",'FontSize', 18);
+        xlabel("$x$","Interpreter","latex",'FontSize', 14);
+        ylabel("$\omega$","Interpreter","latex",'FontSize', 14);
+        grid on;
+        filename = sprintf("%sa%d/w_data_a%d_%s.jpg",image_path,index,index,num2str(round(a,1)));
+        exportgraphics(fg,filename,'Resolution',600)
+
+        % omega_x vs x plots
+        filename = sprintf("%sa%d/wx_data_a%d_%s.csv",data_path,index,index,num2str(round(a,1)));
+        data = readmatrix(filename);
+        fg = figure();
+        clf;
+        plot(X,data(1,:),'Color','blue');
+        hold on;
+        for i=3:4:(size(data, 1)-1)
+            plot(X,data(i,:),'Color',[0.5,0.5,0.5]);
+        end
+        plot(X,data(i,:),'Color','red');
+        ylim([-3,3]);
+        title("$\omega_x$ vs $x$","Interpreter","latex",'FontSize', 18);
+        xlabel("$x$","Interpreter","latex",'FontSize', 14);
+        ylabel("$\omega_x$","Interpreter","latex",'FontSize', 14);
+        grid on;
+        filename = sprintf("%sa%d/wx_data_a%d_%s.jpg",image_path,index,index,num2str(round(a,1)));
+        exportgraphics(fg,filename,'Resolution',600)
+
+        % u vs x plots
+        filename = sprintf("%sa%d/u_data_a%d_%s.csv",data_path,index,index,num2str(round(a,1)));
+        data = readmatrix(filename);
+        fg = figure();
+        clf;
+        plot(X,data(1,:),'Color','blue');
+        hold on;
+        for i=3:4:(size(data, 1)-1)
+            plot(X,data(i,:),'Color',[0.5,0.5,0.5]);
+        end
+        plot(X,data(i,:),'Color','red');
+        ylim([-3,3]);
+        title("$u$ vs $x$","Interpreter","latex",'FontSize', 18);
+        xlabel("$x$","Interpreter","latex",'FontSize', 14);
+        ylabel("$u$","Interpreter","latex",'FontSize', 14);
+        grid on;
+        filename = sprintf("%sa%d/u_data_a%d_%s.jpg",image_path,index,index,num2str(round(a,1)));
+        exportgraphics(fg,filename,'Resolution',600)
+
+        % ux vs x plots
+        filename = sprintf("%sa%d/ux_data_a%d_%s.csv",data_path,index,index,num2str(round(a,1)));
+        data = readmatrix(filename);
+        fg = figure();
+        clf;
+        plot(X,data(1,:),'Color','blue');
+        hold on;
+        for i=3:4:(size(data, 1)-1)
+            plot(X,data(i,:),'Color',[0.5,0.5,0.5]);
+        end
+        plot(X,data(i,:),'Color','red');
+        ylim([-3,3]);
+        title("$u_x$ vs $x$","Interpreter","latex",'FontSize', 18);
+        xlabel("$x$","Interpreter","latex",'FontSize', 14);
+        ylabel("$u_x$","Interpreter","latex",'FontSize', 14);
+        grid on;
+        filename = sprintf("%sa%d/ux_data_a%d_%s.jpg",image_path,index,index,num2str(round(a,1)));
+        exportgraphics(fg,filename,'Resolution',600)
+
+        % |w_c| vs K plots
+        filename = sprintf("%sa%d/spec_data_a%d_%s.csv",data_path,index,index,num2str(round(a,1)));
+        data = readmatrix(filename);
+        fg = figure();
+        clf;
+        semilogy(K(K>0),data(1,:),'Color','blue');
+        hold on;
+        for i=3:4:(size(data, 1))
+            semilogy(K(K>0),data(i,:),'Color',[0.5,0.5,0.5]);
+        end
+        semilogy(K(K>0),data(end,:),'Color','red');
+        title("$|\hat{\omega}_k|$ vs $k$","Interpreter","latex",'FontSize', 18);
+        xlabel("$k$","Interpreter","latex",'FontSize', 14);
+        ylabel("$|\hat{\omega}_k|$","Interpreter","latex",'FontSize', 14);
+        grid on;
+        filename = sprintf("%sa%d/spec_data_a%d_%s.jpg",image_path,index,index,num2str(round(a,1)));
+        exportgraphics(fg,filename,'Resolution',600)
+
+        close all;
+        index = index + 1;
+    end
+end
+
+% Generalized Constantin-Lax-Majda Equation solver
+function SolveGCLM(init)
+    global X;
     
-    for a=1.0:-0.1:0.0
+    index = 1;
+    for a=1.0:-0.1:-1.0
         disp("a: "+a);
-        
-        eps = 0.1;
-        w_0 = sin(X)+eps*sin(2*X);
-        %w_0 = exp(sin(2*X)) - exp(cos(X));
-        
-        [~,~,t] = RK4(w_0, a, index); 
-        
-        blowup_times(index) = t;
-        as(index) = a;
+
+        % Initial conditions
+        if init=="Init_1"
+            w_0 = sin(X)+(0.1*sin(2*X));
+        else
+            w_0 = exp(sin(2*X)) - exp(cos(X));
+        end
+        RK4(w_0, a, index, init); 
+       
         index = index + 1;
     end      
-
-    figure(7);
-    plot(as,blowup_times);
-    grid on;
-    ylabel("T*");
-    xlabel("a");
-    title("Blowup Time vs a");
 end
 
-function b = blowup_dealias_checker(w_t)
-    global N; global DEALIAS_MAX; global K;
-    w_c = fft(w_t,N);
-    w_c_high = w_c(K>2*(N/2)/3);
-    val = max(w_c_high);
-    b = logical(val>DEALIAS_MAX);
-end
-
-% L2 norm of w_x
-function n = L2_norm(w_t)
+% L2 norm of w_x from w
+function n = L2_norm(w)
     global N;
-    n = norm(ifft(deriv(fft(w_t,N),1),N),2);
+    n = norm(ifft(deriv(fft(w,N)),N),2);
 end
 
-% LINF norm of u_x
-function n = LINF_norm(w_t)
+% LINF norm of u_x from w
+function n = LINF_norm(w)
     global N;
-    n = norm(ifft(ht(fft(w_t,N)),N),Inf);
+    n = norm(ifft(ht(fft(w,N)),N),Inf);
 end
 
 % Derivative in Fourier Space
-function d = deriv(w_c, ord)
+function d = deriv(w_c)
     global K;
-    d = ((1i.*K).^ord).*w_c;
+    d = (1i.*K).*w_c;
 end
 
-% Hilbert Transform
+% Hilbert Transform in Fourier space
 function h = ht(w_c)
     global K;
     h = (-1i*sign(K)).*w_c;
@@ -136,10 +225,9 @@ function u = calc_u(w_c)
     global N; global K;
     % exclude k=0 
     points = (K ~= 0);
-    % calc k=0 val
-    w_c(~points) = 4*log(2)*w_c(~points);
+    w_c(~points) = 0;
     % divide Fourier coefficients by k~=0
-    w_c(points) = -w_c(points)./abs(K(points));
+    w_c(points) = -sign(K(points)).*w_c(points)./K(points);
     % convert back to physical space
     u = ifft(w_c,N);
 end
@@ -153,7 +241,7 @@ function w_c = dealias(w_c)
     w_c(dealias_points) = 0;
 end
 
-% filter |e_k| < 1E-12 to zero
+% filter |w_c| <= 1E-12 to zero
 function w_c = filter(w_c)
     global F;
     % find points below threshold
@@ -162,225 +250,116 @@ function w_c = filter(w_c)
     w_c(filter_points) = 0;
 end
 
-function f = calc_RHS(w,a,t,index)
-    global N;  global X; global T; global K;
+% Calculate u_x*w - a*u*w_x
+function f = calc_RHS(w,a)
+    global N; 
     
     w_c = fft(w,N); % Convert w to Fourier space  
     ux_c = ht(w_c); % calculate du/dx in Fourier space
-    wx_c = deriv(w_c,1); % calculate dw/dx in Fourier Space
-    u = calc_u(w_c); % calculate u in physical space
-    w = ifft(w_c,N); %calculate w in physical space
+    wx_c = deriv(w_c); % calculate dw/dx in Fourier Space
 
+    u = calc_u(w_c); % calculate u in physical space
     ux = ifft(ux_c,N); % convert du/dx to physical space
     wx = ifft(wx_c,N); % convert dw/dx to physical space
 
     t1 = ux.*w; % compute du/dx * w in physical space
     t2 = a*(u.*wx); % compute a*u*dw/dx in physical space
 
-    %t1 = real(ifft(filter(dealias(fft(t1,N))),N)); % dealias and filter t1
-    %t2 = real(ifft(filter(dealias(fft(t2,N))),N)); % dealias and filter t2
+    f = t1 - t2; %f = u_x*w - a*u*w_x
+    f = real(ifft(filter(dealias(fft(f,N))),N)); %dealias and filter
+   
+end
 
-    f = t1 - t2;
-    
-    if(t ~= -1)
-        if (mod(t,0.5)==0 && t ~=T)
-            disp("t: "+t);
-            
-            colors = {[0,0,1],[0.5,0.5,0.5]};
-            figure(1);
-            plot(X,real(w),'color', colors{1 + ~(t==0)});
-            filename = sprintf('../Results/w_data_a%s_%s.csv', num2str(index), num2str(round(a,1)));
-            writematrix(real(w), filename, 'WriteMode', 'append');
-            hold on;
+function save_data(w, a, index, init_path)
+    global N; global K;
+    % Save w and u data every 0.25  
+    filename = sprintf('../Results/Data/%s/a%s/w_data_a%s_%s.csv', init_path, num2str(index), num2str(index), num2str(round(a,1)));
+    writematrix(real(w), filename, 'WriteMode', 'append');
         
-            figure(2);
-            spec = filter(abs(w_c));
-            semilogy(K(K>0),real(spec(K>0)),'color',colors{1 + ~(t==0)});
-            filename = sprintf('../Results/spec_data_a%s_%s.csv', num2str(index), num2str(round(a,1)));
-            writematrix(real(spec(K>0)), filename, 'WriteMode', 'append');
-            hold on;
+    w_c = fft(w,N);
+    spec = filter(abs(w_c));
+    filename = sprintf('../Results/Data/%s/a%s/spec_data_a%s_%s.csv', init_path,num2str(index), num2str(index), num2str(round(a,1)));
+    writematrix(real(spec(K>0)), filename, 'WriteMode', 'append');
         
-            figure(4);
-            plot(X,real(ux),'color',colors{1 + ~(t==0)});
-            filename = sprintf('../Results/ux_data_a%s_%s.csv', num2str(index), num2str(round(a,1)));
-            writematrix(real(ux), filename, 'WriteMode', 'append');
-            hold on;
+    u = calc_u(w_c);
+    filename = sprintf('../Results/Data/%s/a%s/u_data_a%s_%s.csv', init_path, num2str(index), num2str(index), num2str(round(a,1)));
+    writematrix(real(u), filename, 'WriteMode', 'append');
         
-            figure(5);
-            plot(X,real(wx),'color',colors{1 + ~(t==0)});
-            filename = sprintf('../Results/wx_data_a%s_%s.csv', num2str(index), num2str(round(a,1)));
-            writematrix(real(wx), filename, 'WriteMode', 'append');
-            hold on;
-        end
-    end
+    ux = ifft(ht(w_c),N);
+    filename = sprintf('../Results/Data/%s/a%s/ux_data_a%s_%s.csv', init_path, num2str(index), num2str(index), num2str(round(a,1)));
+    writematrix(real(ux), filename, 'WriteMode', 'append');
+        
+    wx = ifft(deriv(w_c),N);
+    filename = sprintf('../Results/Data/%s/a%s/wx_data_a%s_%s.csv', init_path, num2str(index), num2str(index), num2str(round(a,1)));
+    writematrix(real(wx), filename, 'WriteMode', 'append');
+
 end
 
 % Integration of the model problem using the RK4 scheme;
-function [w_T, b, t] = RK4( w_t, a, index)
-    global DT; global X; global T; global N; global F; global K; global COUNT; 
-    i = 0;
+function RK4( w_t, a, index,init_path)
+    global DT; global X; global T; global N; global K;
+    global DEALIAS_MAX;
+    i = 1;
     t = 0;
     b = false;
-    COUNT = 1;
 
     norm_data = [];
     norm_data_2 = [];
     norm_times = [];
-    
-    for j=1:8
-        figure(j); clf;
-    end
-    calc_RHS(w_t, a, t, index);
 
-    while ( all([(t <= T),(~b)]) )
+    save_data(w_t, a, index, init_path);
+    norm_data(i) = L2_norm(w_t);
+    norm_data_2(i) = LINF_norm(w_t);
+    norm_times(i) = t;
+    disp(t);
 
-      norm_data(COUNT) = L2_norm(w_t);
-      norm_data_2(COUNT) = LINF_norm(w_t);
-      norm_times(COUNT) = t;
-      COUNT = COUNT + 1;
+    while ( all([(t < T),(~b)]) )
 
-      t = (i+1) * DT;
+      t = i*DT;
      
-      f1 = calc_RHS(w_t, a, t,index);
+      f1 = calc_RHS(w_t, a);
       k1 = DT*f1;
-
-      f2 = calc_RHS(w_t + k1/2, a, -1,index);
+      f2 = calc_RHS(w_t + k1/2, a);
       k2 = DT*f2;
-      
-      f3 = calc_RHS(w_t + k2/2, a, -1, index);
+      f3 = calc_RHS(w_t + k2/2, a);
       k3 = DT*f3;
-      
-      f4 = calc_RHS(w_t + k3, a, -1, index);
+      f4 = calc_RHS(w_t + k3, a);
       k4 = DT*f4;
 
       w_t = w_t + (1/6)*( k1 + 2*k2 + 2*k3 + k4 );
-
-      b = blowup_dealias_checker(w_t);
-      w_t = real(ifft(filter(dealias(fft(w_t,N))),N)); %filter and dealias w_t
-
+  
+      if(mod(t,0.25)==0)
+        disp(t);
+        save_data(w_t, a, index, init_path);
+      end
       i = i + 1;
+      norm_data(i) = L2_norm(w_t);
+      norm_data_2(i) = LINF_norm(w_t);
+      norm_times(i) = t;
+
+      % underresolved check
+      x = filter(abs(fft(w_t,N)));
+      cut = floor(2*(N/2)/3);
+      b = logical(mean(x(cut-100:cut))>DEALIAS_MAX);
     end
 
     if b
-        disp("Blowup");
-        disp(t)
+        disp("Under resolved");
+        disp(t);
     else
         disp("DONE");
         disp(t);
     end
-    w_T = w_t;
-    filename = '../Results/blowup_times.csv';
-    writematrix(t, filename, 'WriteMode', 'append');
 
-    fg = figure(1);
-    figure(fg);
-    plot(X,real(w_t),"-",'color','r');
-    filename = sprintf('../Results/w_data_a%s_%s.csv', num2str(index), num2str(round(a,1)));
-    writematrix(real(w_t), filename, 'WriteMode', 'append');
-    title("$\omega$ vs $x$: $a=$" + num2str(round(a,1)), 'Interpreter', 'latex');
-    ylabel("$\omega$",'Interpreter','latex');
-    xlabel("$x$",'Interpreter','latex');
-    ylim([-5,5]);
-    grid on;
-    filename = sprintf('../Results/w_vs_x_a%s_%s.jpg', num2str(index), num2str(round(a,1)));
-    exportgraphics(fg,filename,'Resolution',600)
-    filename = sprintf('../Results/w_vs_x_a%s_%s.fig', num2str(index), num2str(round(a,1)));
-    savefig(fg,filename)
-
-    fg = figure(2);
-    figure(fg);
-    w_c = filter(fft(w_t,N));
-    spec = filter(abs(w_c));
-    semilogy(K(K>0),real(spec(K>0)),"-",'color','r');
-    filename = sprintf('../Results/spec_data_a%s_%s.csv', num2str(index), num2str(round(a,1)));
-    writematrix(real(spec(K>0)), filename, 'WriteMode', 'append');
-    title("$\omega$ Fourier Spectrum: $a=$" + num2str(round(a,1)), 'Interpreter', 'latex');
-    ylabel("$|\hat{\omega}_k|$",'Interpreter','latex');
-    xlabel("$k$",'Interpreter','latex');
-    grid on;
-    xlim([-(N/2)*0.1,(N/2)*1.1]);
-    filename = sprintf('../Results/w_spectrum_a%s_%s.jpg', num2str(index), num2str(round(a,1)));
-    exportgraphics(fg,filename,'Resolution',600)
-    filename = sprintf('../Results/w_spectrum_a%s_%s.fig', num2str(index),num2str(round(a,1)));
-    savefig(fg,filename)
-
-    fg = figure(3);
-    figure(fg);
-    norm_data(COUNT) = L2_norm(w_t);
-    norm_times(COUNT) = t;
-    semilogy(norm_times,norm_data);
-    filename = sprintf('../Results/l2_data_a%s_%s.csv', num2str(index), num2str(round(a,1)));
+    save_data(w_t, a, index, init_path);
+    
+    filename = sprintf('../Results/Data/%s/a%s/l2_data_a%s_%s.csv', init_path, num2str(index), num2str(index), num2str(round(a,1)));
     writematrix(norm_data, filename, 'WriteMode', 'append');
-    title("$\|\omega_x\|$ vs Time: $a=$"+ num2str(round(a,1)), 'Interpreter', 'latex');
-    ylabel("$\|\omega_x\|$",'Interpreter','latex');
-    xlabel("$t$",'Interpreter','latex');
-    grid on;
-    xlim([-0.5,7.5]);
-    filename = sprintf('../Results/norm_vs_time_a%s_%s.jpg', num2str(index), num2str(round(a,1)));
-    exportgraphics(fg,filename,'Resolution',600)
-    filename = sprintf('../Results/norm_vs_time_a%s_%s.fig', num2str(index), num2str(round(a,1)));
-    savefig(fg,filename)
-
-    fg = figure(4);
-    figure(fg);
-    ux_c = ht(w_c);
-    ux = ifft(ux_c,N);
-    plot(X,real(ux),"-",'color','r');
-    filename = sprintf('../Results/ux_data_a%s_%s.csv', num2str(index), num2str(round(a,1)));
-    writematrix(real(ux), filename, 'WriteMode', 'append');
-    title("$u_x$ vs $x$: $a=$" + num2str(round(a,1)),'Interpreter', 'latex');
-    ylabel("$u_x$",'Interpreter','latex');
-    xlabel("x",'Interpreter','latex');
-    ylim([-5,5]);
-    grid on;
-    filename = sprintf('../Results/ux_vs_x_a%s_%s.jpg', num2str(index), num2str(round(a,1)));
-    exportgraphics(fg,filename,'Resolution',600)
-    filename = sprintf('../Results/ux_vs_x_a%s_%s.fig', num2str(index), num2str(round(a,1)));
-    savefig(fg,filename)
-
-    fg = figure(5);
-    figure(fg);
-    wx_c = deriv(w_c,1);
-    wx = ifft(wx_c,N);
-    plot(X,real(wx),"-",'color','r');
-    filename = sprintf('../Results/wx_data_a%s_%s.csv', num2str(index), num2str(round(a,1)));
-    writematrix(real(wx), filename, 'WriteMode', 'append');
-    title("$\omega_x$ vs $x$: $a=$" + num2str(round(a,1)),'Interpreter', 'latex');
-    ylabel("$\omega_x$",'Interpreter', 'latex');
-    xlabel("$x$",'Interpreter', 'latex');
-    ylim([-10,10]);
-    grid on;
-    filename = sprintf('../Results/wx_vs_x_a%s_%s.jpg', num2str(index), num2str(round(a,1)));
-    exportgraphics(fg,filename,'Resolution',600)
-    filename = sprintf('../Results/wx_vs_x_a%s_%s.fig', num2str(index), num2str(round(a,1)));
-    savefig(fg,filename)
-
-    fg = figure(6);
-    figure(fg);
-    norm_data_2(COUNT) = LINF_norm(w_t);
-    semilogy(norm_times,norm_data_2);
-    filename = sprintf('../Results/linf_data_a%s_%s.csv', num2str(index), num2str(round(a,1)));
+    
+    filename = sprintf('../Results/Data/%s/a%s/linf_data_a%s_%s.csv', init_path, num2str(index), num2str(index), num2str(round(a,1)));
     writematrix(norm_data_2, filename, 'WriteMode', 'append');
-    title("$\|u_x\|_{\infty}$ vs Time: $a=$" + num2str(round(a,1)), 'Interpreter', 'latex');
-    ylabel("$\|u_x\|_{\infty}$",'Interpreter','latex');
-    xlabel("$t$",'Interpreter','latex');
-    grid on;
-    xlim([-0.5,7.5]);
-    filename = sprintf('../Results/norm2_vs_time_a%s_%s.jpg', num2str(index), num2str(round(a,1)));
-    exportgraphics(fg,filename,'Resolution',600)
-    filename = sprintf('../Results/norm2_vs_time_a%s_%s.fig', num2str(index), num2str(round(a,1)));
-    savefig(fg,filename)
 
-    %fg = figure(8);
-    %figure(fg);
-    %norm_data_deriv=(norm_data(2:end)-norm_data(1:end-1))/DT;
-    %loglog(norm_data(1:end-1), norm_data_deriv,"color","b");
-    %grid on;
-    %ylabel("dg(t)/dt");
-    %xlabel("g(t)");
-    %filename = sprintf('../Results/dgdt_vs_g_a%s_%s.jpg', num2str(index), num2str(round(a,1)));
-    %exportgraphics(fg,filename,'Resolution',600)
-    %filename = sprintf('../Results/dgdt_vs_g_a%s_%s.fig', num2str(index), num2str(round(a,1)));
-    %savefig(fg,filename)
-
+    filename = sprintf('../Results/Data/%s/blowup_times.csv', init_path);
+    writematrix(t, filename, 'WriteMode', 'append');
+    
 end
