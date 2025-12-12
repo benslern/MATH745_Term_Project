@@ -16,10 +16,10 @@ X = linspace(-pi,pi-H,N); % grid points
 K = [0:N/2-1, -N/2:-1];   % wavenumbers
 DEALIAS_MAX = 1E-10;
 
-%SolveGCLM("Init_1");
-generateGraphs("Init_1");
+SolveGCLM("Init_1");
+%generateGraphs("Init_1");
 %SolveGCLM("Init_2");
-generateGraphs("Init_2");
+%generateGraphs("Init_2");
 
 
 %Test functions used to verify the velocity, hilbert transform, and
@@ -304,7 +304,7 @@ end
 function w_c = dealias(w_c)
     global N; global K;
     % points above 2/3
-    dealias_points = (abs(K) >= ceil(2*(N/2)/3));
+    dealias_points = (abs(K) >= N) %ceil(2*(N/2)/3));
     % set dealias points to zero
     w_c(dealias_points) = 0;
 end
@@ -320,7 +320,7 @@ end
 
 % Calculate u_x*w - a*u*w_x
 function f = calc_RHS(w,a)
-    global N; 
+    global N; global K;
     
     w_c = fft(w,N); % Convert w to Fourier space  
     ux_c = ht(w_c); % calculate du/dx in Fourier space
@@ -334,7 +334,10 @@ function f = calc_RHS(w,a)
     t2 = a*(u.*wx); % compute a*u*dw/dx in physical space
 
     f = t1 - t2; %f = u_x*w - a*u*w_x
-    f = real(ifft(filter(dealias(fft(f,N))),N)); %dealias and filter
+    f_c = fft(f,N);
+    semilogy(K,abs(f_c));
+    pause
+    f = real(ifft(filter(dealias(fft(f,3*N/2))),N)); %dealias and filter
    
 end
 
@@ -375,7 +378,7 @@ function RK4( w_t, a, index,init_path)
     norm_data_2 = [];
     norm_times = [];
 
-    save_data(w_t, a, index, init_path);
+    %save_data(w_t, a, index, init_path);
     norm_data(i) = L2_norm(w_t);
     norm_data_2(i) = LINF_norm(w_t);
     norm_times(i) = t;

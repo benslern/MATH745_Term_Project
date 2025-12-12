@@ -16,8 +16,8 @@
         literate={~}{{\fontfamily{ptm}\selectfont \textasciitilde}}1
 }
 
-\pagecolor[rgb]{0.2,0.2,0.2}
-\color[rgb]{0.95,0.95,0.95}
+%\pagecolor[rgb]{0.2,0.2,0.2}
+%\color[rgb]{0.95,0.95,0.95}
 
 \newtheorem{thm}{Theorem}[section]
 
@@ -52,6 +52,8 @@
 \newcommand{\rs}{\right]}
 \newcommand{\lr}{\left(}
 \newcommand{\rr}{\right)}
+\newcommand{\lv}{\left|}
+\newcommand{\rv}{\right|}
 
 \def\w{\omega}
 \def\wt{\omega_t}
@@ -116,7 +118,7 @@
 
 \begin{flushleft}
 \begin{large}
-\textbf{Project Proposal}
+\textbf{Project Proposal - DONE DONE DONE DONE}
 \end{large}
 \end{flushleft}
 \noindent
@@ -128,7 +130,7 @@ which has a singularity at $x=y$ and so must be evaluated using the Cauchy Princ
 $$\wt + u\wx - \ux\w = 0, \qquad \ux = H\w.\vspace{-12pt}$$
 The De Gregorio equation was later generalized by Okamoto et al. to include the real parameter $a$. The result is the Generalized Constantin-Lax-Majda equation (GCLM)\vspace{-12pt}
 $$\wt + au\wx - \ux\w = 0, \qquad \ux = H\w.\vspace{-12pt}$$
-The parameter $a$ determines the relative strength of the convection term. When $a=0$ the GCLM is equal to the CLM, and when $a=1$ it is equal to the De Gregorio equation. The CLM equation was proposed in 1985 and has been shown to exhibit finite time blow-up. While the De Gregorio equation was proposed shortly after in 1989, questions still remain as to whether or not the equation permits finite time blow-up. The goal of this analysis will be to examine the affect the parameter $a$ has on the finite time blow-up of the GCLM equation. I will explore solutions of the GCLM for values of $a\in[-1,1]$. 
+The parameter $a$ determines the relative strength of the convection term. When $a=0$ the GCLM is equal to the CLM, and when $a=1$ it is equal to the De Gregorio equation. The CLM equation was proposed in 1985 and has been shown to exhibit finite-time blow-up. While the De Gregorio equation was proposed shortly after in 1989, questions still remain as to whether or not the equation permits finite-time blow-up. The goal of this analysis will be to examine the affect the parameter $a$ has on the finite-time blow-up of the GCLM equation. I will explore solutions of the GCLM for values of $a\in[-1,1]$. 
 
 \pagebreak
 
@@ -139,7 +141,7 @@ The parameter $a$ determines the relative strength of the convection term. When 
 \end{large}
 \end{flushleft}
 \noindent
-The Constantine-Lax-Majda (CLM) equation was proposed as a one-dimensional model for the three-dimensional vorticity equation. The CLM equation was later expanded on by De Gregorio to include the convection term $u\wx$. The De Gregorio equation was generalized by Okamoto et al. to include the real parameter $a$ which determines the relative strength of the convection term. The result is the Generalized Constantin-Lax-Majda equation (GCLM). In this analysis we examine the affect the parameter $a\in[-1,1]$ has on the finite time blow-up of the GCLM equation on the periodic domain $x\in[-\pi,\pi]$. 
+The Constantine-Lax-Majda (CLM) equation was proposed as a one-dimensional model for the three-dimensional vorticity equation. The CLM equation was later expanded on by De Gregorio to include the convection term $u\wx$. The De Gregorio equation was generalized by Okamoto et al. to include the real parameter $a$ which determines the relative strength of the convection term. The result is the Generalized Constantin-Lax-Majda equation (GCLM). In this analysis we examine the affect the parameter $a\in[-1,1]$ has on the finite-time blow-up of the GCLM equation on the periodic domain $x\in[-\pi,\pi]$. 
 \\~\\
 The analysis found RESULTS RESULTS RESULTS. CONCLUSION CONCLUSION CONCLUSION.
 \\~\\
@@ -149,7 +151,7 @@ Nearly all values of $a$ resulted in blow-up or blow-up like behaviour. The resu
 
 
 {
-  \hypersetup{linkcolor=white} %black
+  \hypersetup{linkcolor=black} %white
   \tableofcontents
 }
 
@@ -157,85 +159,110 @@ Nearly all values of $a$ resulted in blow-up or blow-up like behaviour. The resu
 
 \pagenumbering{arabic}
 
-\section{Introduction}
+\section{Introduction - DONE DONE DONE DONE DONE DONE}
 
-The three-dimensional Euler equations are a simplified form of the Navier-Stokes equations which describe the flow of inviscid incompressible fluids. The Euler equations are
-\begin{subequations}\label{eq:Euler}
+The 3D Euler equations are a simplified form of the 3D Navier-Stokes equations which describe the flow of inviscid incompressible fluids. The 3D Euler equations are
+
+\vspace{-30pt}
+
+\begin{subequations}\label{eq:3D:Euler}
 \begin{align}
 \ut + u\cdot \nabla u + \nabla p &= 0, \\
-\nabla \cdot u &= 0,
+\nabla \cdot u &= 0, \\
+u(x,0) &= u_0(x),
 \end{align}
 \end{subequations}
-where $u$ is the velocity field and $p$ is the scalar pressure. By substituting in the vorticity ($\w = \nabla \times u$) these equations can be re-expressed in the three-dimensional vorticity equation
-\begin{equation}\label{eq:Vorticity}
-\wt + (u\nabla)\w = (\w\nabla)u,
-\end{equation}
-where the velocity can be computed from the vorticity field with the equation 
-\begin{equation}\label{eq:Vel:Vort}
-u = -\nabla \times (\nabla^{-1} \w).
-\end{equation}
-A central question in fluid dynamics is whether or not finite-time singularities can form in fluid flows with smooth initial conditions \cite{constantin_simple_1985}. As first demonstrated by Beale, Kato, and Majda, singularities can form if and only if the maximum vorticity of the flow becomes infinite \cite{beale_remarks_1984}. The vorticity equation allows for the direct modelling of the vorticity and so is a very useful tool for studying singularity formation in the Euler equations. WHY USE 1D MODELS.
 
-\subsection{The GCLM Equation}
+\vspace{-10pt}
 
-The Constantin-Lax-Majda (CLM) equation was the first one-dimensional model of the three-dimensional vorticity equation for an incompressible fluid \cite{constantin_simple_1985}. The CLM equation is
-\begin{equation}\label{eq:CLM}
-\wt = H(\w)\w
-\end{equation}
-where $H$ is the Hilbert transform
-\begin{equation}\label{eq:Hilbert:Transform:CLM}
-H(\w) = \frac{1}{\pi}\text{ P.V.}\int \frac{\w(y)}{(x-y)}\,dy.
-\end{equation}
-with P.V. indicating the integral must be evaluated using the Cauchy Principle Value due to the singularity at $x=y$. It was demonstrated that most solutions to (\ref{eq:CLM}) form finite-time singularities CITATION. A significant advantage of this model was that its simplicity allowed for the derivation of an explicit solution to (\ref{eq:CLM}) \cite{constantin_simple_1985}. The solution of the CLM equation is is
-\begin{equation}\label{eq:Explicit:Omega}
-\w(x,t) = \frac{4\w_0(x)}{(2 - tH\w_0(x))^2 + t^2\w_0^2(x)}.
-\end{equation}
-However, De Gregorio noted three shortcomings of the model \cite{de_gregorio_one-dimensional_1990}.
-\begin{enumerate}
-\item asdf
-\end{enumerate}
-Due to these problems, De Gregorio proposed a new one-dimensional model that improved upon the CLM equation by ... \cite{de_gregorio_one-dimensional_1990}. The De Gregorio equation is
-\begin{equation}\label{eq:De:Gregorio}
-\wt + u\wx - \ux\w = 0.
-\end{equation}
-adds the convection term. De Gregorio claimed that (\ref{eq:De:Gregorio}) is globally well posed, although was not able to prove it CITATION.
+\noindent
+where $u$ is the velocity, $p$ is the scalar pressure, and $u_0$ is the initial condition. By substituting in the vorticity ($\w = \nabla \times u$) these equations can be re-expressed as the 3D vorticity equation
 
-The De Gregorio equation was later generalized to the Generalized Constantin-Lax-Majda (GCLM) equation \cite{okamoto_generalization_2008}. The GCLM equation adds the real parameter $a$ which controls the relative strength of the convection term. The GCLM equation is
-\begin{equation}\label{eq:GCLM}
-\wt + au\wx - \ux\w = 0.
-\end{equation}
-When $a=0$ the GCLM is equal to the (\ref{eq:CLM}), and when $a=1$ it is (\ref{eq:De:Gregorio}). Okamoto et al. showed that in the limit of $a\rightarrow\infty$ (\ref{eq:GCLM}) does not permit blowup CITATION. 
+\vspace{-30pt}
 
-\begin{equation}\label{eq:Hilbert:Transform}
-H\omega(x,t) = \frac{1}{2\pi}\int_{-\pi}^{\pi} \omega(y,t)\cot\left(\frac{x-y}{2}\right) \,dy.
+\begin{subequations}\label{eq:3D:Vorticity}
+\begin{align}
+\wt + (u\nabla)\w &= (\w\nabla)u,\\
+\w(x,0) &= \w_0(x),
+\end{align}
+\end{subequations}
+
+\vspace{-10pt}
+
+\noindent
+where the velocity is now computed from the vorticity with the Biot-Savart formula 
+
+\vspace{-10pt}
+
+\begin{equation}\label{eq:3D:Vel:Vort}
+u(x,t) = -\frac{1}{4\pi}\text{ P.V. }\int \frac{(x-y)}{|x-y|^3}\w(y,t)\,dy,
 \end{equation}
 
+\noindent
+where P.V. indicates the integral is solved using the Cauchy Principal Value due to the singularity at $x=y$. A central question in fluid dynamics is whether or not finite-time singularities can form in fluid flows with smooth initial conditions \cite{constantin_simple_1985}. As first demonstrated by Beale, Kato, and Majda, singularities can form if and only if the maximum vorticity of the flow becomes infinite \cite{beale_remarks_1984}. The vorticity equation allows for the direct modelling of the vorticity and so is a very useful tool for studying singularity formation in the Euler equations. One of the principal reasons the question of singularity formation remains unanswered is the complexity of the problem, which arises from the Euler equations being a system of non-linear non-local PDEs \cite{elgindi_effects_2017}. These combined factors motivated the development of simplified 1D vorticity models which still possess many of the properties of 3D flows while being analytically and computationally simpler.
 
+\subsection{The GCLM Equation DONE DONE DONE DONE DONE}
 
+The Constantin-Lax-Majda (CLM) model was the first 1D vorticity model for an inviscid incompressible fluid \cite{constantin_simple_1985}. The CLM equation is
+\begin{subequations}\label{eq:CLM}
+\begin{align}
+\wt &= H(\w)\w, \qquad x\in \R^1\\
+\w(x,0) &= \w_0(x),
+\end{align}
+\end{subequations}
+where $H(\w)$ is the Hilbert transform of the vorticity
+\begin{equation}
+H(\w) = \frac{1}{\pi}\text{ P.V. } \int_{-\infty}^{\infty} \frac{\w(y,t)}{(x-y)}\,dy.
+\end{equation}
+The velocity of the CLM model is defined as 
+\begin{equation}\label{eq:CLM:Velocity}
+u(x,t) = \int_{-\infty}^x \w(y,t)\,dy.
+\end{equation}
+Constantin et al. proved that a solution to (\ref{eq:CLM}) will form finite-time singularities if and only if there exists a point $x_0$ where $w_0(x_0)=0$ and $H(\w_0)(x_0)>0$. A significant advantage of the CLM model was that its simplicity allowed for the derivation of an explicit solution to (\ref{eq:CLM}) \cite{constantin_simple_1985}. However, De Gregorio noted that while the CLM model does possess the vortex stretching properties of (\ref{eq:3D:Vorticity}), it does not include a convection term which limits its similarity to 3D flows. Due to the limitations of the CLM model, De Gregorio proposed a modified 1D model that improved upon the CLM model \cite{de_gregorio_one-dimensional_1990}. The De Gregorio equation is
+\begin{subequations}\label{eq:De:Gregorio}
+\begin{align}
+\wt + u\wx &= \ux\w, \qquad x\in\R^1, \\
+u_x &= H(\w), \\
+\w(x,0) &= \w_0(x).
+\end{align}
+\end{subequations}
+The velocity is defined as
+\begin{equation}
+u(x,t) = \frac{1}{\pi}\text{ P.V. }\int_{-\infty}^{\infty}\frac{\Omega(y,t)}{(x-y)}\,dy = H(\Omega)(x,t),
+\end{equation}
+where $\Omega(x,t)$ is the same formula as the velocity of the CLM model (\ref{eq:CLM:Velocity}). The De Gregorio equation includes the stretching term $u_x\w$ and the convection term $u\wx$. De Gregorio proposed that, due to the convection term suppressing blow-up, (\ref{eq:De:Gregorio}) is globally well posed, although he was not able to prove it \cite{de_gregorio_partial_1996}. The De Gregorio equation was later expanded on by Okamoto et al. to the Generalized Constantin-Lax-Majda (GCLM) model \cite{okamoto_generalization_2008}. The GCLM equation adds the real parameter $a$ which controls the relative strength of the convection term to the stretching term. In their analysis Okamoto et al. examined the GCLM model on the periodic domain $x\in[-\pi,\pi]$. The GCLM equation is
+\begin{subequations}\label{eq:GCLM}
+\begin{align}
+\wt + au\wx - \ux\w &= 0, \qquad x\in[-\pi,\pi],\\
+u_x &= H\w,\\
+\w(x,0) &= \w_0(x).
+\end{align}
+\end{subequations}
+Because (\ref{eq:GCLM}) is defined on the periodic domain, the Hilbert transform is defined as
+\begin{equation}\label{eq:Hilbert:Transform:GCLM}
+H\w(x,t) = \frac{1}{2\pi}\text{ P.V. }\int_{-\pi}^{\pi}\w(y,t)\cot\lr\frac{x-y}{2}\rr\,dy.
+\end{equation}
+The velocity of the GCLM model is defined as
+\begin{equation}\label{eq:Velocity:GCLM}
+u(x,t) = \frac{1}{\pi}\text{ P.V. }\int_{-\pi}^{\pi}\w(y,t)\log\lv\sin\lr\frac{x-y}{2}\rr \rv \, dy.
+\end{equation}
+Okamoto et al. presented numerical evidence that the solution of (\ref{eq:GCLM}) exist globally when $a=1$, and proved the solution exists globally in the limit of $a\rightarrow\infty$ \cite{okamoto_generalization_2008}. 
+\\~\\
+When $a=1$ the GCLM model equal to the De Gregorio equation, which both have evidence supporting the claim that they are globally well-posed. When $a=0$ the GCLM model is equal to the CLM model, which is known to form finite-time singularities. When $a<0$ the convection term no longer acts to suppress blow-up and instead actually contributes to it \cite{chen_singularity_2020}. This will cause the GCLM model to form finite-time singularities, as was proved in \cite{castro_infinite_2010}. 
 
-\subsection{Blow-up Criteria}
-Okamoto et al. (2008) prove Theorem 3.1 and Theorem 3.2.
+\subsection{Overview DONE DONE DONE DONE DONE DONE}
 
-\begin{thm}\label{thm:Theorem:3.1}
-Let $a\in\R$ be given. For all $\omega_0\in H^1(S^1)/\R$, there exists a $T>0$ depending only on $a$ and $\|\omega_{0,x}\|$ such that there exists a unique solution $\omega\in C^0([0,T];H^1(S^1)/\R) \cap C^1([0,T];L^2(S^1)/\R)$ of (GCLM ref) with $\omega(0,x)=w_0$.
-\end{thm}
-
-
-\subsection{Overview}
-
-In this paper we will conduct a search for singularity formation in the GCLM by 
-
-In this analysis we present results for the GCLM for different values of $a\in[-1,1]$.  We use the same pseudo-spectral numerical methods as \cite{okamoto_generalization_2008} which are described in Section 2. In Section 3 we present the results and summarize in Section 4.
+In this analysis we present numerical evidence for singularity formation in the solutions of the GCLM for all $a\in[-1,0.9]$, and the well-posedness of the solution in the case of $a=1$. In addition, we present numerical evidence that the rate at which blow-up occurs RESULTS RESULTS VS A. We base our numerical method on the pseudo-spectral method used in \cite{okamoto_generalization_2008} which is described in Section 2. In Section 3 we present the results along with possible interpretations. Finally we summarize the results of the analysis and present potential future work in Section 4. Section 5 contains the derivations of the nonstandard formulas used in this analysis.
 
 \section{Numerical Methods}
 
-To model the GCLM equation numerically we must compute the values of the four components, $\w$, $\wx$, $u$, and $\ux$. These components are used to calculate the nonlinear convection term $\ux\w$, the nonlinear stretching term $u\wx$, and the time stepping. The methods for calculating the components, terms, and time stepping are described below.
+To model the GCLM equation numerically we must compute the values of the four components, $\w$, $\wx$, $u$, and $\ux$. Which are used to calculate the non-linear convection term $\ux\w$ and the non-linear stretching term $u\wx$. The methods for calculating the components, terms, and time stepping are described below.
 
 \subsection{Physical and Fourier Representation}
 
-The terms of (\ref{eq:GCLM}) are represented in physical space on a grid of $N = 2^{14}$ equispaced points on the domain $x\in[-\pi,\pi]$. Because the domain is periodic we must avoid double counting the grid point on the boundary. Therefore we set $x_0=-\pi$ and $x_N=\pi-h$, where $h$ is the distance between points. The terms are represented in Fourier space using a truncated Fourier series
+The terms of (\ref{eq:GCLM}) are represented in physical space on a grid of $N = 2^{14}$ equispaced points on the domain $x\in[-\pi,\pi]$. Because the domain is periodic we must avoid double counting the grid point on the boundary. Therefore we set $x_0=-\pi$ and $x_N=\pi-h$, where $h$ is the distance between points. The solution $\w$ is represented in Fourier space using a truncated Fourier series
 \begin{equation}\label{eq:Vorticity:Truncated:Fourier}
-f(x,t) = \sum_{k=-N/2}^{N/2 - 1}\hat{f}_k(t)\exp(ikx).
+w(x,t) = \sum_{k=-N/2}^{N/2 - 1}\wk(t)\exp(ikx).
 \end{equation}
 Transformation from physical to Fourier space, and vice versa, are performed using the standard Matlab fft and ifft functions respectively. 
 \\~\\
@@ -248,9 +275,14 @@ As shown in (ref EQUATION), the velocity can be computed from the vorticity in p
 \begin{equation}\label{eq:Velocity:Fourier}
 u(x,t) = -\sum_{k=-N/2,k\neq 0}^{N/2 - 1}\frac{\sgn(k)\wk(t)\exp(ikx)}{k}.
 \end{equation}
-The derivation of this equation from (ref EQUATION) is shown in Section 5.2. The derivative of the velocity is calculated using the Hilbert Transform (ref EQUATION). To calculate the derivative of the velocity in physical space would again require the CPV and so is calculated in Fourier space using the formula
+The derivation of this equation from (ref EQUATION) is shown in Section 5.2. The derivative of the velocity is calculated using the Hilbert Transform
+\begin{equation}\label{eq:Hilbert:Transform}
+H\omega(x,t) = \frac{1}{2\pi}\text{ P.V }\int_{-\pi}^{\pi} \omega(y,t)\cot\left(\frac{x-y}{2}\right) \,dy,
+\end{equation}
+with P.V. indicating the integral must be evaluated using the Cauchy Principle Value (CPV) due to the singularity at $x=y$.
+ To calculate the derivative of the velocity in physical space would again require the CPV and so is calculated in Fourier space using the formula
 \begin{equation}\label{eq:Velocity:Deriv:Fourier}
-u(x,t) = -\sum_{k=-N/2}^{N/2 - 1}i \sgn(k)\wk(t)e^{ikx}.
+u_x(x,t) = -\sum_{k=-N/2}^{N/2 - 1}i \sgn(k)\wk(t)e^{ikx}.
 \end{equation}
 The derivation of this formula from (ref EQUATION) is shown in section 5.1. 
 
@@ -277,17 +309,6 @@ f(\omega^{(n)},t^{(n)}) = \ux\omega - au\wx
 \end{equation}
 using the components described in Section 2.1.
 
-\subsection{Complete Numerical Method}
-
-
-Combining the methods described above, we use the following procedure
-
-\begin{enumerate}
-  \item Convert $\omega^(n)$ from Physical space to Fourier space using FFT.
-  \item Calculate $u_x$ 
-\end{enumerate}
-
-
 \subsection{Initial Conditions}
 
 Okamoto et al. (2008) showed that any solution that satisfies (GCLM ref) must also satisfy
@@ -297,6 +318,23 @@ Okamoto et al. (2008) showed that any solution that satisfies (GCLM ref) must al
 where  $(\cdot,\cdot)$ denotes the $L^2$ inner product (Okamoto et al., 2008). Therefore, we may assume without loss of generality that the initial condition satisfies
 $$\int_{-\pi}^{\pi} \omega(0,x)\,dx = 0,$$
 which is also a necessary assumption of (ref VELOCITY EQUATION). 
+
+\subsection{Blow-up Criteria}
+Okamoto et al. (2008) prove Theorem 3.1 and Theorem 3.2.
+
+\begin{thm}\label{thm:Theorem:3.1}
+Let $a\in\R$ be given. For all $\omega_0\in H^1(S^1)/\R$, there exists a $T>0$ depending only on $a$ and $\|\omega_{0,x}\|$ such that there exists a unique solution $\omega\in C^0([0,T];H^1(S^1)/\R) \cap C^1([0,T];L^2(S^1)/\R)$ of (GCLM ref) with $\omega(0,x)=w_0$.
+\end{thm}
+
+\subsection{Complete Numerical Method}
+
+
+Combining the methods described above, we use the following procedure
+
+\begin{enumerate}
+  \item Convert $\omega^(n)$ from Physical space to Fourier space using FFT.
+  \item Calculate $u_x$ 
+\end{enumerate}
 
 \section{Results}
 these are the results
