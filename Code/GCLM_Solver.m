@@ -6,19 +6,25 @@ clear all;
 close all;
 
 % Global Constants
-global N; global DT; global H; global T; global F; global X; global K; global DEALIAS_MAX;
+global N; global DT; global H; global T; global F; global X; global K2; global K; global DEALIAS_MAX;
+global H2; global X2;
 N = 2^14;                 % number of grid points
-DT = 1E-4;                % timestep
+DT = 1E-5;                % timestep
 H = 2*pi/N;               % distance between x_i and x_i+1
+H2 = 2*pi/(3*N/2);
 T = 7;                    % timescale
 F = 1E-12;                % filter tolerance
 X = linspace(-pi,pi-H,N); % grid points
+X2 = linspace(-pi,pi-H2,3*N/2); % grid points
 K = [0:N/2-1, -N/2:-1];   % wavenumbers
+K2 =[0:(3*(N/2)/2)-1, -3*(N/2)/2:-1];
 DEALIAS_MAX = 1E-10;
 
 %SolveGCLM("Init_1");
+%generateDGDTData("Init_1");
 generateGraphs("Init_1");
 %SolveGCLM("Init_2");
+%generateDGDTData("Init_2");
 generateGraphs("Init_2");
 
 
@@ -65,13 +71,69 @@ function [E] = deriv_test()
     E = norm(dif,2);
 end
 
+function generateDGDTData(init)
+    global X; global K; global DT;
+    data_path = "../Results/Data/"+init+"/";
+    
+    index = 1;
+    for a=1.0:-0.1:-1.0
+        disp(a);
+        filename = sprintf("%sa%d/l2_data_a%d_%s.csv",data_path,index,index,num2str(round(a,1)));
+        data = readmatrix(filename);
+        dgdt = (data(1,2:end)-data(1,1:end-1))/DT;
+        disp(size(data(1,1:end-1)));
+        disp(size(dgdt));
+        filename = sprintf("%sa%d/l2_y_data_a%d_%s.csv",data_path,index,index,num2str(round(a,1)));
+        writematrix(dgdt, filename, 'WriteMode', 'append');
+        filename = sprintf("%sa%d/l2_x_data_a%d_%s.csv",data_path,index,index,num2str(round(a,1)));
+        writematrix(data(1,1:end-1), filename, 'WriteMode', 'append');
+
+        filename = sprintf("%sa%d/linf_data_a%d_%s.csv",data_path,index,index,num2str(round(a,1)));
+        data = readmatrix(filename);
+        int_vals = zeros(size(data));
+        for i=2:length(data)
+            int_vals(i) = trapz((0:DT:(i-1)*DT),data(1:i));
+        end
+        disp(size(int_vals));
+        disp(size(data));
+        filename = sprintf("%sa%d/linf_y_data_a%d_%s.csv",data_path,index,index,num2str(round(a,1)));
+        writematrix(data, filename, 'WriteMode', 'append');
+        filename = sprintf("%sa%d/linf_x_data_a%d_%s.csv",data_path,index,index,num2str(round(a,1)));
+        writematrix(int_vals, filename, 'WriteMode', 'append');
+
+        index = index + 1;
+    end
+end
+
 % Generate graphs from data files
 function generateGraphs(init)
     global X; global K; global DT;
-    data_path = "../Results/Data_large_dt/"+init+"/";
+    data_path = "../Results/Data/"+init+"/";
     image_path = "../Results/Images/"+init+"/";
 
     index = 1;
+    alphas_l2 = zeros(12,21);
+    alphas_linf = zeros(12,21);
+    for i=1:12
+        alphas_l2(i,1) = NaN;
+        alphas_linf(i,1) = NaN;
+    end
+    as = (1.0:-0.1:-1.0);
+
+    filename = sprintf("%s/blowup_times.csv",data_path);
+    data = readmatrix(filename);
+    fg = figure();
+    clf;
+    plot(as,data);
+    ylim([0,8]);
+    xlim([-1.1,1.1]);
+    title('Under-resolved Times vs a','interpreter','latex','FontSize', 18);
+    xlabel("$a$",'interpreter','latex','FontSize', 14);
+    ylabel("Time",'interpreter','latex','FontSize', 14);
+    grid on;
+    filename = sprintf("%s/blowup_times.jpg",image_path);
+    exportgraphics(fg,filename,'Resolution',600)
+
     for a=1.0:-0.1:-1.0
         disp(a);
         %colors = {[0,0,1],[0.5,0.5,0.5]};
@@ -126,7 +188,7 @@ function generateGraphs(init)
             plot(X,data(i,:),'Color',[0.5,0.5,0.5]);
         end
         plot(X,data(end,:),'Color','red');
-        ylim([-3,3]);
+        %ylim([-3,3]);
         title("$u$ vs $x$ - a="+num2str(round(a,1)),"Interpreter","latex",'FontSize', 18);
         xlabel("$x$","Interpreter","latex",'FontSize', 14);
         ylabel("$u$","Interpreter","latex",'FontSize', 14);
@@ -171,8 +233,8 @@ function generateGraphs(init)
         filename = sprintf("%sa%d/spec_data_a%d_%s.jpg",image_path,index,index,num2str(round(a,1)));
         exportgraphics(fg,filename,'Resolution',600)
 
+        
         % L2 vs t plots
-
         filename = sprintf("%sa%d/l2_data_a%d_%s.csv",data_path,index,index,num2str(round(a,1)));
         data = readmatrix(filename);
         fg = figure();
@@ -186,27 +248,53 @@ function generateGraphs(init)
         filename = sprintf("%sa%d/l2_data_a%d_%s.jpg",image_path,index,index,num2str(round(a,1)));
         exportgraphics(fg,filename,'Resolution',600)
 
-        % dgdt L2 vs t plots
-        filename = sprintf("%sa%d/l2_data_a%d_%s.csv",data_path,index,index,num2str(round(a,1)));
-        data = readmatrix(filename);
+        % dgdt L2 vs L2 plots
+        filename = sprintf("%sa%d/l2_y_data_a%d_%s.csv",data_path,index,index,num2str(round(a,1)));
+        data_y = readmatrix(filename);
+        filename = sprintf("%sa%d/l2_x_data_a%d_%s.csv",data_path,index,index,num2str(round(a,1)));
+        data_x = readmatrix(filename);
         fg = figure();
         clf;
-        dgdt = (data(1,2:end)-data(1,1:end-1))/DT;
-        loglog(data(1,1:end-1),dgdt,'Color','blue');
-        title("$\|\omega_x\|_t$ vs $\|\omega_x\|$ - a="+num2str(round(a,1)),"Interpreter","latex",'FontSize', 18);
+        loglog(data_x,data_y,'Color','blue');
+
+        if index ~= 1
+            hold on;
+            x = data_x;
+            y = data_y;
+            x = transpose(x);
+            y = transpose(y);
+            s = 1250; %0.025
+            for j=1:12
+                %x1 = x(end*(40-j)*s:min(end,end*(41-j)*s));
+                %y1 = y(end*(40-j)*s:min(end,end*(41-j)*s));
+                x1 = x(end-s*j:end-s*(j-1));
+                y1 = y(end-s*j:end-s*(j-1));
+
+                ft = fittype('a*(x^b)','independent','x','dependent','y');
+                startPoints = [1E-3,2];
+                %lower = [1E-10,0.1];
+                [f1,~] = fit(x1,y1,ft,'StartPoint',startPoints);
+                plot(x1,f1(x1));
+                hold on;
+                alphas_l2(j,index) = f1.b;
+            end
+            
+        end
+
+        title("$\frac{d}{dt}\|\omega_x\|$ vs $\|\omega_x\|$ - a="+num2str(round(a,1)),"Interpreter","latex",'FontSize', 18);
         xlabel("$\|\omega_x\|$","Interpreter","latex",'FontSize', 14);
-        ylabel("$\|\omega_x\|_t$","Interpreter","latex",'FontSize', 14);
+        ylabel("$\frac{d}{dt}\|\omega_x\|$","Interpreter","latex",'FontSize', 14);
         grid on;
         filename = sprintf("%sa%d/l2_dgdt_data_a%d_%s.jpg",image_path,index,index,num2str(round(a,1)));
         exportgraphics(fg,filename,'Resolution',600)
 
-        %trapz(x,y);
+        
         %plot linf norm vs t
         filename = sprintf("%sa%d/linf_data_a%d_%s.csv",data_path,index,index,num2str(round(a,1)));
         data = readmatrix(filename);
         fg = figure();
         clf;
-        plot((0:DT:(length(data)-1)*DT),data);
+        plot(linspace(0,length(data_y(1,:))*DT,length(data_y(1,:))),data_y);
         title("$\|u_x\|_\infty$ vs $t$ - a="+num2str(round(a,1)),"Interpreter","latex",'FontSize', 18);
         xlabel("$t$","Interpreter","latex",'FontSize', 14);
         ylabel("$\|u_x\|_\infty$","Interpreter","latex",'FontSize', 14);
@@ -215,41 +303,104 @@ function generateGraphs(init)
         exportgraphics(fg,filename,'Resolution',600)
 
         %convert linf norm vs t to integral linf norm from 0 to t vs t
-        int_vals = zeros(size(data));
-        for i=2:length(data)
-            int_vals(i) = trapz((0:DT:(i-1)*DT),data(1:i));
-        end
-        plot((DT:DT:length(int_vals)*DT),int_vals);
-        title("$\int_0^t \|u_x\|_\infty$ vs $t$ - a="+num2str(round(a,1)),"Interpreter","latex",'FontSize', 18);
+        filename = sprintf("%sa%d/linf_x_data_a%d_%s.csv",data_path,index,index,num2str(round(a,1)));
+        data = readmatrix(filename);
+        loglog(linspace(0,length(data(1,:))*DT,length(data(1,:))),data,'Color','blue');
+        title("$\int_0^t \|u_x(\tau)\|_\infty d\tau$ vs $t$ - a="+num2str(round(a,1)),"Interpreter","latex",'FontSize', 18);
         xlabel("$t$","Interpreter","latex",'FontSize', 14);
-        ylabel("$\int_0^t \|u_x\|_\infty$","Interpreter","latex",'FontSize', 14);
+        ylabel("$\int_0^t \|u_x(\tau)\|_\infty d\tau$","Interpreter","latex",'FontSize', 14);
         grid on;
         filename = sprintf("%sa%d/linf_int_data_a%d_%s.jpg",image_path,index,index,num2str(round(a,1)));
         exportgraphics(fg,filename,'Resolution',600)
 
-        % dgdt LINF vs t plots
+        % dgdt LINF int vs LIF int plots
         fg = figure();
         clf;
-        dgdt = (int_vals(1,2:end)-int_vals(1,1:end-1))/DT;
-        loglog(int_vals(1,1:end-1),dgdt,'Color','blue');
-        title("$(\int_0^t \|u_x\|_\infty)_t$ vs $\|u_x\|$ - a="+num2str(round(a,1)),"Interpreter","latex",'FontSize', 18);
-        xlabel("$\|u_x\|_\infty$","Interpreter","latex",'FontSize', 14);
-        ylabel("$(\int_0^t \|u_x\|_\infty)_t$","Interpreter","latex",'FontSize', 14);
+        filename = sprintf("%sa%d/linf_x_data_a%d_%s.csv",data_path,index,index,num2str(round(a,1)));
+        data_x = readmatrix(filename);
+        filename = sprintf("%sa%d/linf_y_data_a%d_%s.csv",data_path,index,index,num2str(round(a,1)));
+        data_y = readmatrix(filename);
+        loglog(data_x,data_y,'Color','blue');
+
+        if index ~= 1
+            hold on;
+            x = data_x;
+            y = data_y;
+            x = transpose(x);
+            y = transpose(y);
+            s = 1250; %0.025
+            for j=1:12
+                %x1 = x(end*(40-j)*s:min(end,end*(41-j)*s));
+                %y1 = y(end*(40-j)*s:min(end,end*(41-j)*s));
+                x1 = x(end-s*j:end-s*(j-1));
+                y1 = y(end-s*j:end-s*(j-1));
+    
+                ft = fittype('a*(x^b)','independent','x','dependent','y');
+                startPoints = [1E-3,2];
+                %lower = [1E-10,0.1];
+                [f1,~] = fit(x1,y1,ft,'StartPoint',startPoints);
+                plot(x1,f1(x1));
+                hold on;
+                alphas_linf(j,index) = f1.b;
+            end
+            
+        end
+
+        title("$\|u_x(\tau)\|_\infty$ vs $\int_0^t\|u_x(\tau)\|_{\infty} d\tau$ - a="+num2str(round(a,1)),"Interpreter","latex",'FontSize', 18);
+        xlabel("$\int_0^t\|u_x(\tau)\|_{\infty} d\tau$","Interpreter","latex",'FontSize', 14);
+        ylabel("$\|u_x\|_\infty$","Interpreter","latex",'FontSize', 14);
         grid on;
         filename = sprintf("%sa%d/linf_int_dgdt_data_a%d_%s.jpg",image_path,index,index,num2str(round(a,1)));
         exportgraphics(fg,filename,'Resolution',600)
-
+        
         close all;
         index = index + 1;
+        
+    end 
+        
+
+    fg = figure();
+    clf;
+    plot(as,alphas_l2(1,:),'color','r');
+    hold on;
+    for j=2:11
+        plot(as,alphas_l2(j,:),'color',[0.5,0.5,0.5]);
+        hold on;
     end
+    plot(as,alphas_l2(12,:),'color','b');
+    xlim([-1.1,1.1]);
+    grid on;
+    %legend('$\alpha_1$','$\alpha_2$','$\alpha_3$','interpreter','latex');
+    xlabel("a",'Interpreter','latex','FontSize', 14);
+    title("$\alpha$ vs $a$ - $\|\omega_x\|$",'Interpreter','latex','FontSize', 18);
+    ylabel("$\alpha$",'Interpreter','latex','FontSize', 14);
+    filename = sprintf("%salpha_l2_vs_a.jpg",image_path);
+    exportgraphics(fg,filename,'Resolution',600)
+
+    fg = figure();
+    clf;
+    plot(as,alphas_linf(1,:),'color','r');
+    hold on;
+    for j=2:11
+        plot(as,alphas_linf(j,:),'color',[0.5,0.5,0.5]);
+        hold on;
+    end
+    plot(as,alphas_linf(12,:),'color','b');
+    xlim([-1.1,1.1]);
+    grid on;
+    xlabel("a",'Interpreter','latex','FontSize', 14);
+    title("$\alpha$ vs $a$ - $\|u_x\|_{\infty}$",'Interpreter','latex','FontSize', 18);
+    ylabel("$\alpha$",'Interpreter','latex','FontSize', 14);
+    filename = sprintf("%salpha_inf_vs_a.jpg",image_path);
+    exportgraphics(fg,filename,'Resolution',600)
 end
 
 % Generalized Constantin-Lax-Majda Equation solver
 function SolveGCLM(init)
     global X;
     
-    index = 1;
-    for a=1.0:-0.1:-1.0
+    index = 20;
+    for a=-0.9:-0.1:-1.0
         disp("a: "+a);
 
         % Initial conditions
@@ -289,24 +440,26 @@ function h = ht(w_c)
 end
 
 % Calculate velocity from vorticity
-function u = calc_u(w_c)
+function w_c = calc_u(w_c)
     global N; global K;
     % exclude k=0 
     points = (K ~= 0);
     w_c(~points) = 0;
     % divide Fourier coefficients by k~=0
     w_c(points) = -sign(K(points)).*w_c(points)./K(points);
-    % convert back to physical space
-    u = ifft(w_c,N);
+    
 end
 
 % Dealias with 2/3 rule
 function w_c = dealias(w_c)
-    global N; global K;
+    global N; global K2; global K;
     % points above 2/3
-    dealias_points = (abs(K) >= ceil(2*(N/2)/3));
+    %dealias_points = (abs(K2) >= N/2);
     % set dealias points to zero
-    w_c(dealias_points) = 0;
+    %w_c(dealias_points) = 0;
+    %w_c = w_c(abs(K)>=0);
+    w_c = (2/3)*[w_c(1:N/2),w_c(end-N/2+1:end)];
+
 end
 
 % filter |w_c| <= 1E-12 to zero
@@ -316,26 +469,37 @@ function w_c = filter(w_c)
     filter_points = (abs(w_c) <= F);
     % set filter points to zero
     w_c(filter_points) = 0;
+
+    
 end
 
 % Calculate u_x*w - a*u*w_x
 function f = calc_RHS(w,a)
-    global N; 
-    
-    w_c = fft(w,N); % Convert w to Fourier space  
+    global N; global K; global K2; global X; global X2;
+
+    % calc values
+    w_c = fft(w,N);
     ux_c = ht(w_c); % calculate du/dx in Fourier space
     wx_c = deriv(w_c); % calculate dw/dx in Fourier Space
+    u_c = calc_u(w_c); % calculate u in physical space
 
-    u = calc_u(w_c); % calculate u in physical space
-    ux = ifft(ux_c,N); % convert du/dx to physical space
-    wx = ifft(wx_c,N); % convert dw/dx to physical space
+    % pad in fourier space
+    w_c2 =  (3/2)*[w_c(1:N/2),zeros(1,2^13),w_c(N/2 + 1:end)];
+    ux_c2 = (3/2)*[ux_c(1:N/2),zeros(1,2^13),ux_c(N/2 + 1:end)];
+    wx_c2 = (3/2)*[wx_c(1:N/2),zeros(1,2^13),wx_c(N/2 + 1:end)];
+    u_c2 =  (3/2)*[u_c(1:N/2),zeros(1,2^13),u_c(N/2 + 1:end)];
 
-    t1 = ux.*w; % compute du/dx * w in physical space
-    t2 = a*(u.*wx); % compute a*u*dw/dx in physical space
+    w2 = ifft(w_c2);
+    ux2 = ifft(ux_c2,3*N/2); % convert du/dx to physical space
+    wx2 = ifft(wx_c2,3*N/2); % convert dw/dx to physical space
+    u2 = ifft(u_c2,3*N/2);
+
+    t1 = ux2.*w2; % compute du/dx * w in physical space
+    t2 = a*(u2.*wx2); % compute a*u*dw/dx in physical space
 
     f = t1 - t2; %f = u_x*w - a*u*w_x
-    f = real(ifft(filter(dealias(fft(f,N))),N)); %dealias and filter
-   
+    f = ifft(filter(dealias(fft(f,3*N/2))),N);
+    
 end
 
 function save_data(w, a, index, init_path)
@@ -349,7 +513,8 @@ function save_data(w, a, index, init_path)
     filename = sprintf('../Results/Data/%s/a%s/spec_data_a%s_%s.csv', init_path,num2str(index), num2str(index), num2str(round(a,1)));
     writematrix(real(spec(K>0)), filename, 'WriteMode', 'append');
         
-    u = calc_u(w_c);
+    u_c = calc_u(w_c);
+    u = ifft(u_c,N);
     filename = sprintf('../Results/Data/%s/a%s/u_data_a%s_%s.csv', init_path, num2str(index), num2str(index), num2str(round(a,1)));
     writematrix(real(u), filename, 'WriteMode', 'append');
         
@@ -365,7 +530,7 @@ end
 
 % Integration of the model problem using the RK4 scheme;
 function RK4( w_t, a, index,init_path)
-    global DT; global X; global T; global N; global K;
+    global DT; global X; global T; global N; global K; global K2;
     global DEALIAS_MAX;
     i = 1;
     t = 0;
@@ -407,7 +572,7 @@ function RK4( w_t, a, index,init_path)
 
       % underresolved check
       x = filter(abs(fft(w_t,N)));
-      cut = floor(2*(N/2)/3);
+      cut = (N/2);
       b = logical(mean(x(cut-100:cut))>DEALIAS_MAX);
     end
 
