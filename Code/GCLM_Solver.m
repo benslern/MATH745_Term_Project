@@ -20,6 +20,7 @@ K = [0:N/2-1, -N/2:-1];   % wavenumbers
 K2 =[0:(3*(N/2)/2)-1, -3*(N/2)/2:-1];
 DEALIAS_MAX = 1E-10;
 
+<<<<<<< HEAD
 %SolveGCLM("Init_1");
 %generateDGDTData("Init_1");
 generateGraphs("Init_1");
@@ -475,10 +476,9 @@ end
 
 % Calculate u_x*w - a*u*w_x
 function f = calc_RHS(w,a)
-    global N; global K; global K2; global X; global X2;
-
-    % calc values
-    w_c = fft(w,N);
+    global N; global K;
+    
+    w_c = fft(w,N); % Convert w to Fourier space  
     ux_c = ht(w_c); % calculate du/dx in Fourier space
     wx_c = deriv(w_c); % calculate dw/dx in Fourier Space
     u_c = calc_u(w_c); % calculate u in physical space
@@ -498,8 +498,8 @@ function f = calc_RHS(w,a)
     t2 = a*(u2.*wx2); % compute a*u*dw/dx in physical space
 
     f = t1 - t2; %f = u_x*w - a*u*w_x
-    f = ifft(filter(dealias(fft(f,3*N/2))),N);
-    
+    f = real(ifft(filter(dealias(fft(f,3*N/2))),N)); %dealias and filter
+   
 end
 
 function save_data(w, a, index, init_path)
@@ -540,7 +540,7 @@ function RK4( w_t, a, index,init_path)
     norm_data_2 = [];
     norm_times = [];
 
-    save_data(w_t, a, index, init_path);
+    %save_data(w_t, a, index, init_path);
     norm_data(i) = L2_norm(w_t);
     norm_data_2(i) = LINF_norm(w_t);
     norm_times(i) = t;
