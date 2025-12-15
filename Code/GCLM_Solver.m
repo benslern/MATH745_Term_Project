@@ -20,7 +20,6 @@ K = [0:N/2-1, -N/2:-1];   % wavenumbers
 K2 =[0:(3*(N/2)/2)-1, -3*(N/2)/2:-1];
 DEALIAS_MAX = 1E-10;
 
-<<<<<<< HEAD
 %SolveGCLM("Init_1");
 %generateDGDTData("Init_1");
 generateGraphs("Init_1");
@@ -264,12 +263,12 @@ function generateGraphs(init)
             y = data_y;
             x = transpose(x);
             y = transpose(y);
-            s = 1250; %0.025
+            s = 0.025; %1250
             for j=1:12
-                %x1 = x(end*(40-j)*s:min(end,end*(41-j)*s));
-                %y1 = y(end*(40-j)*s:min(end,end*(41-j)*s));
-                x1 = x(end-s*j:end-s*(j-1));
-                y1 = y(end-s*j:end-s*(j-1));
+                x1 = x(end*(40-j)*s:min(end,end*(41-j)*s));
+                y1 = y(end*(40-j)*s:min(end,end*(41-j)*s));
+                %x1 = x(end-s*j:end-s*(j-1));
+                %y1 = y(end-s*j:end-s*(j-1));
 
                 ft = fittype('a*(x^b)','independent','x','dependent','y');
                 startPoints = [1E-3,2];
@@ -281,7 +280,6 @@ function generateGraphs(init)
             end
             
         end
-
         title("$\frac{d}{dt}\|\omega_x\|$ vs $\|\omega_x\|$ - a="+num2str(round(a,1)),"Interpreter","latex",'FontSize', 18);
         xlabel("$\|\omega_x\|$","Interpreter","latex",'FontSize', 14);
         ylabel("$\frac{d}{dt}\|\omega_x\|$","Interpreter","latex",'FontSize', 14);
@@ -329,12 +327,12 @@ function generateGraphs(init)
             y = data_y;
             x = transpose(x);
             y = transpose(y);
-            s = 1250; %0.025
+            s = 0.025
             for j=1:12
-                %x1 = x(end*(40-j)*s:min(end,end*(41-j)*s));
-                %y1 = y(end*(40-j)*s:min(end,end*(41-j)*s));
-                x1 = x(end-s*j:end-s*(j-1));
-                y1 = y(end-s*j:end-s*(j-1));
+                x1 = x(end*(40-j)*s:min(end,end*(41-j)*s));
+                y1 = y(end*(40-j)*s:min(end,end*(41-j)*s));
+                %x1 = x(end-s*j:end-s*(j-1));
+                %y1 = y(end-s*j:end-s*(j-1));
     
                 ft = fittype('a*(x^b)','independent','x','dependent','y');
                 startPoints = [1E-3,2];
@@ -346,7 +344,6 @@ function generateGraphs(init)
             end
             
         end
-
         title("$\|u_x(\tau)\|_\infty$ vs $\int_0^t\|u_x(\tau)\|_{\infty} d\tau$ - a="+num2str(round(a,1)),"Interpreter","latex",'FontSize', 18);
         xlabel("$\int_0^t\|u_x(\tau)\|_{\infty} d\tau$","Interpreter","latex",'FontSize', 14);
         ylabel("$\|u_x\|_\infty$","Interpreter","latex",'FontSize', 14);
@@ -371,6 +368,7 @@ function generateGraphs(init)
     plot(as,alphas_l2(12,:),'color','b');
     xlim([-1.1,1.1]);
     grid on;
+    ylim([1,3]);
     %legend('$\alpha_1$','$\alpha_2$','$\alpha_3$','interpreter','latex');
     xlabel("a",'Interpreter','latex','FontSize', 14);
     title("$\alpha$ vs $a$ - $\|\omega_x\|$",'Interpreter','latex','FontSize', 18);
@@ -388,6 +386,7 @@ function generateGraphs(init)
     end
     plot(as,alphas_linf(12,:),'color','b');
     xlim([-1.1,1.1]);
+    ylim([0,9]);
     grid on;
     xlabel("a",'Interpreter','latex','FontSize', 14);
     title("$\alpha$ vs $a$ - $\|u_x\|_{\infty}$",'Interpreter','latex','FontSize', 18);
