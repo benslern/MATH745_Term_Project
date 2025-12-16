@@ -124,7 +124,7 @@ function generateGraphs(init)
     data = readmatrix(filename);
     fg = figure();
     clf;
-    plot(as,data);
+    plot(as,data,"o-");
     ylim([0,8]);
     xlim([-1.1,1.1]);
     title('Under-resolved Times vs a','interpreter','latex','FontSize', 26);
@@ -227,6 +227,7 @@ function generateGraphs(init)
         end
         semilogy(K(K>0),data(end,:),'Color','red');
         xlim([-1000,9000]);
+        ylim([1E-12, 1E5]);
         title("$|\hat{\omega}_k|$ vs $k$ - a="+num2str(round(a,1)),"Interpreter","latex",'FontSize', 26);
         xlabel("$k$","Interpreter","latex",'FontSize', 20);
         ylabel("$|\hat{\omega}_k|$","Interpreter","latex",'FontSize', 20);
@@ -264,12 +265,12 @@ function generateGraphs(init)
             y = data_y;
             x = transpose(x);
             y = transpose(y);
-            s = 1250;
+            s = 0.025;
             for j=1:12
-                %x1 = x(end*(40-j)*s:min(end,end*(41-j)*s));
-                %y1 = y(end*(40-j)*s:min(end,end*(41-j)*s));
-                x1 = x(end-s*j:end-s*(j-1));
-                y1 = y(end-s*j:end-s*(j-1));
+                x1 = x(end*(40-j)*s:min(end,end*(41-j)*s));
+                y1 = y(end*(40-j)*s:min(end,end*(41-j)*s));
+                %x1 = x(end-s*j:end-s*(j-1));
+                %y1 = y(end-s*j:end-s*(j-1));
 
                 ft = fittype('a*(x^b)','independent','x','dependent','y');
                 startPoints = [1E-3,2];
@@ -331,12 +332,12 @@ function generateGraphs(init)
             y = data_y;
             x = transpose(x);
             y = transpose(y);
-            s = 1250; %0.025
+            s = 0.025; %1250
             for j=1:12
-                %x1 = x(end*(40-j)*s:min(end,end*(41-j)*s));
-                %y1 = y(end*(40-j)*s:min(end,end*(41-j)*s));
-                x1 = x(end-s*j:end-s*(j-1));
-                y1 = y(end-s*j:end-s*(j-1));
+                x1 = x(end*(40-j)*s:min(end,end*(41-j)*s));
+                y1 = y(end*(40-j)*s:min(end,end*(41-j)*s));
+                %x1 = x(end-s*j:end-s*(j-1));
+                %y1 = y(end-s*j:end-s*(j-1));
     
                 ft = fittype('a*(x^b)','independent','x','dependent','y');
                 startPoints = [1E-3,2];
@@ -363,13 +364,13 @@ function generateGraphs(init)
 
     fg = figure();
     clf;
-    plot(as,alphas_l2(1,:),'color','r');
+    plot(as,alphas_l2(1,:),'o-','color','r');
     hold on;
     for j=2:11
-        plot(as,alphas_l2(j,:),'color',[0.5,0.5,0.5]);
+        plot(as,alphas_l2(j,:),'o-','color',[0.5,0.5,0.5]);
         hold on;
     end
-    plot(as,alphas_l2(12,:),'color','b');
+    plot(as,alphas_l2(12,:),'o-','color','b');
     xlim([-1.1,1.1]);
     grid on;
     ylim([1,3]);
@@ -382,13 +383,13 @@ function generateGraphs(init)
 
     fg = figure();
     clf;
-    plot(as,alphas_linf(1,:),'color','r');
+    plot(as,alphas_linf(1,:),'o-','color','r');
     hold on;
     for j=2:11
-        plot(as,alphas_linf(j,:),'color',[0.5,0.5,0.5]);
+        plot(as,alphas_linf(j,:),'o-','color',[0.5,0.5,0.5]);
         hold on;
     end
-    plot(as,alphas_linf(12,:),'color','b');
+    plot(as,alphas_linf(12,:),'o-','color','b');
     xlim([-1.1,1.1]);
     ylim([0,9]);
     grid on;
