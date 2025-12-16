@@ -127,9 +127,9 @@ function generateGraphs(init)
     plot(as,data);
     ylim([0,8]);
     xlim([-1.1,1.1]);
-    title('Under-resolved Times vs a','interpreter','latex','FontSize', 18);
-    xlabel("$a$",'interpreter','latex','FontSize', 14);
-    ylabel("Time",'interpreter','latex','FontSize', 14);
+    title('Under-resolved Times vs a','interpreter','latex','FontSize', 26);
+    xlabel("$a$",'interpreter','latex','FontSize', 20);
+    ylabel("Time",'interpreter','latex','FontSize', 20);
     grid on;
     filename = sprintf("%s/blowup_times.jpg",image_path);
     exportgraphics(fg,filename,'Resolution',600)
@@ -151,9 +151,9 @@ function generateGraphs(init)
         end
         plot(X,data(end,:),'Color','red');
         ylim([-3,3]);
-        title("$\omega$ vs $x$ - a="+num2str(round(a,1)),"Interpreter","latex",'FontSize', 18);
-        xlabel("$x$","Interpreter","latex",'FontSize', 14);
-        ylabel("$\omega$","Interpreter","latex",'FontSize', 14);
+        title("$\omega$ vs $x$ - a="+num2str(round(a,1)),"Interpreter","latex",'FontSize', 26);
+        xlabel("$x$","Interpreter","latex",'FontSize', 20);
+        ylabel("$\omega$","Interpreter","latex",'FontSize', 20);
         grid on;
         filename = sprintf("%sa%d/w_data_a%d_%s.jpg",image_path,index,index,num2str(round(a,1)));
         exportgraphics(fg,filename,'Resolution',600)
@@ -170,9 +170,9 @@ function generateGraphs(init)
         end
         plot(X,data(end,:),'Color','red');
         ylim([-3,3]);
-        title("$\omega_x$ vs $x$ - a="+num2str(round(a,1)),"Interpreter","latex",'FontSize', 18);
-        xlabel("$x$","Interpreter","latex",'FontSize', 14);
-        ylabel("$\omega_x$","Interpreter","latex",'FontSize', 14);
+        title("$\omega_x$ vs $x$ - a="+num2str(round(a,1)),"Interpreter","latex",'FontSize', 26);
+        xlabel("$x$","Interpreter","latex",'FontSize', 20);
+        ylabel("$\omega_x$","Interpreter","latex",'FontSize', 20);
         grid on;
         filename = sprintf("%sa%d/wx_data_a%d_%s.jpg",image_path,index,index,num2str(round(a,1)));
         exportgraphics(fg,filename,'Resolution',600)
@@ -189,9 +189,9 @@ function generateGraphs(init)
         end
         plot(X,data(end,:),'Color','red');
         %ylim([-3,3]);
-        title("$u$ vs $x$ - a="+num2str(round(a,1)),"Interpreter","latex",'FontSize', 18);
-        xlabel("$x$","Interpreter","latex",'FontSize', 14);
-        ylabel("$u$","Interpreter","latex",'FontSize', 14);
+        title("$u$ vs $x$ - a="+num2str(round(a,1)),"Interpreter","latex",'FontSize', 26);
+        xlabel("$x$","Interpreter","latex",'FontSize', 20);
+        ylabel("$u$","Interpreter","latex",'FontSize', 20);
         grid on;
         filename = sprintf("%sa%d/u_data_a%d_%s.jpg",image_path,index,index,num2str(round(a,1)));
         exportgraphics(fg,filename,'Resolution',600)
@@ -208,9 +208,9 @@ function generateGraphs(init)
         end
         plot(X,data(end,:),'Color','red');
         ylim([-3,3]);
-        title("$u_x$ vs $x$ - a="+num2str(round(a,1)),"Interpreter","latex",'FontSize', 18);
-        xlabel("$x$","Interpreter","latex",'FontSize', 14);
-        ylabel("$u_x$","Interpreter","latex",'FontSize', 14);
+        title("$u_x$ vs $x$ - a="+num2str(round(a,1)),"Interpreter","latex",'FontSize', 26);
+        xlabel("$x$","Interpreter","latex",'FontSize', 20);
+        ylabel("$u_x$","Interpreter","latex",'FontSize', 20);
         grid on;
         filename = sprintf("%sa%d/ux_data_a%d_%s.jpg",image_path,index,index,num2str(round(a,1)));
         exportgraphics(fg,filename,'Resolution',600)
@@ -226,9 +226,10 @@ function generateGraphs(init)
             semilogy(K(K>0),data(i,:),'Color',[0.5,0.5,0.5]);
         end
         semilogy(K(K>0),data(end,:),'Color','red');
-        title("$|\hat{\omega}_k|$ vs $k$ - a="+num2str(round(a,1)),"Interpreter","latex",'FontSize', 18);
-        xlabel("$k$","Interpreter","latex",'FontSize', 14);
-        ylabel("$|\hat{\omega}_k|$","Interpreter","latex",'FontSize', 14);
+        xlim([-1000,9000]);
+        title("$|\hat{\omega}_k|$ vs $k$ - a="+num2str(round(a,1)),"Interpreter","latex",'FontSize', 26);
+        xlabel("$k$","Interpreter","latex",'FontSize', 20);
+        ylabel("$|\hat{\omega}_k|$","Interpreter","latex",'FontSize', 20);
         grid on;
         filename = sprintf("%sa%d/spec_data_a%d_%s.jpg",image_path,index,index,num2str(round(a,1)));
         exportgraphics(fg,filename,'Resolution',600)
@@ -241,9 +242,9 @@ function generateGraphs(init)
         hold off;
         clf;
         plot(linspace(0,length(data(1,:))*DT,length(data(1,:))),data(1,:),'Color','b');
-        title("$\|\omega_x\|$ vs $t$ - a="+num2str(round(a,1)),"Interpreter","latex",'FontSize', 18);
-        xlabel("$t$","Interpreter","latex",'FontSize', 14);
-        ylabel("$\|\omega_x\|$","Interpreter","latex",'FontSize', 14);
+        title("$\|\omega_x\|$ vs $t$ - a="+num2str(round(a,1)),"Interpreter","latex",'FontSize', 26);
+        xlabel("$t$","Interpreter","latex",'FontSize', 20);
+        ylabel("$\|\omega_x\|$","Interpreter","latex",'FontSize', 20);
         grid on;
         filename = sprintf("%sa%d/l2_data_a%d_%s.jpg",image_path,index,index,num2str(round(a,1)));
         exportgraphics(fg,filename,'Resolution',600)
@@ -263,12 +264,12 @@ function generateGraphs(init)
             y = data_y;
             x = transpose(x);
             y = transpose(y);
-            s = 0.025; %1250
+            s = 1250;
             for j=1:12
-                x1 = x(end*(40-j)*s:min(end,end*(41-j)*s));
-                y1 = y(end*(40-j)*s:min(end,end*(41-j)*s));
-                %x1 = x(end-s*j:end-s*(j-1));
-                %y1 = y(end-s*j:end-s*(j-1));
+                %x1 = x(end*(40-j)*s:min(end,end*(41-j)*s));
+                %y1 = y(end*(40-j)*s:min(end,end*(41-j)*s));
+                x1 = x(end-s*j:end-s*(j-1));
+                y1 = y(end-s*j:end-s*(j-1));
 
                 ft = fittype('a*(x^b)','independent','x','dependent','y');
                 startPoints = [1E-3,2];
@@ -280,9 +281,11 @@ function generateGraphs(init)
             end
             
         end
-        title("$\frac{d}{dt}\|\omega_x\|$ vs $\|\omega_x\|$ - a="+num2str(round(a,1)),"Interpreter","latex",'FontSize', 18);
-        xlabel("$\|\omega_x\|$","Interpreter","latex",'FontSize', 14);
-        ylabel("$\frac{d}{dt}\|\omega_x\|$","Interpreter","latex",'FontSize', 14);
+        xlim padded;
+        ylim padded;
+        title("$\frac{d}{dt}\|\omega_x\|$ vs $\|\omega_x\|$ - a="+num2str(round(a,1)),"Interpreter","latex",'FontSize', 26);
+        xlabel("$\|\omega_x\|$","Interpreter","latex",'FontSize', 20);
+        ylabel("$\frac{d}{dt}\|\omega_x\|$","Interpreter","latex",'FontSize', 20);
         grid on;
         filename = sprintf("%sa%d/l2_dgdt_data_a%d_%s.jpg",image_path,index,index,num2str(round(a,1)));
         exportgraphics(fg,filename,'Resolution',600)
@@ -294,9 +297,9 @@ function generateGraphs(init)
         fg = figure();
         clf;
         plot(linspace(0,length(data_y(1,:))*DT,length(data_y(1,:))),data_y);
-        title("$\|u_x\|_\infty$ vs $t$ - a="+num2str(round(a,1)),"Interpreter","latex",'FontSize', 18);
-        xlabel("$t$","Interpreter","latex",'FontSize', 14);
-        ylabel("$\|u_x\|_\infty$","Interpreter","latex",'FontSize', 14);
+        title("$\|u_x\|_\infty$ vs $t$ - a="+num2str(round(a,1)),"Interpreter","latex",'FontSize', 26);
+        xlabel("$t$","Interpreter","latex",'FontSize', 20);
+        ylabel("$\|u_x\|_\infty$","Interpreter","latex",'FontSize', 20);
         grid on;
         filename = sprintf("%sa%d/linf_data_a%d_%s.jpg",image_path,index,index,num2str(round(a,1)));
         exportgraphics(fg,filename,'Resolution',600)
@@ -305,9 +308,9 @@ function generateGraphs(init)
         filename = sprintf("%sa%d/linf_x_data_a%d_%s.csv",data_path,index,index,num2str(round(a,1)));
         data = readmatrix(filename);
         loglog(linspace(0,length(data(1,:))*DT,length(data(1,:))),data,'Color','blue');
-        title("$\int_0^t \|u_x(\tau)\|_\infty d\tau$ vs $t$ - a="+num2str(round(a,1)),"Interpreter","latex",'FontSize', 18);
-        xlabel("$t$","Interpreter","latex",'FontSize', 14);
-        ylabel("$\int_0^t \|u_x(\tau)\|_\infty d\tau$","Interpreter","latex",'FontSize', 14);
+        title("$\int_0^t \|u_x(\tau)\|_\infty d\tau$ vs $t$ - a="+num2str(round(a,1)),"Interpreter","latex",'FontSize', 26);
+        xlabel("$t$","Interpreter","latex",'FontSize', 20);
+        ylabel("$\int_0^t \|u_x(\tau)\|_\infty d\tau$","Interpreter","latex",'FontSize', 20);
         grid on;
         filename = sprintf("%sa%d/linf_int_data_a%d_%s.jpg",image_path,index,index,num2str(round(a,1)));
         exportgraphics(fg,filename,'Resolution',600)
@@ -320,19 +323,20 @@ function generateGraphs(init)
         filename = sprintf("%sa%d/linf_y_data_a%d_%s.csv",data_path,index,index,num2str(round(a,1)));
         data_y = readmatrix(filename);
         loglog(data_x,data_y,'Color','blue');
-
+        ylim padded;
+        xlim padded;
         if index ~= 1
             hold on;
             x = data_x;
             y = data_y;
             x = transpose(x);
             y = transpose(y);
-            s = 0.025
+            s = 1250; %0.025
             for j=1:12
-                x1 = x(end*(40-j)*s:min(end,end*(41-j)*s));
-                y1 = y(end*(40-j)*s:min(end,end*(41-j)*s));
-                %x1 = x(end-s*j:end-s*(j-1));
-                %y1 = y(end-s*j:end-s*(j-1));
+                %x1 = x(end*(40-j)*s:min(end,end*(41-j)*s));
+                %y1 = y(end*(40-j)*s:min(end,end*(41-j)*s));
+                x1 = x(end-s*j:end-s*(j-1));
+                y1 = y(end-s*j:end-s*(j-1));
     
                 ft = fittype('a*(x^b)','independent','x','dependent','y');
                 startPoints = [1E-3,2];
@@ -344,9 +348,9 @@ function generateGraphs(init)
             end
             
         end
-        title("$\|u_x(\tau)\|_\infty$ vs $\int_0^t\|u_x(\tau)\|_{\infty} d\tau$ - a="+num2str(round(a,1)),"Interpreter","latex",'FontSize', 18);
-        xlabel("$\int_0^t\|u_x(\tau)\|_{\infty} d\tau$","Interpreter","latex",'FontSize', 14);
-        ylabel("$\|u_x\|_\infty$","Interpreter","latex",'FontSize', 14);
+        title("$\|u_x(\tau)\|_\infty$ vs $\int_0^t\|u_x(\tau)\|_{\infty} d\tau$ - a="+num2str(round(a,1)),"Interpreter","latex",'FontSize', 26);
+        xlabel("$\int_0^t\|u_x(\tau)\|_{\infty} d\tau$","Interpreter","latex",'FontSize', 20);
+        ylabel("$\|u_x\|_\infty$","Interpreter","latex",'FontSize', 20);
         grid on;
         filename = sprintf("%sa%d/linf_int_dgdt_data_a%d_%s.jpg",image_path,index,index,num2str(round(a,1)));
         exportgraphics(fg,filename,'Resolution',600)
@@ -370,9 +374,9 @@ function generateGraphs(init)
     grid on;
     ylim([1,3]);
     %legend('$\alpha_1$','$\alpha_2$','$\alpha_3$','interpreter','latex');
-    xlabel("a",'Interpreter','latex','FontSize', 14);
-    title("$\alpha$ vs $a$ - $\|\omega_x\|$",'Interpreter','latex','FontSize', 18);
-    ylabel("$\alpha$",'Interpreter','latex','FontSize', 14);
+    xlabel("a",'Interpreter','latex','FontSize', 20);
+    title("$\alpha$ vs $a$ - $\|\omega_x\|$",'Interpreter','latex','FontSize', 26);
+    ylabel("$\alpha$",'Interpreter','latex','FontSize', 20);
     filename = sprintf("%salpha_l2_vs_a.jpg",image_path);
     exportgraphics(fg,filename,'Resolution',600)
 
@@ -388,9 +392,9 @@ function generateGraphs(init)
     xlim([-1.1,1.1]);
     ylim([0,9]);
     grid on;
-    xlabel("a",'Interpreter','latex','FontSize', 14);
-    title("$\alpha$ vs $a$ - $\|u_x\|_{\infty}$",'Interpreter','latex','FontSize', 18);
-    ylabel("$\alpha$",'Interpreter','latex','FontSize', 14);
+    xlabel("a",'Interpreter','latex','FontSize', 20);
+    title("$\alpha$ vs $a$ - $\|u_x\|_{\infty}$",'Interpreter','latex','FontSize', 26);
+    ylabel("$\alpha$",'Interpreter','latex','FontSize', 20);
     filename = sprintf("%salpha_inf_vs_a.jpg",image_path);
     exportgraphics(fg,filename,'Resolution',600)
 end
