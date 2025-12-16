@@ -265,18 +265,18 @@ function generateGraphs(init)
             y = data_y;
             x = transpose(x);
             y = transpose(y);
-            s = 0.025;
+            s = 1250;
             for j=1:12
-                x1 = x(end*(40-j)*s:min(end,end*(41-j)*s));
-                y1 = y(end*(40-j)*s:min(end,end*(41-j)*s));
-                %x1 = x(end-s*j:end-s*(j-1));
-                %y1 = y(end-s*j:end-s*(j-1));
+                %x1 = x(end*(40-j)*s:min(end,end*(41-j)*s));
+                %y1 = y(end*(40-j)*s:min(end,end*(41-j)*s));
+                x1 = x(end-s*j:end-s*(j-1));
+                y1 = y(end-s*j:end-s*(j-1));
 
                 ft = fittype('a*(x^b)','independent','x','dependent','y');
                 startPoints = [1E-3,2];
                 %lower = [1E-10,0.1];
                 [f1,~] = fit(x1,y1,ft,'StartPoint',startPoints);
-                plot(x1,f1(x1));
+                plot(x1,f1(x1),'LineWidth',3);
                 hold on;
                 alphas_l2(j,index) = f1.b;
             end
@@ -332,18 +332,18 @@ function generateGraphs(init)
             y = data_y;
             x = transpose(x);
             y = transpose(y);
-            s = 0.025; %1250
+            s = 1250; %0.025
             for j=1:12
-                x1 = x(end*(40-j)*s:min(end,end*(41-j)*s));
-                y1 = y(end*(40-j)*s:min(end,end*(41-j)*s));
-                %x1 = x(end-s*j:end-s*(j-1));
-                %y1 = y(end-s*j:end-s*(j-1));
+                %x1 = x(end*(40-j)*s:min(end,end*(41-j)*s));
+                %y1 = y(end*(40-j)*s:min(end,end*(41-j)*s));
+                x1 = x(end-s*j:end-s*(j-1));
+                y1 = y(end-s*j:end-s*(j-1));
     
                 ft = fittype('a*(x^b)','independent','x','dependent','y');
                 startPoints = [1E-3,2];
                 %lower = [1E-10,0.1];
                 [f1,~] = fit(x1,y1,ft,'StartPoint',startPoints);
-                plot(x1,f1(x1));
+                plot(x1,f1(x1),'LineWidth',3);
                 hold on;
                 alphas_linf(j,index) = f1.b;
             end
