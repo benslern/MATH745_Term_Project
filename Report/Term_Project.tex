@@ -5,6 +5,8 @@
 \usepackage{color}
 \usepackage{graphicx}
 \usepackage{amsmath}
+\usepackage{caption}
+\usepackage{subcaption}
 \usepackage{amsthm}
 \usepackage{amssymb}
 \usepackage{amsfonts}
@@ -15,6 +17,7 @@
         basicstyle=\ttfamily,
         literate={~}{{\fontfamily{ptm}\selectfont \textasciitilde}}1
 }
+\usepackage[font=footnotesize,labelfont=bf]{caption}
 
 %\pagecolor[rgb]{0.2,0.2,0.2}
 %\color[rgb]{0.95,0.95,0.95}
@@ -80,7 +83,7 @@
    \begin{center}
        \vspace*{1cm}
 
-	    SINGULARITIES IN THE GENERALIZED CONSTANTIN–LAX–MAJDA EQUATION
+	    FINITE-TIME BLOW-UP OF THE GENERALIZED CONSTANTIN–LAX–MAJDA EQUATION
 	   
    \end{center}
 \end{titlepage}
@@ -90,7 +93,7 @@
    \begin{center}
        \vspace*{3.8cm}
 
-       ON A SEARCH FOR FINITE-TIME SINGULARITIES IN THE GENERALIZED CONSTANTIN–LAX–MAJDA EQUATION
+       ON A SEARCH FOR FINITE-TIME BLOW-UP OF THE GENERALIZED CONSTANTIN–LAX–MAJDA EQUATION
 
        \vspace{2.5cm}
 
@@ -105,7 +108,7 @@
             
        Computational Science \& Engineering\\
        McMaster University\\
-       ©Copyright by Noah Bensler, 17 December 2025.
+       ©Copyright by Noah Bensler, 20 December 2025.
             
    \end{center}
 \end{titlepage}
@@ -118,11 +121,11 @@
 
 \begin{flushleft}
 \begin{large}
-\textbf{Project Proposal - DONE DONE DONE DONE}
+\textbf{Project Proposal}
 \end{large}
 \end{flushleft}
 \noindent
-For my term project I will compute and analyse solutions of the Generalized Constantine-Lax-Majda equation. The Constantine-Lax-Majda (CLM) equation was proposed as a one-dimensional model for the three-dimensional vorticity equation and has the form\vspace{-12pt}
+For my term project, I will compute and analyse solutions of the Generalized Constantine-Lax-Majda equation. The Constantine-Lax-Majda (CLM) equation was proposed as a one-dimensional model for the three-dimensional vorticity equation and has the form\vspace{-12pt}
 $$\wt - \ux\w = 0, \qquad \ux = H\w\vspace{-12pt}$$
 where $\w$ is the vorticity of the fluid and $u$ is the fluid velocity. For this analysis the equations will be examined on the periodic domain $x\in[-\pi,\pi]$. The Hilbert transform of the vorticity is defined as
 $$H\w(x,t) = \frac{1}{2\pi}\int_{-\pi}^{\pi} \w(y,t)\cot\lr\frac{x-y}{t}\rr \,dy,$$
@@ -141,11 +144,9 @@ The parameter $a$ determines the relative strength of the convection term. When 
 \end{large}
 \end{flushleft}
 \noindent
-The Constantine-Lax-Majda (CLM) equation was proposed as a one-dimensional model for the three-dimensional vorticity equation. The CLM equation was later expanded on by De Gregorio to include the convection term $u\wx$. The De Gregorio equation was generalized by Okamoto et al. to include the real parameter $a$ which determines the relative strength of the convection term. The result is the Generalized Constantin-Lax-Majda equation (GCLM). In this analysis we examine the affect the parameter $a\in[-1,1]$ has on the finite-time blow-up of the GCLM equation on the periodic domain $x\in[-\pi,\pi]$. 
+The Constantine-Lax-Majda (CLM) equation was proposed as a one-dimensional model for the three-dimensional vorticity equation. The CLM equation was later expanded on by De Gregorio to include the convection term $u\wx$. The De Gregorio equation was generalized by Okamoto et al. to include the real parameter $a$ which determines the relative strength of the convection term. The result is the Generalized Constantin-Lax-Majda equation (GCLM). In this analysis, we examine the affect the parameter $a\in[-1,1]$, with increments of $0.1$, has on the finite-time blow-up of numerical solutions to the GCLM equation on the periodic domain $x\in[-\pi,\pi]$. 
 \\~\\
-The analysis found RESULTS RESULTS RESULTS. CONCLUSION CONCLUSION CONCLUSION.
-\\~\\
-Nearly all values of $a$ resulted in blow-up or blow-up like behaviour. The results for most $a$ values are inconclusive as the resolution was insufficient to properly capture the singular behaviour. However, the results indicate that all values of $a<0.8$ would result in a finite-time singularity. The primary effect $a$ had was on how quickly the singularity formed. 
+The results of this analysis show that all values of $a\in[-1,0.8]$  resulted in the finite-time blow-up. In the case $a=1$ the solutions remain well-posed. The results for $a=0.9$ are inconclusive. This analysis also found that the time at which blow-up occurs can be approximated by an exponential function of $a$. However, due to a combination of numerical instability and insufficient resolution, we were unable to come to any definitive conclusions on the affect the parameter $a$ has on the rate of blow-up. 
 
 \pagebreak
 
@@ -159,7 +160,7 @@ Nearly all values of $a$ resulted in blow-up or blow-up like behaviour. The resu
 
 \pagenumbering{arabic}
 
-\section{Introduction - DONE DONE DONE DONE DONE DONE}
+\section{Introduction}
 
 The 3D Euler equations are a simplified form of the 3D Navier-Stokes equations which describe the flow of inviscid incompressible fluids. The 3D Euler equations are
 
@@ -190,7 +191,7 @@ where $u$ is the velocity, $p$ is the scalar pressure, and $u_0$ is the initial 
 \vspace{-10pt}
 
 \noindent
-where the velocity is now computed from the vorticity with the Biot-Savart formula 
+The velocity is now computed from the vorticity with the Biot-Savart formula 
 
 \vspace{-10pt}
 
@@ -201,7 +202,7 @@ u(x,t) = -\frac{1}{4\pi}\text{ P.V. }\int \frac{(x-y)}{|x-y|^3}\w(y,t)\,dy,
 \noindent
 where P.V. indicates the integral is solved using the Cauchy Principal Value due to the singularity at $x=y$. A central question in fluid dynamics is whether or not finite-time singularities can form in fluid flows with smooth initial conditions \cite{constantin_simple_1985}. As first demonstrated by Beale, Kato, and Majda, singularities can form if and only if the maximum vorticity of the flow becomes infinite \cite{beale_remarks_1984}. The vorticity equation allows for the direct modelling of the vorticity and so is a very useful tool for studying singularity formation in the Euler equations. One of the principal reasons the question of singularity formation remains unanswered is the complexity of the problem, which arises from the Euler equations being a system of non-linear non-local PDEs \cite{elgindi_effects_2017}. These combined factors motivated the development of simplified 1D vorticity models which still possess many of the properties of 3D flows while being analytically and computationally simpler.
 
-\subsection{The GCLM Equation DONE DONE DONE DONE DONE}
+\subsection{The GCLM Equation}
 
 The Constantin-Lax-Majda (CLM) model was the first 1D vorticity model for an inviscid incompressible fluid \cite{constantin_simple_1985}. The CLM equation is
 \begin{subequations}\label{eq:CLM}
@@ -230,7 +231,7 @@ The velocity is defined as
 \begin{equation}
 u(x,t) = \frac{1}{\pi}\text{ P.V. }\int_{-\infty}^{\infty}\frac{\Omega(y,t)}{(x-y)}\,dy = H(\Omega)(x,t),
 \end{equation}
-where $\Omega(x,t)$ is the same formula as the velocity of the CLM model (\ref{eq:CLM:Velocity}). The De Gregorio equation includes the stretching term $u_x\w$ and the convection term $u\wx$. De Gregorio proposed that, due to the convection term suppressing blow-up, (\ref{eq:De:Gregorio}) is globally well posed, although he was not able to prove it \cite{de_gregorio_partial_1996}. The De Gregorio equation was later expanded on by Okamoto et al. to the Generalized Constantin-Lax-Majda (GCLM) model \cite{okamoto_generalization_2008}. The GCLM equation adds the real parameter $a$ which controls the relative strength of the convection term to the stretching term. In their analysis Okamoto et al. examined the GCLM model on the periodic domain $x\in[-\pi,\pi]$. The GCLM equation is
+where $\Omega(x,t)$ is the same formula as the velocity of the CLM model (\ref{eq:CLM:Velocity}). The De Gregorio equation includes the non-linear stretching term $u_x\w$, and the non-linear convection term $u\wx$. The convection term acts to move energy from small wave-numbers to higher wave-numbers and by doing so may act against blow-up. De Gregorio proposed that (\ref{eq:De:Gregorio}) is globally well posed, although he was not able to prove it \cite{de_gregorio_partial_1996}. The De Gregorio equation was later expanded on by Okamoto et al. to the Generalized Constantin-Lax-Majda (GCLM) model \cite{okamoto_generalization_2008}. The GCLM equation adds the real parameter $a$ which controls the relative strength of the convection term to the stretching term. In their analysis Okamoto et al. examined the GCLM model on the periodic domain $x\in[-\pi,\pi]$. The GCLM equation is
 \begin{subequations}\label{eq:GCLM}
 \begin{align}
 \wt + au\wx - \ux\w &= 0, \qquad x\in[-\pi,\pi],\\
@@ -246,51 +247,140 @@ The velocity of the GCLM model is defined as
 \begin{equation}\label{eq:Velocity:GCLM}
 u(x,t) = \frac{1}{\pi}\text{ P.V. }\int_{-\pi}^{\pi}\w(y,t)\log\lv\sin\lr\frac{x-y}{2}\rr \rv \, dy.
 \end{equation}
-Okamoto et al. presented numerical evidence that the solution of (\ref{eq:GCLM}) exist globally when $a=1$, and proved the solution exists globally in the limit of $a\rightarrow\infty$ \cite{okamoto_generalization_2008}. 
+Okamoto et al. presented numerical evidence that the solution of (\ref{eq:GCLM}) exist globally when $a=1$, and proved the solution exists globally in the limit of $a\rightarrow\infty$ \cite{okamoto_generalization_2008}. When $a=1$, the GCLM model is equal to the De Gregorio equation, which has numerical evidence supporting the claim that it is globally well-posed. When $a=0$, the GCLM model is equal to the CLM model, which is known to form finite-time singularities. When $a<0$, the convection term no longer acts to suppress blow-up and instead contributes to it, and so blow-up is expected \cite{chen_singularity_2020}. 
+
+\subsection{Initial Conditions}
+
+Okamoto et al. noted that the solution of (\ref{eq:GCLM}) must satisfy
+\begin{equation}
+\frac{d}{dt}\int_{-\pi}^{\pi}\omega(t,x)\,dx = \int_{-\pi}^{\pi} (-au\omega_x + u_x\omega)\,dx = (a+1)\int_{-\pi}^{\pi}u_x\omega\,dx = (a+1)(H\omega,\omega),
+\end{equation}
+where  $(\cdot,\cdot)$ denotes the $L^2$ inner product. Therefore, the mean value of $\w(x,t)$ is independent of t. Based off of this, they use initial conditions in the following function spaces
+\begin{subequations}\label{eq:Function:Spaces}
+\begin{align}
+L^2(S^1)/\R &= \lb f \big| f\in L^2(-\pi,\pi), \int_{-\pi}^{\pi}f(x)\,dx = 0\rb,\\
+H^k(S^1)/\R &= \lb f \big| f=\sum_{n=1}^\infty(a_n\cos nx + b_n \sin nx),\sum_{n=1}^\infty (a_n^2 + b_n^2)n^{2k} < \infty \rb,
+\end{align}
+\end{subequations}
+where $k$ is a positive integer, $S^1$ denotes the unit circle in the plane, and $/\R$ implies that functions with zero mean are collected \cite{okamoto_generalization_2008}. The first initial condition they examined was
+\begin{equation}\label{eq:Init:1}
+w_{0}(x) = \sin(x)+0.1\sin(2x), \qquad x\in[-\pi, \pi], 
+\end{equation}
+which was computed numerically for the case $a=1$. We use this same initial condition as it allows us to verify our numerical methods by comparing our results for $a=1$ with those found in \cite{okamoto_generalization_2008}. The function (\ref{eq:Init:1}) has a very sparse Fourier spectrum, with only two non-zero modes. In order to gain a better understanding of the GCLM model, we must also investigate initial conditions with more complex behaviour. Therefore, we also consider the initial condition
+\begin{equation}\label{eq:Init:2}
+w_{0}(x) = e^{\sin(2x)} - e^{\cos(x)}, \qquad x\in[-\pi,\pi].
+\end{equation}
+The initial condition (\ref{eq:Init:2}) is analytic, periodic, and has a mean of zero. Therefore, it belongs to the (\ref{eq:Function:Spaces}) function spaces and can benefit from the pseudo-spectral methods used in this analysis.
+
+\subsection{Blow-up Criteria}
+In their analysis, Okamoto et al. prove the following Theorem, which is an analogue of the Beale–Kato–Majda theorem for the 3D Euler equations \cite{okamoto_generalization_2008}\cite{beale_remarks_1984}.
+
+\begin{thm}\label{thm:Theorem:3.2}
+Suppose that $\w_0\in H^1(S^1)/\R$, that the solution of (\ref{eq:GCLM}) exists in $[0,T)$ and that 
+$$\int_0^T \|H\w(x,t)\|_{\infty}\,dt < \infty.$$
+Then the solution exists in $0\leq t\leq T+\delta$ for some $\delta>0$.
+\end{thm}
+\noindent
+In (\ref{eq:GCLM}), the derivative of the velocity is given by $u_x = H\w(x,t)$. Therefore, the first diagnostic quantity we track over time is 
+\begin{equation}\label{eq:LINF}
+q_1(t) = \int_0^t \|u_x(x,\tau)\|_{\infty}\,d\tau
+\end{equation}
+where $\|\cdot\|_{\infty}$ is the $L^{\infty}$-norm. Based on Theorem 1.1, Okamoto et al. derive the criteria that blow-up does not occurs if $\|\wx\|$ remains bounded, where $\|\cdot\|$ is the $L^2$-norm. In addition, they provide numerical evidence that for $a=1$ and all $T>0$
+\begin{equation}
+\sup_{0\leq t\leq T}\|\wx(x,t)\| < \infty.
+\end{equation}
+Therefore, the second diagnostic quantity we track over time is
+\begin{equation}
+q_2(t) = \|\wx(x,t)\|.
+\end{equation}
+\noindent
+These diagnostic quantities can be used to determine whether or not blow-up occurs because if $q_1$ and $q_2$ remain bounded over $0\leq t\leq T$, then blow-up does not occur. In Remark 5.1, Okamoto et al. note that the quantity $q_2$ is bounded by an exponential function of $q_1$ \cite{okamoto_generalization_2008}. Therefore, $q_2$ could become very large very quickly even if blow-up does not occur. Because of this, determining blow-up by setting an arbitrary finite threshold to these quantities will not provide useful insight whether or not blow-up of the solutions occurs. Instead, we base our determination of blow-up off of the method used in \cite{zhao_systematic_2023}. We assume the evolution of our diagnostic quantities, during blow-up, is determined by the relation
+\begin{equation}\label{eq:Diagnostic:Relation}
+\frac{dq_i(t)}{dt} = C_i(t)q_i(t)^{\alpha_i(t)}, \qquad i=1,2.
+\end{equation}
+By plotting this function on a log-log graph, the rate of blow-up ($\alpha_i(t)$) is given by the slope of the plot. This slope does not necessarily remain constant. Therefore, the rate of blow-up is calculated over a window of time for each value of $a$. If $\alpha_i(t)>1$ and $C_i(t)>1$ for a sufficient period of time, then the solution will experience finite-time blow-up. This calculation is complicated by the fact that blow-up occurs at different times and has a different duration, for each value of $a$. Therefore, we must create a metric to evaluate the rate of blow-up over time without having to pick arbitrary windows for all 42 models examined in this report. Furthermore, to fully analyse the blow-up we compare and contrast the following two methods.
+\\
+The first method is to calculate the rate of blow-up by using uniform windows of time of size $t = 0.15$, which is at the end of the model and is divided into 12 equal blocks. The advantage of the block method is that the windows $\alpha_i(t)$ is calculated for are uniform for all values of $a$. The disadvantage is that these windows cover a large percentage of the blow-up for the some values of $a$ while covering a very small percentage for others. Figure 1 shows an example of the block method for two different values of $a$. 
+
+\begin{figure}[h!]
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=0.9\linewidth]{../Results/Final_Images_Block/Init_1/a3/l2_dgdt_data_a3_0.8.jpg}
+  \caption{$q_2$ block method for $a=0.8$}
+  \label{fig:sub1}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=0.9\linewidth]{../Results/Final_Images_Block/Init_1/a15/l2_dgdt_data_a15_-0.4.jpg}
+  \caption{$q_2$ block method for $a=-0.4$}
+  \label{fig:sub2}
+\end{subfigure}
+\caption{Block method for $q_2$ showing uniform windows in time for two values of $a$.}
+\label{fig:test}
+\end{figure}
+\vspace{-12pt}
+\noindent
+The two coloured sections in Figure 1 (a) and (b) correspond to the same length of time. Therefore, we can see that the blow-up phase of the model for $a=0.8$ lasts much longer than $a=-0.4$. Because of this, in (a) the block method only captures the very tail end of the blow-up, while in (b) it captures the middle to end of the blow-up. 
 \\~\\
-When $a=1$ the GCLM model equal to the De Gregorio equation, which both have evidence supporting the claim that they are globally well-posed. When $a=0$ the GCLM model is equal to the CLM model, which is known to form finite-time singularities. When $a<0$ the convection term no longer acts to suppress blow-up and instead actually contributes to it \cite{chen_singularity_2020}. This will cause the GCLM model to form finite-time singularities, as was proved in \cite{castro_infinite_2010}. 
+\noindent
+The second method uses windows that make up a uniform percentage of the run-time for each model. We use a value of the last $30\%$ of the runtime which is divided into 12 equal blocks. The advantage of the percentage method is that the windows more uniformly cover the blow-up evolution. This allows us to compare the overall evolution of $\alpha_i(t)$ for each $a$. The disadvantage is that the windows are not uniform in time. Figure 2 (a) and (b) show that the percentage method provides a different perspective, as it captures the early stage to end of blow-up for both models. However, the two color sections now capture different lengths of time. By comparing and contrasting these two methods we can come to a more complete understanding of the evolution of $\alpha_i(t)$.
 
-\subsection{Overview DONE DONE DONE DONE DONE DONE}
+\begin{figure}[h!]
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=0.90\linewidth]{../Results/Final_Images_Percentage/Init_1/a3/l2_dgdt_data_a3_0.8.jpg}
+  \caption{$q_2$ percentage method for $a=0.8$}
+  \label{fig:sub1}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=0.90\linewidth]{../Results/Final_Images_Percentage/Init_1/a15/l2_dgdt_data_a15_-0.4.jpg}
+  \caption{$q_2$ percentage method for $a=-0.4$}
+  \label{fig:sub2}
+\end{subfigure}
+\caption{Percentage method for $q_2$ showing uniform percentage windows for two values of $a$.}
+\label{fig:test}
+\end{figure}
 
-In this analysis we present numerical evidence for singularity formation in the solutions of the GCLM for all $a\in[-1,0.9]$, and the well-posedness of the solution in the case of $a=1$. In addition, we present numerical evidence that the rate at which blow-up occurs RESULTS RESULTS VS A. We base our numerical method on the pseudo-spectral method used in \cite{okamoto_generalization_2008} which is described in Section 2. In Section 3 we present the results along with possible interpretations. Finally we summarize the results of the analysis and present potential future work in Section 4. Section 5 contains the derivations of the nonstandard formulas used in this analysis.
+\subsection{Overview}
+
+In this analysis, we compute numerical solutions to the GCLM equation with initial conditions (\ref{eq:Init:1}) and (\ref{eq:Init:2}) for $a\in[-1,1]$ with increments of 0.1. We base our numerical method on the pseudo-spectral method used in \cite{okamoto_generalization_2008} which is described in Section 2. The solutions are analysed using the block and percentage methods described above. In Section 3, we present numerical evidence for the well-posedness of the solution in the case of $a=1$, and for singularity formation in the solutions of the GCLM for $a\in[-1,0.8]$. The results for $a=0.9$ are also analysed but remain inconclusive. Finally, we summarize our analysis, its results, and shortcomings, as well as present potential future work in Section 4. Section 5 contains the derivations of the non-standard formulas used in this analysis.
 
 \section{Numerical Methods}
 
-To model the GCLM equation numerically we must compute the values of the four components, $\w$, $\wx$, $u$, and $\ux$. Which are used to calculate the non-linear convection term $\ux\w$ and the non-linear stretching term $u\wx$. The methods for calculating the components, terms, and time stepping are described below.
+To model (\ref{eq:GCLM}) numerically, we rearrange it to the form
+\begin{equation}\label{eq:GCLM:Numerical}
+\wt = \ux\w - au\wx, \qquad x\in[-\pi,\pi].
+\end{equation}
+We compute the values of the four components, $\w$, $\wx$, $u$, and $\ux$ in Fourier space. These components are converted to physical space to calculate the non-linear convection term $\ux\w$ and the non-linear stretching term $u\wx$. We apply the 2/3 de-aliasing rule to the combination of the non-linear terms ($\ux\w - au\wx$). Time stepping is performed using the fourth-order Runge-Kutta method. As was done in \cite{okamoto_generalization_2008}, we also apply a spectral filter to reduce the growth of round-off errors. The complete methods for calculating these terms are described below. 
+\\~\\
+The evolution of the vorticity is computed for $a\in[-1,1]$ with increments of $0.1$. We use a maximum time-scale of $T=7$. However, most models are stopped early due to the vorticity becoming under-resolved or experiencing numerical instability. The models are computed with a resolution of $N=2^{14}$ and a time step size of $dt=1E-5$. 
 
 \subsection{Physical and Fourier Representation}
 
-The terms of (\ref{eq:GCLM}) are represented in physical space on a grid of $N = 2^{14}$ equispaced points on the domain $x\in[-\pi,\pi]$. Because the domain is periodic we must avoid double counting the grid point on the boundary. Therefore we set $x_0=-\pi$ and $x_N=\pi-h$, where $h$ is the distance between points. The solution $\w$ is represented in Fourier space using a truncated Fourier series
+The vorticity of (\ref{eq:GCLM:Numerical}) is represented in physical space on a grid of $N = 2^{14}$ equispaced points on the domain $x\in[-\pi,\pi]$. Because the domain is periodic, we must avoid double counting the grid point on the boundary. Therefore, we set $x_0=-\pi$ and $x_N=\pi-h$, where $h$ is the distance between points. The solution $\w$ is represented in Fourier space using a truncated Fourier series
 \begin{equation}\label{eq:Vorticity:Truncated:Fourier}
 w(x,t) = \sum_{k=-N/2}^{N/2 - 1}\wk(t)\exp(ikx).
 \end{equation}
-Transformation from physical to Fourier space, and vice versa, are performed using the standard Matlab fft and ifft functions respectively. 
-\\~\\
-We compute the terms $\wx$, $u$ and $\ux$ from $w$. Calculations of the derivative of the vorticity $\wx$ is performed in Fourier space using the standard formula
-\begin{equation}
+Transformation from physical to Fourier space, and vice versa, is performed using the standard Matlab 'fft' and 'ifft' functions respectively. Calculation of the derivative of the vorticity ($\wx$) is performed in Fourier space using the standard formula
+\begin{equation}\label{eq:Vorticity:Deriv}
 \wx(t) = \sum_{k=-N/2}^{N/2 - 1}(ik)\wk(t)\exp(ikx).
 \end{equation} 
 \noindent
-As shown in (ref EQUATION), the velocity can be computed from the vorticity in physical space. However, due to the singularity, this equation must be solved using the Cauchy Principle value, which is difficult to compute numerically. Therefore, we compute the value of $u$ in Fourier Space using the formula
+The derivative of the velocity ($\ux$) is calculated using the Hilbert Transform (\ref{eq:Hilbert:Transform:GCLM}). However, due to the singularity at $x=y$, this equation must be solved using the Cauchy Principle value, which is difficult to compute numerically. Therefore, the derivative of the velocity is calculated in Fourier space using the formula
+\begin{equation}\label{eq:Velocity:Deriv:Fourier}
+u_x(x,t) = -\sum_{k=-N/2}^{N/2 - 1}i \sgn(k)\wk(t)e^{ikx},
+\end{equation}
+where sgn is the sign function. The derivation of this formula from (\ref{eq:Hilbert:Transform:GCLM}) is shown in Section 5.1. As shown in (\ref{eq:Velocity:GCLM}), the velocity can be computed from the vorticity as an integral in physical space. This integral also requires the use of the Cauchy Principle Value. Therefore, we compute the value of $u$ in Fourier space using the formula
 \begin{equation}\label{eq:Velocity:Fourier}
 u(x,t) = -\sum_{k=-N/2,k\neq 0}^{N/2 - 1}\frac{\sgn(k)\wk(t)\exp(ikx)}{k}.
 \end{equation}
-The derivation of this equation from (ref EQUATION) is shown in Section 5.2. The derivative of the velocity is calculated using the Hilbert Transform
-\begin{equation}\label{eq:Hilbert:Transform}
-H\omega(x,t) = \frac{1}{2\pi}\text{ P.V }\int_{-\pi}^{\pi} \omega(y,t)\cot\left(\frac{x-y}{2}\right) \,dy,
-\end{equation}
-with P.V. indicating the integral must be evaluated using the Cauchy Principle Value (CPV) due to the singularity at $x=y$.
- To calculate the derivative of the velocity in physical space would again require the CPV and so is calculated in Fourier space using the formula
-\begin{equation}\label{eq:Velocity:Deriv:Fourier}
-u_x(x,t) = -\sum_{k=-N/2}^{N/2 - 1}i \sgn(k)\wk(t)e^{ikx}.
-\end{equation}
-The derivation of this formula from (ref EQUATION) is shown in section 5.1. 
-
-For REASON we compute the stretching and convection terms in physical space. To avoid errors due to aliasing we apply the $2/3$ dealiasing rule to the terms. Additionally, as in \cite{okamoto_generalization_2008}, we apply a filter to prevent small values at each time step.
+The derivation of this formula from (\ref{eq:Velocity:GCLM}) is shown in Section 5.2. We now have the four components needed to calculate the convection and stretching terms, with each component in Fourier space. Since we apply the 2/3 de-aliasing to the combined convection and stretching terms, we first apply zero-padding to each of the four terms then transform back to physical space. Once in physical space, we calculate the right hand side of (\ref{eq:GCLM:Numerical}) ($u_x\w - au\wx$). We convert the result back to Fourier space and and apply the 2/3 rule to prevent aliasing. While still in Fourier space, we apply a spectral filter by setting all Fourier modes below the threshold $1E-12$ to zero. Finally, we convert back to physical space.
 
 \subsection{Time Stepping}
 
-When modelling time dependent PDEs it is best practice to use explicit time stepping methods for non-linear terms in order to reduce computation cost, and use implicit methods for linear term to improve stability \cite{protas_spectral_2025}. As described in prior sections, both the convection term and stretching term of the GCLM are non-linear. Therefore, we perform time stepping using the explicit fourth-order Runge-Kutta (RK4) method. The RK4 time stepping is performed with the formula
+When modelling time dependent PDEs, it is best practice to use explicit time stepping methods for non-linear terms in order to reduce computation cost, and use implicit methods for linear term to improve stability \cite{protas_spectral_2025}. Both the convection term and stretching term of (\ref{eq:GCLM:Numerical}) are non-linear. Therefore, we perform time stepping using the explicit fourth-order Runge-Kutta (RK4) method. The RK4 time stepping is performed with the formula
 \begin{equation}\label{eq:RK4}
 \omega^{(n+1)} = \omega^{(n)} + \frac{1}{6}(k_1 + 2k_2 + 2k_3 + k_4)
 \end{equation}
@@ -303,44 +393,267 @@ k_3 &= F(\omega^{(n)}+ dt \cdot k_2/2,t^{(n)}+ dt/2)  \\
 k_4 &= F(\omega^{(n)}+ dt \cdot k_3,t^{(n)}+dt) 
 \end{align}
 \end{subequations}
-where $dt = 1E-4$ is the time step size. The function $F$ in the above equations is given by
+where the function $F$ is given by
 \begin{equation}\label{eq:RHS}
-f(\omega^{(n)},t^{(n)}) = \ux\omega - au\wx
+F(\omega^{(n)},t^{(n)}) = \ux\omega - au\wx,
 \end{equation}
-using the components described in Section 2.1.
-
-\subsection{Initial Conditions}
-
-Okamoto et al. (2008) showed that any solution that satisfies (GCLM ref) must also satisfy
-\begin{equation}
-\frac{d}{dt}\int_{-\pi}^{\pi}\omega(t,x)\,dx = \int_{-\pi}^{\pi} (-au\omega_x + u_x\omega)\,dx = (a+1)\int_{-\pi}^{\pi}u_x\omega\,dx = (a+1)(H\omega,\omega),
-\end{equation}
-where  $(\cdot,\cdot)$ denotes the $L^2$ inner product (Okamoto et al., 2008). Therefore, we may assume without loss of generality that the initial condition satisfies
-$$\int_{-\pi}^{\pi} \omega(0,x)\,dx = 0,$$
-which is also a necessary assumption of (ref VELOCITY EQUATION). 
-
-\subsection{Blow-up Criteria}
-Okamoto et al. (2008) prove Theorem 3.1 and Theorem 3.2.
-
-\begin{thm}\label{thm:Theorem:3.1}
-Let $a\in\R$ be given. For all $\omega_0\in H^1(S^1)/\R$, there exists a $T>0$ depending only on $a$ and $\|\omega_{0,x}\|$ such that there exists a unique solution $\omega\in C^0([0,T];H^1(S^1)/\R) \cap C^1([0,T];L^2(S^1)/\R)$ of (GCLM ref) with $\omega(0,x)=w_0$.
-\end{thm}
+and so is calculated using the method described in Section 2.1.
 
 \subsection{Complete Numerical Method}
 
-
-Combining the methods described above, we use the following procedure
+Combining the methods described above, we use the following procedure for each time step
 
 \begin{enumerate}
-  \item Convert $\omega^(n)$ from Physical space to Fourier space using FFT.
-  \item Calculate $u_x$ 
+  \item Convert $\omega^{(n)}$ from Physical space to Fourier space using FFT.
+  \item Calculate $\wx$, $ux$, and $u$ in Fourier space using (\ref{eq:Vorticity:Deriv}), (\ref{eq:Velocity:Deriv:Fourier}), and (\ref{eq:Velocity:Fourier}).
+  \item Apply zero-padding and convert back to physical space.
+  \item Calculate $u_x\w - au\wx$ in physical space.
+  \item Convert back to Fourier space and apply 2/3 de-aliasing and the filter.
+  \item Convert back to physical space.
+  \item Repeat 1 - 6 for each of the $k_i$ terms in the RK4 method.
+  \item Calculate $\w^{(n+1)}$ using (\ref{eq:RK4}).
 \end{enumerate}
+\noindent
+This process is repeated until either the model reaches the maximum time of $T=7$, the model becomes under-resolved, or the model experiences numerical instability. To detect under-resolution and numerical instability, we check if the average value of the 100 largest Fourier modes in the vorticity are larger than a threshold value of 1E-10. If the average is above this threshold, the model is stopped. The plots in Figure 3 show examples of models that were stopped at the resolution limit (a) and due to numerical instability (b). The under-resolution and numerical instability were stopped early enough in all cases and so, even if the last step is inaccurate, the overall trend is still accurate and provide meaningful results. Additionally, we can consider the times the models were stopped to be close enough to the time at which blow-up occurs that we can still draw meaningful conclusions. This assertion will be supported with numerical evidence in Section 3.2.
+\begin{figure}[h!]
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=0.95\linewidth]{../Results/Images/Init_1/a12/spec_data_a12_-0.1.jpg}
+  \caption{Resolution Limit}
+  \label{fig:sub1}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=0.95\linewidth]{../Results/Images/Init_2/a7/spec_data_a7_0.4.jpg}
+  \caption{Numerical Instability}
+  \label{fig:sub2}
+\end{subfigure}
+\caption{Two models stopped before reaching the time limit. (a) The model reaches the resolution limit. (b) The model is stopped by numerical instability.}
+\label{fig:test}
+\end{figure}
+\noindent
+
+
+\subsection{Diagnostic Quantities}
+
+The $L^\infty$-norm and $L^2$-norm used for $q_1$ and $q_2$ are calculated using the Matlab 'norm' function. The integral in $q_1$ is calculated using the Matlab 'trapz' function, which uses the trapezoidal method to approximate the integral of a vector over a given domain with uniform spacing. For $q_1$ the derivative is 
+\begin{equation}
+\frac{dq_1}{dt} = \frac{d}{dt}\int_0^t \|\ux(x,\tau)\|_{\infty} d\tau = \|\ux(x,t)\|_{\infty},
+\end{equation}
+\noindent
+and so the log-log plots of $dq_1/dt$ vs $q_1$ is simplified to $\|\ux(x,t)\|_{\infty}$ vs $q_1$. The derivative of $q_2$ is simply the derivative of the $L^2$-norm over time, which is calculated using the forward difference method. To calculate the values of $\alpha_i(t)$, we perform fitting with the Matlab 'fit' function from the Curve Fitting Toolbox, which fits a function of the form $a*x^b$ to the selected data segments from the block and percentage methods described in Section 1.3.
 
 \section{Results}
-these are the results
+
+\subsection{Results of $\boldsymbol a$ = 1}
+
+First, we present the results for $a=1$. The plots in Figure 4 show the evolution of the vorticity for the two initial conditions. The initial condition is drawn in blue, the intermediate steps are draw in grey at time intervals of 1, and the end state is drawn in red. Note that in cases where the model remains well resolved and does not experience numerical instability, the final state is at $T=7$. However, when the model is stopped early, the final state is at any value in $0 < t < 7$ and so the final interval is generally not equal to 1 unit of time. 
+
+\begin{figure}[h!]
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=0.95\linewidth]{../Results/Images/Init_1/a1/w_data_a1_1.jpg}
+  \caption{Vorticity evolution of Initial Condition (\ref{eq:Init:1})}
+  \label{fig:sub1}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=0.95\linewidth]{../Results/Images/Init_2/a1/w_data_a1_1.jpg}
+  \caption{Vorticity evolution of Initial Condition (\ref{eq:Init:2})}
+  \label{fig:sub2}
+\end{subfigure}
+\caption{Evolution of the vorticity for $a=1$}
+\label{fig:test}
+\end{figure}
+\noindent
+The plot in Figure 4(a) show that the vorticity gradually decreases over time, which reproduces the results of Figure 4(a) in \cite{okamoto_generalization_2008}. The solution of (\ref{eq:Init:1}) remains well resolved for the full time-scale, as is shown in Figure 5(a). However, the solution of (\ref{eq:Init:2}) becomes under-resolved at $t=2.6934$, which is shown in Figure 5(b). 
+\\~\\
+
+\begin{figure}[h!]
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=0.95\linewidth]{../Results/Images/Init_1/a1/spec_data_a1_1.jpg}
+  \caption{Initial Condition 1}
+  \label{fig:sub1}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=0.95\linewidth]{../Results/Images/Init_2/a1/spec_data_a1_1.jpg}
+  \caption{Initial Condition 2}
+  \label{fig:sub2}
+\end{subfigure}
+\caption{Evolution of the vorticity Fourier spectrum. Initial condition drawn in blue, intermediate steps draw in grey, end state drawn in red.}
+\label{fig:test}
+\end{figure}
+\noindent
+We now must determine whether or not the solutions experience finite-time blow-up by plotting the diagnostic quantities discussed in Section 1.3. Figure 6 shows the log-log plots of $dq_1/dt$ vs $q_1$ for $a=1$. Due to the very small range, the y-axis appears linear but is log-scale. 
+
+\begin{figure}[h!]
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=0.95\linewidth]{../Results/Images/Init_1/a1/linf_int_dgdt_data_a1_1.jpg}
+  \caption{Initial Condition 1}
+  \label{fig:sub1}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=0.95\linewidth]{../Results/Images/Init_2/a1/linf_int_dgdt_data_a1_1.jpg}
+  \caption{Initial Condition 2}
+  \label{fig:sub2}
+\end{subfigure}
+\caption{Evolution of the diagnostic criteria $q_1$.}
+\label{fig:test}
+\end{figure}
+\noindent
+Figure 6(a) shows the evolution of $q_1$ for initial condition (\ref{eq:Init:1}). In this case, $dq_1/dt$ decreases as $q_1$ increases. Based on this result, we can conclude (\ref{eq:Init:1}) remains globally well-posed. For initial condition (\ref{eq:Init:2}), Figure 6(b) shows that $dq_1/dt$ increases as $q_1$ increases. However, the increase is extremely small and takes a significant increase in $q_1$ on the x-axis. This would indicate that $\alpha_1(t)$ is positive but much less than 1. Additionally, the slope of the plot is decreasing at the end, which would indicate that $\alpha_1(t) << 1$ and is decreasing over time. Therefore, the results for the evolution of $q_1$ indicate that the solution for (\ref{eq:Init:2}) remains globally well-posed in the case of $a=1$. Figure 7 shows the log-log plots of the evolution of $q_2$. For this plot, the x-axis appears linear due to the small scale of the change.
+
+\begin{figure}[h!]
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=0.95\linewidth]{../Results/Images/Init_1/a1/l2_dgdt_data_a1_1.jpg}
+  \caption{Initial Condition 1}
+  \label{fig:sub1}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=0.95\linewidth]{../Results/Images/Init_2/a1/l2_dgdt_data_a1_1.jpg}
+  \caption{Initial Condition 2}
+  \label{fig:sub2}
+\end{subfigure}
+\caption{Evolution of the diagnostic criteria 2.}
+\label{fig:test}
+\end{figure}
+\noindent
+Figure 7(a) shows the evolution of $q_2$ for (\ref{eq:Init:1}). In this case $dq_2/dt$ also decreases as $q_2$ increases, and so the solution remains well-posed. For the initial condition (\ref{eq:Init:2}), Figure 7(b) shows a large dip which occurs due to the derivative of $q_2$ becomes negative and then returns to a positive value. The overall trend of the plot shows that $dq_2/dt$ decreases as $q_2$ increases. Therefore, the results for the evolution of $q_2$ indicate that the solutions remain globally well-posed in the case of $a=1$. Combining these with the prior results, the diagnostic quantities indicate that the solutions of the GCLM equation are globally well-posed for $a=1$.
+
+\subsection{Results of $\boldsymbol{ a \in[-1,0.8]}$}
+
+We now examine the results for $a\in[-1,0.8]$. Before we can examine the results for the rate of blow-up, we must first examine how the time at which blow-up occurs varies with $a$. Figure 8 shows the time at which the models are stopped. For Figure 8(a), the solution for $a=0.8$ remains well-resolved until the full time-scale $T$ and so is excluded as T is an arbitrary value.
+
+\begin{figure}[h!]
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=0.95\linewidth]{../Results/Final_Images_Block/Init_1/blowup_times.jpg}
+  \caption{Initial Condition 1}
+  \label{fig:sub1}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=0.95\linewidth]{../Results/Final_Images_Block/Init_2/blowup_times.jpg}
+  \caption{Initial Condition 2}
+  \label{fig:sub2}
+\end{subfigure}
+\caption{Time the model becomes under-resolved vs the parameter $a$.}
+\label{fig:test}
+\end{figure}
+\noindent
+For Figure (a), the line of best fit is the shifted exponential function 
+\begin{equation}
+f(a) = 0.8164*8.808^{a} + 1.324.
+\end{equation}
+For Figure (b), the line of best fit is given by
+\begin{equation}
+f(a) = 0.2879*8.384^a + 0.5819.
+\end{equation}
+While the models with initial condition (\ref{eq:Init:2}) are stopped much earlier than (\ref{eq:Init:1}), the shapes of the plots are very similar. The blow-up times of both initial conditions follow an exponential curve and begin to reach the time limit T for large positive values of $a$. This is consistent with the expected behaviour. As the relative strength of the convection term diminishes to zero, blow-up occurs earlier. At $a=0$, blow-up is driven entirely by the vortex stretching term. Once $a$ becomes negative, convection acts with the stretching term to cause blow-up and so the time at which blow-up occurs decreases even further. Both plots can be approximated by exponential functions, but the best fits have significantly different parameters. To determine if this exponential behaviour is a consistent property of the GLCM equation requires further analysis with a wider range of initial conditions.
+\\~\\
+We now present numerical evidence to support the claim of finite-time blow-up for $a\in[-1,0.8]$. Figure 9 shows the evolution of $\alpha_1(t)$ as a function of $a$, for the $q_1$ diagnostic quantity, using the percentage metric. As before, the data starts at the line drawn in blue, the intermediate steps are drawn in grey, and the final step is drawn in red. However, for these plots, blue does not correspond to the initial condition but to the beginning of the blow-up time window discussed in Section 1.3. The final line shows a large spike away from the general trend. This is due to the previously discussed numerical instability causing the calculation of $\alpha_1(t)$ to be inaccurate at the final block. Therefore, this final line should be disregarded.
+
+\begin{figure}[h!]
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=0.95\linewidth]{../Results/Final_Images_Percentage/Init_1/alpha_inf_vs_a.jpg}
+  \caption{Initial Condition 1}
+  \label{fig:sub1}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=0.95\linewidth]{../Results/Final_Images_Percentage/Init_2/alpha_inf_vs_a.jpg}
+  \caption{Initial Condition 2}
+  \label{fig:sub2}
+\end{subfigure}
+\caption{Evolution of $\alpha$ vs $a$ over time for diagnostic criteria $q_1$, using the percentage metric.}
+\label{fig:test}
+\end{figure}
+\noindent
+Figure 9 (a) and (b) show very similar trends. At the beginning of blow-up, $\alpha_1(t)$ is slightly above 1. As time progresses, the rate of blow-up not only increases, but even accelerates over time as the spacing between intermediate steps increases over time. This result is strong numerical evidence for finite-time blow-up as $\alpha_1(t)>1$ for a significant period of time. Another trend shown in Figure 8 is that alpha is largest for the small positive values of $a$ and decreases as $a\rightarrow -1$. This contradicts the expected behaviour as we would expect the rate of blow-up to increase as the relative strength of the convection term decreases and increase even further as $a$ becomes negative and convection contributes to blow-up. One possible explanation is the fact that the models are stopped earlier into their blow-up when that blow-up occurs faster. This is shown back in Figure 1. The blow-up phase of the model for $a=0.8$ lasts much longer than for $a=-0.4$. This trend holds true for all values of $a$. Simply put, the longer the blow-up phase lasts the larger $\alpha_1(t)$ becomes. As $a$ diminishes, the blow-up phase is stopped earlier and earlier. Therefore, the rate of blow-up decreasing as $a$ decreases may simply be an artifact of these two factors and not a genuine trend. The results of the block method are shown in Figure 10.
+
+\begin{figure}[h!]
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=0.95\linewidth]{../Results/Final_Images_Block/Init_1/alpha_inf_vs_a.jpg}
+  \caption{Initial Condition 1}
+  \label{fig:sub1}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=0.95\linewidth]{../Results/Final_Images_Block/Init_2/alpha_inf_vs_a.jpg}
+  \caption{Initial Condition 2}
+  \label{fig:sub2}
+\end{subfigure}
+\caption{Evolution of $\alpha$ vs $a$ over time for diagnostic criteria $q_1$, using the block metric. Initial condition drawn in blue, intermediate steps draw in grey, end state drawn in red.}
+\label{fig:test}
+\end{figure}
+\noindent
+As can be seen, the trend of decreasing rate of blow-up is even more apparent in the block method results. This is expected if the trend is an artifact of the models being cut short. The block method measures the rate of blow-up over uniform windows of time at the end of blow-up. Crucially, this would mean that the blue plot for the block should be much larger for longer lasting models as the block method only measures $\alpha_1(t)$ at the very end of these models and so the trend should be magnified in the block method results. To draw definitive conclusions requires further analysis at higher resolutions. This would allow the blow-up phase of the negative $a$ models to last longer and so would allow us to determine if this trend is genuine or simply a product of limited resolution and numerical instability. While the question of the rate of blow-up remains unanswered, all the results for $q_1$ show that $\alpha_1(t)>1$ for all $a\in[-1,0.8]$ and that $\alpha_1(t)$ increases over time. Therefore, these results do strongly indicate finite-time blow-up for all $a\in[-1,0.8]$. 
+
+\begin{figure}[h!]
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=0.95\linewidth]{../Results/Final_Images_Percentage/Init_1/alpha_l2_vs_a.jpg}
+  \caption{Initial Condition 1}
+  \label{fig:sub1}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=0.95\linewidth]{../Results/Final_Images_Percentage/Init_2/alpha_l2_vs_a.jpg}
+  \caption{Initial Condition 2}
+  \label{fig:sub2}
+\end{subfigure}
+\caption{Evolution of $\alpha$ vs $a$ over time for diagnostic criteria $q_2$, using the percentage metric.}
+\label{fig:test}
+\end{figure}
+\noindent
+We now examine the percentage results for $q_2$, shown in Figure 11. Figure 11 shows the evolution of $\alpha_2(t)$ using the percentage metric. These plots show that for all values of $a$, the rate of blow-up decreases over time. This would seem to contradict the results for $q_1$ and suggest that blow-up will not occur as $\alpha_2(t)$ may drop below 1 over time. However, we believe this is not the case for two reasons. First is the fact that this quantity is based upon the $L^2$-norm. The $L^2$-norm is weighted towards the smaller wave-number. Because the convection term acts to move energy from the small wave-numbers to the large wave-numbers, this transfer of energy to larger wave-numbers could cause the rate of blow-up based on the $L^2$-norm to decrease even when blow-up does occur. In addition to this, while the rate of blow-up is decreasing over time, it is still greater than 1 for all cases. These two factors indicate that the results for $q_2$ support the claim that blow-up occurs for all values of $a\in[-1,0.8]$. The results of Figure 11 show the same general trend of $\alpha_2(t)$ decreasing as $a\rightarrow -1$. This trend is also likely an artifact of the numerical instability and insufficient resolution. Finally, we present the results for the block method for $q_2$.
+
+\begin{figure}[h!]
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=0.95\linewidth]{../Results/Final_Images_Block/Init_1/alpha_l2_vs_a.jpg}
+  \caption{Initial Condition 1}
+  \label{fig:sub1}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=0.95\linewidth]{../Results/Final_Images_Block/Init_2/alpha_l2_vs_a.jpg}
+  \caption{Initial Condition 2}
+  \label{fig:sub2}
+\end{subfigure}
+\caption{Evolution of $\alpha$ vs $a$ over time for diagnostic criteria $q_2$, using the block metric. }
+\label{fig:test}
+\end{figure}
+\noindent
+Figure 12 shows the evolution of $\alpha_2(t)$ using the block metric. These plots show that for the positive values of $a$, the rate of blow-up barely changes at all. This corroborates the conclusions from Figure 11. The rate of blow-up for $q_2$ does decrease over time. However, it eventually plateaus. Therefore, despite slowing down, the rate of blow-up is still greater than 1 for all cases. Therefore, the results of the $q_2$ diagnostic criteria indicate that blow-up occurs for all values of $a\in[-1,0.8]$.
+
+\subsection{Results of $\boldsymbol a$ = 0.9}
+
+Finally, we examine the case of $a=0.9$. In this case, the diagnostic quantities produce contradictory results. The rate of blow-up in Figure 9 for $a=0.9$ is below 1. The rate of blow-up in Figure 10 (a) shows that $\alpha_1(t)$ stays below 1 for the entire evolution and the plot in Figure 10 (b) show it is very slightly above 1. Overall, this would indicate that blow-up does not occur. However, Figures 11 and 12 show that for $a=0.9$, $\alpha_2(t)>1$ for the entire time window. This would indicate that blow-up does occur. This contradictory result may be due to the convection term being sufficiently large to initially suppress blow-up, but insufficient to stop blow-up in the longer term. If this is correct, then blow-up will occur, but at a time $t>T$. Alternatively, it may be that the stretching term initially dominates but in the long term is suppressed by the convection and so the solution remains globally well-posed. Unfortunately, the time-scale used in this analysis is insufficient to come to any definite conclusion on whether or not finite-time singularities can form in the GCLM equation for $a=0.9$.
 
 \section{Conclusion}
-this is the conclusion
+
+The results of this analysis show that for $a=1$, the solutions of the GCLM equation are globally well-posed. For $a\in[-1,0.8]$, the rate of blow-up for the diagnostic quantity $q_1$ starts larger than 1 in all cases and accelerates over time. The rate of blow-up for $q_2$ also starts over 1 and stays over 1, but does decelerate and plateau over time. Therefore, these results demonstrate very strong numerical evidence for the formation of finite-time singularities in the solutions of the GCLM equation for $a\in[-1,0.8]$. The results show that blow-up occurs earlier as $a$ decreases and follows an exponential curve. In the case of $a=0.9$, the results are inconclusive. The diagnostic quantities used to determine blow-up produce contradictory results, with the $q_2$ indicating blow-up will occur and $q_1$ indicating blow-up will not occur. 
+\\~\\
+Based on the results of this analysis, we believe addition investigation is worth pursuing. In particular, repeating this analysis with increased resolution and a greater diversity of initial conditions. 
 
 \section{Appendix}
 \subsection{Derivation of Hilbert Transform in Fourier space}
@@ -372,7 +685,7 @@ $$u(t,x) = \frac{1}{\pi}\int_{-\pi}^{\pi} \sum_{k=-N/2}^{N/2 - 1}\wk(t)\exp(iky)
 We can swap the integral and sum to obtain
 $$u(t,x) = \frac{1}{\pi} \sum_{k=-N/2}^{N/2 - 1}\wk(t) \int_{-\pi}^{\pi}\exp(iky)\log\left| \sin\left(\frac{x-y}{2}\right) \right|\,dy.$$
 The integral has a singularity at $x=y$ and so must be evaluated using the Cauchy Principle Value. The Cauchy Principle values of this equation is
-$$u(t,x) = -4\ln(2)w_0(t) - \sum_{k=-N/2,k\neq 0}^{N/2 - 1}\frac{\sgn(k)\wk(t) \exp(ikx)}{k}$$
+$$u(t,x) = -4\ln(2)w_0(t) - \sum_{k=-N/2,k\neq 0}^{N/2 - 1}\frac{\sgn(k)\wk(t) \exp(ikx)}{k}.$$
 For functions $w(x,t)$ with a mean of zero over the domain, the Fourier coefficient $\hat{w}_0(t)$ is zero. Since the mean of the solution is constant over time, and we use initial conditions with a mean of zero, we can simplify the velocity equation to that used in \cite{hideki_numerical_2006} and \cite{okamoto_generalization_2008},
 $$u(t,x) = -\sum_{k=-N/2,k\neq 0}^{N/2 - 1}\frac{\sgn(k)\wk(t) \exp(ikx)}{k}$$
 where $\sgn$ is the sign function 
@@ -381,7 +694,7 @@ $$\sgn(k) = \begin{cases}
   0, & \text{if } k = 0 \\
   -1 & \text{if } k < 0.
 \end{cases}$$
-\pagebreak
+
 
 \bibliographystyle{plain}
 \raggedright

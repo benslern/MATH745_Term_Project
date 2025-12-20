@@ -5,79 +5,34 @@ hold off;
 clear all;
 close all;
 
-% Global Constants
+% Global Variables
 global N; global DT; global H; global T; global F; global X; global K2; global K; global DEALIAS_MAX;
-global H2; global X2;
 N = 2^14;                 % number of grid points
 DT = 1E-5;                % timestep
 H = 2*pi/N;               % distance between x_i and x_i+1
-H2 = 2*pi/(3*N/2);
 T = 7;                    % timescale
 F = 1E-12;                % filter tolerance
 X = linspace(-pi,pi-H,N); % grid points
-X2 = linspace(-pi,pi-H2,3*N/2); % grid points
 K = [0:N/2-1, -N/2:-1];   % wavenumbers
-K2 =[0:(3*(N/2)/2)-1, -3*(N/2)/2:-1];
-DEALIAS_MAX = 1E-10;
+K2 =[0:(3*(N/2)/2)-1, -3*(N/2)/2:-1]; %zero-padded wavenumbers
+DEALIAS_MAX = 1E-10;      % underresolved cutoff threshold
 
-%SolveGCLM("Init_1");
-%generateDGDTData("Init_1");
-generateGraphs("Init_1");
-%SolveGCLM("Init_2");
-%generateDGDTData("Init_2");
+SolveGCLM("Init_1");        % run models and save data
+generateDGDTData("Init_1"); % calculate diagnostic quantities
+generateGraphs("Init_1");   % create graphs
+SolveGCLM("Init_2");
+generateDGDTData("Init_2");
 generateGraphs("Init_2");
 
-
-%Test functions used to verify the velocity, hilbert transform, and
-%derivative were calculated correctly
-function [E] = calc_u_test()
-    global X; global N; global F;
-    w = sin(3*X);
-    u_ana = -sin(3*X)/3;
-    w_c = fft(w,N);
-    w_c = filter(w_c, F);
-    u_num = calc_u(w_c);
-
-    dif = abs(u_ana - u_num);
-    %E = max(dif);
-    E = norm(dif,2);
-end
-
-function [E] = ht_test()
-    global X; global N; global F;
-    w = sin(3*X);
-    wht_ana = -cos(3*X);
-    w_c = fft(w,N);
-    w_c = filter(w_c, F);
-    wht_num = ifft(ht(w_c));
-
-    dif = abs(wht_ana - wht_num);
-    %E = max(dif);
-    E = norm(dif,2);
-end
-
-function [E] = deriv_test()
-    global X; global N; global F;
-    w = sin(3*X);
-    w_c = fft(w, N);
-    w_c = filter(w_c, F);
-    wx_ana = 3*cos(3*X);
-    wx_num_c = deriv(w_c,1);
-    wx_num_c = dealias(wx_num_c);
-    wx_num = ifft(wx_num_c,N);
-
-    dif = abs(wx_ana - wx_num);
-    %E = max(dif);
-    E = norm(dif,2);
-end
-
+% calculate diagnostic quantity plots from save data
 function generateDGDTData(init)
-    global X; global K; global DT;
+    global DT;
     data_path = "../Results/Data/"+init+"/";
     
     index = 1;
     for a=1.0:-0.1:-1.0
         disp(a);
+        % q_2 data
         filename = sprintf("%sa%d/l2_data_a%d_%s.csv",data_path,index,index,num2str(round(a,1)));
         data = readmatrix(filename);
         dgdt = (data(1,2:end)-data(1,1:end-1))/DT;
@@ -88,6 +43,7 @@ function generateDGDTData(init)
         filename = sprintf("%sa%d/l2_x_data_a%d_%s.csv",data_path,index,index,num2str(round(a,1)));
         writematrix(data(1,1:end-1), filename, 'WriteMode', 'append');
 
+        % q_1 data
         filename = sprintf("%sa%d/linf_data_a%d_%s.csv",data_path,index,index,num2str(round(a,1)));
         data = readmatrix(filename);
         int_vals = zeros(size(data));
@@ -120,13 +76,21 @@ function generateGraphs(init)
     end
     as = (1.0:-0.1:-1.0);
 
+    % under resolved time plot
     filename = sprintf("%s/blowup_times.csv",data_path);
     data = readmatrix(filename);
     fg = figure();
     clf;
     plot(as,data,"o-");
+    hold on;
+    ft = fittype('a*(b^x)+c','independent','x','dependent','y');
+    startPoints = [1.2,1.8,1.1];
+    [f1,~] = fit(transpose(as(4:end)),data(4:end),ft,'StartPoint',startPoints);
+    plot(as(4:end),f1(as(4:end)));
+    disp(f1)
     ylim([0,8]);
     xlim([-1.1,1.1]);
+    legend('data','best fit','location','south east');
     title('Under-resolved Times vs a','interpreter','latex','FontSize', 26);
     xlabel("$a$",'interpreter','latex','FontSize', 20);
     ylabel("Time",'interpreter','latex','FontSize', 20);
@@ -136,8 +100,6 @@ function generateGraphs(init)
 
     for a=1.0:-0.1:-1.0
         disp(a);
-        %colors = {[0,0,1],[0.5,0.5,0.5]};
-        %plot(X,real(w),'color', colors{1 + ~(t==0)});
 
         % omega vs x plots
         filename = sprintf("%sa%d/w_data_a%d_%s.csv",data_path,index,index,num2str(round(a,1)));
@@ -235,8 +197,8 @@ function generateGraphs(init)
         filename = sprintf("%sa%d/spec_data_a%d_%s.jpg",image_path,index,index,num2str(round(a,1)));
         exportgraphics(fg,filename,'Resolution',600)
 
-        
-        % L2 vs t plots
+   
+        % q2 vs t plots
         filename = sprintf("%sa%d/l2_data_a%d_%s.csv",data_path,index,index,num2str(round(a,1)));
         data = readmatrix(filename);
         fg = figure();
@@ -250,7 +212,7 @@ function generateGraphs(init)
         filename = sprintf("%sa%d/l2_data_a%d_%s.jpg",image_path,index,index,num2str(round(a,1)));
         exportgraphics(fg,filename,'Resolution',600)
 
-        % dgdt L2 vs L2 plots
+        % dq2dt vs q2 plots
         filename = sprintf("%sa%d/l2_y_data_a%d_%s.csv",data_path,index,index,num2str(round(a,1)));
         data_y = readmatrix(filename);
         filename = sprintf("%sa%d/l2_x_data_a%d_%s.csv",data_path,index,index,num2str(round(a,1)));
@@ -291,8 +253,7 @@ function generateGraphs(init)
         filename = sprintf("%sa%d/l2_dgdt_data_a%d_%s.jpg",image_path,index,index,num2str(round(a,1)));
         exportgraphics(fg,filename,'Resolution',600)
 
-        
-        %plot linf norm vs t
+        %plot q1 norm vs t
         filename = sprintf("%sa%d/linf_data_a%d_%s.csv",data_path,index,index,num2str(round(a,1)));
         data = readmatrix(filename);
         fg = figure();
@@ -316,7 +277,7 @@ function generateGraphs(init)
         filename = sprintf("%sa%d/linf_int_data_a%d_%s.jpg",image_path,index,index,num2str(round(a,1)));
         exportgraphics(fg,filename,'Resolution',600)
 
-        % dgdt LINF int vs LIF int plots
+        % dq1dt vs q1 plots
         fg = figure();
         clf;
         filename = sprintf("%sa%d/linf_x_data_a%d_%s.csv",data_path,index,index,num2str(round(a,1)));
@@ -361,7 +322,7 @@ function generateGraphs(init)
         
     end 
         
-
+    %alpha vs a plots
     fg = figure();
     clf;
     plot(as,alphas_l2(1,:),'o-','color','r');
@@ -404,8 +365,8 @@ end
 function SolveGCLM(init)
     global X;
     
-    index = 20;
-    for a=-0.9:-0.1:-1.0
+    index = 1;
+    for a=1.0:-0.1:-1.0
         disp("a: "+a);
 
         % Initial conditions
@@ -444,7 +405,7 @@ function h = ht(w_c)
     h = (-1i*sign(K)).*w_c;
 end
 
-% Calculate velocity from vorticity
+% Calculate velocity from vorticity in fourier space
 function w_c = calc_u(w_c)
     global N; global K;
     % exclude k=0 
@@ -457,12 +418,8 @@ end
 
 % Dealias with 2/3 rule
 function w_c = dealias(w_c)
-    global N; global K2; global K;
-    % points above 2/3
-    %dealias_points = (abs(K2) >= N/2);
-    % set dealias points to zero
-    %w_c(dealias_points) = 0;
-    %w_c = w_c(abs(K)>=0);
+    global N; 
+    % remove points above 2/3
     w_c = (2/3)*[w_c(1:N/2),w_c(end-N/2+1:end)];
 
 end
@@ -493,10 +450,10 @@ function f = calc_RHS(w,a)
     wx_c2 = (3/2)*[wx_c(1:N/2),zeros(1,2^13),wx_c(N/2 + 1:end)];
     u_c2 =  (3/2)*[u_c(1:N/2),zeros(1,2^13),u_c(N/2 + 1:end)];
 
-    w2 = ifft(w_c2);
+    w2 = ifft(w_c2);         % convert w to physical space
     ux2 = ifft(ux_c2,3*N/2); % convert du/dx to physical space
     wx2 = ifft(wx_c2,3*N/2); % convert dw/dx to physical space
-    u2 = ifft(u_c2,3*N/2);
+    u2 = ifft(u_c2,3*N/2);   % convert u to physical space
 
     t1 = ux2.*w2; % compute du/dx * w in physical space
     t2 = a*(u2.*wx2); % compute a*u*dw/dx in physical space
@@ -509,6 +466,7 @@ end
 function save_data(w, a, index, init_path)
     global N; global K;
     % Save w and u data every 0.25  
+
     filename = sprintf('../Results/Data/%s/a%s/w_data_a%s_%s.csv', init_path, num2str(index), num2str(index), num2str(round(a,1)));
     writematrix(real(w), filename, 'WriteMode', 'append');
         
@@ -534,7 +492,7 @@ end
 
 % Integration of the model problem using the RK4 scheme;
 function RK4( w_t, a, index,init_path)
-    global DT; global X; global T; global N; global K; global K2;
+    global DT; global T; global N;
     global DEALIAS_MAX;
     i = 1;
     t = 0;
@@ -544,7 +502,7 @@ function RK4( w_t, a, index,init_path)
     norm_data_2 = [];
     norm_times = [];
 
-    %save_data(w_t, a, index, init_path);
+    save_data(w_t, a, index, init_path);
     norm_data(i) = L2_norm(w_t);
     norm_data_2(i) = LINF_norm(w_t);
     norm_times(i) = t;
@@ -554,6 +512,7 @@ function RK4( w_t, a, index,init_path)
 
       t = i*DT;
      
+      % calculate k terms
       f1 = calc_RHS(w_t, a);
       k1 = DT*f1;
       f2 = calc_RHS(w_t + k1/2, a);
@@ -563,6 +522,7 @@ function RK4( w_t, a, index,init_path)
       f4 = calc_RHS(w_t + k3, a);
       k4 = DT*f4;
 
+      % time step
       w_t = w_t + (1/6)*( k1 + 2*k2 + 2*k3 + k4 );
   
       if(mod(t,0.25)==0)

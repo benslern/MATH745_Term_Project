@@ -7,11 +7,6 @@ J.~T. Beale, T.~Kato, and A.~Majda.
 \newblock {\em Communications in Mathematical Physics}, 94(1):61--66, March
   1984.
 
-\bibitem{castro_infinite_2010}
-A.~Castro and D.~Córdoba.
-\newblock Infinite energy solutions of the surface quasi-geostrophic equation.
-\newblock {\em Advances in Mathematics}, 225(4):1820--1829, November 2010.
-
 \bibitem{chen_singularity_2020}
 Jiajie Chen.
 \newblock Singularity {Formation} and {Global} {Well}-{Posedness} for the
@@ -63,5 +58,10 @@ Hisashi Okamoto, Takashi Sakajo, and Marcus Wunsch.
 \bibitem{protas_spectral_2025}
 Bartosz Protas.
 \newblock Spectral {Methods} ({III}) - {Nonlinear} {Evolution} {PDEs}, 2025.
+
+\bibitem{zhao_systematic_2023}
+Xinyu Zhao and Bartosz Protas.
+\newblock Systematic {Search} for {Singularities} in {3D} {Euler} {Flows}.
+\newblock {\em Journal of Nonlinear Science}, 33(6):120, October 2023.
 
 \end{thebibliography}
